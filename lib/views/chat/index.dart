@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
+import '../../model/counter.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -6,12 +9,13 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
-
   @override
   Widget build(BuildContext context) {
-    return Container(
-      alignment: Alignment.center,
-      child: Text('聊天室', textScaleFactor: 5),
+    return Consumer(
+      builder: (context, Counter counter, _) => Container(
+        alignment: Alignment.center,
+        child: Text('${counter.value}', textScaleFactor: 5),
+      ),
     );
   }
 }

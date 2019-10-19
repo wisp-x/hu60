@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import './views/home.dart';
+import './model/counter.dart';
 
 void main() {
-  runApp(
-    MaterialApp(
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider.value(value: Counter()),
+    ],
+    child: MaterialApp(
       home: Home(),
       theme: ThemeData(
         brightness: Brightness.light,
@@ -11,6 +16,5 @@ void main() {
         accentColor: Color.fromRGBO(25, 123, 48, 1),
       ),
     ),
-  );
+  ));
 }
-

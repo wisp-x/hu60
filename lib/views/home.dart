@@ -86,7 +86,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               title: Text(
                 '消息',
                 style: TextStyle(
-                  fontSize: ScreenUtil.getInstance().setSp(35.0),
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
                 ),
               ),
               leading: Icon(Icons.message),
@@ -94,31 +94,56 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               onTap: () => {},
             ),
             ListTile(
-              title: Text('内信'),
+              title: Text(
+                '内信',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                ),
+              ),
               leading: Icon(Icons.mail),
               trailing: Icon(Icons.chevron_right),
               onTap: () => {},
             ),
             ListTile(
-              title: Text('收藏'),
+              title: Text(
+                '收藏',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                ),
+              ),
               leading: Icon(Icons.star),
               trailing: Icon(Icons.chevron_right),
               onTap: () => {},
             ),
             ListTile(
-              title: Text('资料'),
+              title: Text(
+                '资料',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                ),
+              ),
               leading: Icon(Icons.person),
               trailing: Icon(Icons.chevron_right),
               onTap: () => {},
             ),
             ListTile(
-              title: Text('设置'),
+              title: Text(
+                '设置',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                ),
+              ),
               leading: Icon(Icons.settings),
               trailing: Icon(Icons.chevron_right),
               onTap: () => {},
             ),
             ListTile(
-              title: Text('关于'),
+              title: Text(
+                '关于',
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                ),
+              ),
               leading: Icon(Icons.info),
               trailing: Icon(Icons.chevron_right),
               onTap: () => {},
