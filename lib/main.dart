@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './views/home.dart';
-import './model/counter.dart';
+import './model/user.dart';
 
 void main() {
   runApp(MultiProvider(
     providers: [
-      ChangeNotifierProvider.value(value: Counter()),
+      ChangeNotifierProvider.value(value: User()),
     ],
     child: MaterialApp(
       home: Home(),

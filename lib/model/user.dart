@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class Counter with ChangeNotifier {
+class User with ChangeNotifier {
   int _count = 0;
   int get value => _count;
 

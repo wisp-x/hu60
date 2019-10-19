@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/counter.dart';
+import '../../model/user.dart';
 
 class Chat extends StatefulWidget {
   @override
@@ -12,10 +12,15 @@ class _ChatState extends State<Chat> {
   @override
   Widget build(BuildContext context) {
     return Consumer(
-      builder: (context, Counter counter, _) => Container(
+      builder: (context, User user, _) => Container(
         alignment: Alignment.center,
-        child: Text('${counter.value}', textScaleFactor: 5),
+        child: Text('${user.value}', textScaleFactor: 5),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
