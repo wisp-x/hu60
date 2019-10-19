@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../model/user.dart';
+import '../../store/user.dart';
 
 class Chat extends StatefulWidget {
   @override
