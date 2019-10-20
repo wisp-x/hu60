@@ -11,12 +11,16 @@ class Community extends StatefulWidget {
   _CommunityState createState() => _CommunityState();
 }
 
-class _CommunityState extends State<Community> {
+class _CommunityState extends State<Community>
+    with AutomaticKeepAliveClientMixin {
   List list = List();
   int _page = 1; // 加载的页数
   bool isLoading = false; // 是否正在加载数据
   bool noMore = false; // 是否已经没有数据了
   ScrollController _scrollController = ScrollController();
+
+  @override
+  bool get wantKeepAlive => true;
 
   @override
   void initState() {
@@ -33,6 +37,8 @@ class _CommunityState extends State<Community> {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     return Scaffold(
       body: Consumer<User>(
         builder: (context, User user, _) => Container(
@@ -100,7 +106,8 @@ class _CommunityState extends State<Community> {
       return ListTile(
         leading: ClipOval(
           child: Image(
-            image: NetworkImage('http://qiniu.img.hu60.cn/avatar/20048.jpg?t=1'),
+            image:
+                NetworkImage('http://qiniu.img.hu60.cn/avatar/20048.jpg?t=1'),
           ),
         ),
         trailing: Text('呵呵'),

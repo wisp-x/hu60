@@ -13,10 +13,12 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
+  List<String> _tabs = ['社区', '聊天室'];
+
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this);
   }
 
   @override
@@ -30,14 +32,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           isScrollable: true,
           indicatorColor: Colors.white,
           indicatorSize: TabBarIndicatorSize.label,
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.home),
-            ),
-            Tab(
-              icon: Icon(Icons.chat),
-            ),
-          ],
+          tabs: _tabs.map((title) {
+            return Tab(
+              text: title,
+            );
+          }).toList(),
         ),
       ),
       drawer: Drawer(
