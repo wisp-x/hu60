@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -14,6 +15,9 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
   List<String> _tabs = ['社区', '聊天室'];
+
+  /// 默认头像地址
+  String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
 
   @override
   void initState() {
@@ -66,18 +70,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     ),
                   );
                 },
-                child: CircleAvatar(
-                  backgroundImage: NetworkImage(
-                    'https://www.gravatar.com/avatar/7a585313ed855e8d652cbb3154a6056e?s=300&d=mm&r=g',
+                child: ClipOval(
+                  child: CachedNetworkImage(
+                    imageUrl: 'http://qiniu.img.hu60.cn/avatar/20048.jpg',
+                    placeholder: (context, url) => Image.network(_defaultAvatarUrl),
+                    errorWidget: (context, url, error) => Image.network(_defaultAvatarUrl),
                   ),
                 ),
               ),
               decoration: BoxDecoration(
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: NetworkImage(
-                    'https://img.ivsky.com/img/bizhi/pre/201906/27/senlin-006.jpg',
-                  ),
+                  image: AssetImage('assets/images/banner.jpg'),
                 ),
               ),
             ),
@@ -162,7 +166,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
     _tabController.dispose();
+    super.dispose();
   }
 }
