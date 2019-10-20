@@ -196,7 +196,9 @@ class _UserState extends State<User> with TickerProviderStateMixin {
               child: Text("确认"),
             ),
             FlatButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
               child: Text('取消'),
             ),
           ],
