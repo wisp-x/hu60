@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -22,7 +23,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: _tabs.length, vsync: this);
+    _tabController = TabController(length: _tabs.length, vsync: this)
+      ..addListener(() {
+        if (_tabController.index.toDouble() == _tabController.animation.value) {
+          switch (_tabController.index) {
+            case 0:
+              break;
+            case 1:
+              break;
+          }
+        }
+      });
   }
 
   @override
@@ -31,16 +42,30 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
     return Scaffold(
       appBar: AppBar(
-        title: TabBar(
-          controller: _tabController,
-          isScrollable: true,
-          indicatorColor: Colors.white,
-          indicatorSize: TabBarIndicatorSize.label,
-          tabs: _tabs.map((title) {
-            return Tab(
-              text: title,
-            );
-          }).toList(),
+        title: Theme(
+          /// 使用局部主题去除点击涟漪效果
+          data: ThemeData(
+            brightness: Theme.of(context).brightness,
+            splashColor: Colors.transparent,
+            highlightColor: Colors.transparent,
+          ),
+          child: TabBar(
+            isScrollable: true,
+            controller: _tabController,
+            labelStyle: TextStyle(
+              fontWeight: FontWeight.w600,
+              fontSize: ScreenUtil.getInstance().setSp(50.0),
+            ),
+            unselectedLabelStyle: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: ScreenUtil.getInstance().setSp(40.0),
+            ),
+            labelColor: Colors.white,
+            indicator: UnderlineTabIndicator(
+              borderSide: BorderSide(style: BorderStyle.none),
+            ),
+            tabs: _tabs.map((title) => Text(title)).toList(),
+          ),
         ),
       ),
       drawer: Drawer(
@@ -73,8 +98,10 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 child: ClipOval(
                   child: CachedNetworkImage(
                     imageUrl: 'http://qiniu.img.hu60.cn/avatar/20048.jpg',
-                    placeholder: (context, url) => Image.network(_defaultAvatarUrl),
-                    errorWidget: (context, url, error) => Image.network(_defaultAvatarUrl),
+                    placeholder: (context, url) =>
+                        Image.network(_defaultAvatarUrl),
+                    errorWidget: (context, url, error) =>
+                        Image.network(_defaultAvatarUrl),
                   ),
                 ),
               ),
