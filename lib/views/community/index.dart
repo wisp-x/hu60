@@ -204,63 +204,64 @@ class _CommunityState extends State<Community>
   Widget buildFoot(index) {
     return Padding(
       padding: EdgeInsets.only(bottom: 6.0),
-      child: Row(
-        children: <Widget>[
-          /// 板块名称
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Text(
-              list[index].forumName,
-              style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(35.0),
-                color: Colors.teal,
+      child: DefaultTextStyle(
+        style: TextStyle(
+            fontSize: ScreenUtil.getInstance().setSp(35.0),
+        ),
+        child: Row(
+          children: <Widget>[
+            /// 板块名称
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                list[index].forumName,
+                style: TextStyle(
+                  color: Colors.teal,
+                ),
               ),
             ),
-          ),
 
-          /// 回复数
-          Icon(
-            Icons.insert_comment,
-            color: Colors.black26,
-            size: 18.0,
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Text(
-              list[index].replyCount.toString(),
+            /// 回复数
+            Icon(
+              Icons.insert_comment,
+              color: Colors.black26,
+              size: 18.0,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                list[index].replyCount.toString(),
+                style: TextStyle(
+                  color: Colors.black45,
+                ),
+              ),
+            ),
+
+            /// 浏览数
+            Icon(
+              Icons.visibility,
+              color: Colors.black26,
+              size: 18.0,
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                list[index].readCount.toString(),
+                style: TextStyle(
+                  color: Colors.black45,
+                ),
+              ),
+            ),
+
+            /// 发布时间
+            Text(
+              TimelineUtil.format(list[index].ctime * 1000),
               style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(35.0),
                 color: Colors.black45,
               ),
-            ),
-          ),
-
-          /// 浏览数
-          Icon(
-            Icons.visibility,
-            color: Colors.black26,
-            size: 18.0,
-          ),
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: Text(
-              list[index].readCount.toString(),
-              style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(35.0),
-                color: Colors.black45,
-              ),
-            ),
-          ),
-
-          /// 发布时间
-          Text(
-            TimelineUtil.format(list[index].ctime * 1000),
-            style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(35.0),
-              color: Colors.black45,
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }
