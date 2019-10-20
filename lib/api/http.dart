@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Http {
   static Dio dio;
@@ -19,6 +20,7 @@ class Http {
   }
 
   static request(String url, {data, method}) async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
     dio = Dio(
       BaseOptions(
         baseUrl: "https://hu60.cn/q.php/",
@@ -34,6 +36,10 @@ class Http {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options) async {
+          String sid = preferences.get("sid");
+          if (sid != null) {
+            options.baseUrl += "${sid}/";
+          }
           return options;
         },
         onResponse: (Response response) async {

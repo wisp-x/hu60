@@ -10,6 +10,7 @@ class _LoginState extends State<Login> {
   final _formKey = GlobalKey<FormState>();
   String _email, _password;
   bool _isObscure = true;
+  bool _isLoading = false;
   Color _eyeColor;
 
   @override
@@ -107,11 +108,9 @@ class _LoginState extends State<Login> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState.validate()) {
-                      Scaffold.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Processing Data'),
-                        ),
-                      );
+                      setState(() {
+                        _isLoading = true;
+                      });
                     }
                   },
                 ),

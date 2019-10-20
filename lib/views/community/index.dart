@@ -20,7 +20,7 @@ class _CommunityState extends State<Community>
   int _page = 1;
 
   /// 加载的页数
-  bool isLoading = false;
+  bool _isLoading = false;
 
   /// 是否正在加载数据
   bool noMore = false;
@@ -82,12 +82,12 @@ class _CommunityState extends State<Community>
   }
 
   Future getData() async {
-    if (!isLoading) {
+    if (!_isLoading) {
       var result = await Http.request('index.index.json');
       Home data = Home.fromJson(result.data);
       setState(() {
         list = data.newTopicList;
-        isLoading = false;
+        _isLoading = false;
       });
     }
   }
@@ -106,7 +106,7 @@ class _CommunityState extends State<Community>
       padding: const EdgeInsets.all(12.0),
       child: Center(
         child: Opacity(
-          opacity: isLoading ? 1.0 : 0.0,
+          opacity: _isLoading ? 1.0 : 0.0,
           child: CircularProgressIndicator(),
         ),
       ),
@@ -146,16 +146,16 @@ class _CommunityState extends State<Community>
   }
 
   Future _getMore() async {
-    if (!isLoading) {
+    if (!_isLoading) {
       setState(() {
-        isLoading = true;
+        _isLoading = true;
         _page++;
       });
       var result = await Http.request('index.index.json?p=${_page}');
       Home data = Home.fromJson(result.data);
       setState(() {
         list.addAll(data.newTopicList);
-        isLoading = false;
+        _isLoading = false;
         if (data.newTopicList.length == 0) {
           noMore = true;
         }
