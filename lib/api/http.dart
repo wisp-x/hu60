@@ -26,9 +26,9 @@ class Http {
         baseUrl: "https://hu60.cn/q.php/",
         connectTimeout: 5000,
         receiveTimeout: 5000,
+        contentType: Headers.formUrlEncodedContentType,
         headers: {
-          HttpHeaders.userAgentHeader: 'dio',
-//      'common-header': 'xx',
+          // HttpHeaders.userAgentHeader: 'dio',
         },
       ),
     );

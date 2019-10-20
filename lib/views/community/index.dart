@@ -74,9 +74,7 @@ class _CommunityState extends State<Community>
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {
-          Provider.of<User>(context, listen: false).increment();
-        },
+        onPressed: () {},
       ),
     );
   }

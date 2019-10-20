@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../../api/http.dart';
 import '../../store/user.dart';
 
 class Chat extends StatefulWidget {
@@ -20,7 +21,7 @@ class _ChatState extends State<Chat> with AutomaticKeepAliveClientMixin {
     return Consumer(
       builder: (context, User user, _) => Container(
         alignment: Alignment.center,
-        child: Text('${user.value}', textScaleFactor: 5),
+        child: Text('${user.uid ?? '66'}', textScaleFactor: 5),
       ),
     );
   }
