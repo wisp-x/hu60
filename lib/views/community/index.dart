@@ -83,6 +83,9 @@ class _CommunityState extends State<Community>
 
   Future _getData() async {
     if (!_isLoading) {
+      setState(() {
+        _page = 1;
+      });
       var result = await Http.request('index.index.json');
       Home data = Home.fromJson(result.data);
       setState(() {
