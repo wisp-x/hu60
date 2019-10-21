@@ -175,7 +175,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                 Navigator.pushAndRemoveUntil(
                   context,
                   PageRouteBuilder(
-                    transitionDuration: Duration(milliseconds: 150),
+                    transitionDuration: Duration(milliseconds: 160),
                     pageBuilder: (
                       BuildContext context,
                       Animation animation,
