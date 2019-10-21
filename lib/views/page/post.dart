@@ -86,7 +86,6 @@ class _PostState extends State<Post> {
       });
       await _username;
       var result = await Http.request('bbs.search.json?keywords=&username=${_username}&p=${_page}');
-      print(result);
       Search data = Search.fromJson(result.data);
       setState(() {
         list = data.topicList;
