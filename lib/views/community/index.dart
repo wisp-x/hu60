@@ -1,5 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +8,7 @@ import 'package:common_utils/common_utils.dart';
 import '../../api/http.dart';
 import '../../store/user.dart';
 import '../../model/home.dart';
+import './detail.dart';
 
 class Community extends StatefulWidget {
   @override
@@ -42,7 +43,7 @@ class _CommunityState extends State<Community>
     _getData();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
+      if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
         _getMore();
       }
@@ -140,7 +141,14 @@ class _CommunityState extends State<Community>
             ],
           ),
         ),
-        onTap: () => {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Detail(list[index].id),
+            ),
+          );
+        },
       );
     }
   }

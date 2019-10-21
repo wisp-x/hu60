@@ -7,6 +7,7 @@ import 'package:hu60/api/http.dart';
 import 'package:hu60/model/search.dart';
 import 'package:hu60/store/user.dart' as UserState;
 import 'package:hu60/model/user.dart' as UserModel;
+import 'package:hu60/views/community/detail.dart';
 import 'package:provider/provider.dart';
 
 class Post extends StatefulWidget {
@@ -40,7 +41,7 @@ class _PostState extends State<Post> {
     _getData();
 
     _scrollController.addListener(() {
-      if (_scrollController.position.pixels ==
+      if (_scrollController.position.pixels >=
           _scrollController.position.maxScrollExtent) {
         _getMore();
       }
@@ -139,7 +140,14 @@ class _PostState extends State<Post> {
             ],
           ),
         ),
-        onTap: () => {},
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => Detail(list[index].id),
+            ),
+          );
+        },
       );
     }
   }
