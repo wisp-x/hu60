@@ -16,17 +16,19 @@ class Community extends StatefulWidget {
 
 class _CommunityState extends State<Community>
     with AutomaticKeepAliveClientMixin {
+
+  ScrollController _scrollController = ScrollController();
+
   List list = List();
-  int _page = 1;
 
   /// 加载的页数
-  bool _isLoading = false;
+  int _page = 1;
 
   /// 是否正在加载数据
-  bool noMore = false;
+  bool _isLoading = false;
 
   /// 是否已经没有数据了
-  ScrollController _scrollController = ScrollController();
+  bool _noMore = false;
 
   /// 默认头像地址
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
@@ -37,7 +39,7 @@ class _CommunityState extends State<Community>
   @override
   void initState() {
     super.initState();
-    getData();
+    _getData();
 
     _scrollController.addListener(() {
       if (_scrollController.position.pixels ==
@@ -79,19 +81,20 @@ class _CommunityState extends State<Community>
     );
   }
 
-  Future getData() async {
+  Future _getData() async {
     if (!_isLoading) {
       var result = await Http.request('index.index.json');
       Home data = Home.fromJson(result.data);
       setState(() {
         list = data.newTopicList;
         _isLoading = false;
+        _noMore = false;
       });
     }
   }
 
   Widget _loadMoreDataLoading() {
-    if (noMore) {
+    if (_noMore) {
       return Padding(
         padding: const EdgeInsets.all(8.0),
         child: Center(
@@ -140,7 +143,7 @@ class _CommunityState extends State<Community>
   }
 
   Future<Null> _onRefresh() async {
-    await getData();
+    await _getData();
   }
 
   Future _getMore() async {
@@ -155,7 +158,7 @@ class _CommunityState extends State<Community>
         list.addAll(data.newTopicList);
         _isLoading = false;
         if (data.newTopicList.length == 0) {
-          noMore = true;
+          _noMore = true;
         }
       });
     }
