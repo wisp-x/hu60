@@ -100,7 +100,7 @@ class _CommunityState extends State<Community>
   Widget _loadMoreDataLoading() {
     if (_noMore) {
       return Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(15.0),
         child: Center(
           child: Text('已经到底啦~'),
         ),
@@ -108,7 +108,7 @@ class _CommunityState extends State<Community>
     }
 
     return Padding(
-      padding: const EdgeInsets.all(12.0),
+      padding: const EdgeInsets.all(15.0),
       child: Center(
         child: Opacity(
           opacity: _isLoading ? 1.0 : 0.0,
