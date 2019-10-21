@@ -8,6 +8,11 @@ import '../api/http.dart';
 import './community/index.dart';
 import './chat/index.dart';
 import './auth/login.dart';
+import '../views/page/setting.dart';
+import '../views/page/about.dart';
+import '../views/page/letter.dart';
+import '../views/page/message.dart';
+import '../views/page/post.dart';
 import '../views/user/index.dart' as UserPage;
 import '../model/user.dart' as UserModel;
 import '../store/user.dart' as UserState;
@@ -20,7 +25,7 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   TabController _tabController;
 
-  List<String> _tabs = ['社区', '聊天室'];
+  List<String> _tabs = ['社区', /*'聊天室'*/];
 
   /// 默认头像地址
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
@@ -53,6 +58,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Consumer<UserState.User>(
       builder: (context, UserState.User user, _) => Scaffold(
         appBar: AppBar(
+          centerTitle: true,
           title: Theme(
             /// 使用局部主题去除点击涟漪效果
             data: ThemeData(
@@ -93,7 +99,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 leading: Icon(Icons.message),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => user.isLogin ? Message() : Login(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 title: Text(
@@ -104,29 +117,32 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 leading: Icon(Icons.mail),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => user.isLogin ? Letter() : Login(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 title: Text(
-                  '收藏',
+                  '帖子',
                   style: TextStyle(
                     fontSize: ScreenUtil.getInstance().setSp(40.0),
                   ),
                 ),
-                leading: Icon(Icons.star),
+                leading: Icon(Icons.library_books),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
-              ),
-              ListTile(
-                title: Text(
-                  '资料',
-                  style: TextStyle(
-                    fontSize: ScreenUtil.getInstance().setSp(40.0),
-                  ),
-                ),
-                leading: Icon(Icons.person),
-                trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => user.isLogin ? Post() : Login(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 title: Text(
@@ -137,7 +153,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 leading: Icon(Icons.settings),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => Setting(),
+                    ),
+                  );
+                },
               ),
               ListTile(
                 title: Text(
@@ -148,7 +171,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                 ),
                 leading: Icon(Icons.info),
                 trailing: Icon(Icons.chevron_right),
-                onTap: () => {},
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => About(),
+                    ),
+                  );
+                },
               ),
             ],
           ),
@@ -157,7 +187,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           controller: _tabController,
           children: <Widget>[
             Community(),
-            Chat(),
+//            Chat(),
           ],
         ),
       ),
@@ -180,7 +210,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     }
   }
 
-  _buildHeaderUser(UserState.User user) {
+  Widget _buildHeaderUser(UserState.User user) {
     if (user.isLogin) {
       return UserAccountsDrawerHeader(
         accountName: Text(
@@ -217,7 +247,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         decoration: BoxDecoration(
           image: DecorationImage(
             fit: BoxFit.cover,
-            image: AssetImage('assets/images/banner.jpg'),
+            image: AssetImage(_bannerUrl),
           ),
         ),
       );

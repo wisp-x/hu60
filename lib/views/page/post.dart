@@ -1,21 +1,19 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:hu60/api/http.dart';
+import 'package:hu60/model/search.dart';
+import 'package:hu60/store/user.dart' as UserState;
+import 'package:hu60/model/user.dart' as UserModel;
+import 'package:provider/provider.dart';
 
-import '../../api/http.dart';
-import '../../store/user.dart';
-import '../../model/home.dart';
-
-class Community extends StatefulWidget {
-  @override
-  _CommunityState createState() => _CommunityState();
+class Post extends StatefulWidget {
+  _PostState createState() => _PostState();
 }
 
-class _CommunityState extends State<Community>
-    with AutomaticKeepAliveClientMixin {
+class _PostState extends State<Post> {
 
   ScrollController _scrollController = ScrollController();
 
@@ -33,8 +31,8 @@ class _CommunityState extends State<Community>
   /// 默认头像地址
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
 
-  @override
-  bool get wantKeepAlive => true;
+  /// 用户名
+  String _username;
 
   @override
   void initState() {
@@ -51,32 +49,31 @@ class _CommunityState extends State<Community>
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
-
+    setState(() {
+      _username = Provider.of<UserState.User>(context).name;
+    });
     ScreenUtil.instance = ScreenUtil.getInstance()..init(context);
 
     return Scaffold(
-      body: Consumer<User>(
-        builder: (context, User user, _) => Container(
-          alignment: Alignment.center,
-          child: RefreshIndicator(
-            onRefresh: _onRefresh,
-            child: list.length == 0
-                ? SpinKitFadingCircle(
-                    color: Colors.green,
-                    size: 50.0,
-                  )
-                : ListView.builder(
-                    controller: _scrollController,
-                    itemBuilder: _renderRow,
-                    itemCount: list.length + 1,
-                  ),
-          ),
+      appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () => Navigator.of(context).pop(),
         ),
+        title: Text('帖子'),
       ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {},
+      body: RefreshIndicator(
+        onRefresh: _onRefresh,
+        child: list.length == 0
+            ? SpinKitFadingCircle(
+          color: Colors.green,
+          size: 50.0,
+        )
+            : ListView.builder(
+          controller: _scrollController,
+          itemBuilder: _renderRow,
+          itemCount: list.length + 1,
+        ),
       ),
     );
   }
@@ -86,10 +83,12 @@ class _CommunityState extends State<Community>
       setState(() {
         _page = 1;
       });
-      var result = await Http.request('index.index.json');
-      Home data = Home.fromJson(result.data);
+      await _username;
+      var result = await Http.request('bbs.search.json?keywords=&username=${_username}&p=${_page}');
+      print(result);
+      Search data = Search.fromJson(result.data);
       setState(() {
-        list = data.newTopicList;
+        list = data.topicList;
         _isLoading = false;
         _noMore = false;
       });
@@ -155,12 +154,12 @@ class _CommunityState extends State<Community>
         _isLoading = true;
         _page++;
       });
-      var result = await Http.request('index.index.json?p=${_page}');
-      Home data = Home.fromJson(result.data);
+      var result = await Http.request('bbs.search.json?keywords=&username=${_username}&p=${_page}');
+      Search data = Search.fromJson(result.data);
       setState(() {
-        list.addAll(data.newTopicList);
+        list.addAll(data.topicList);
         _isLoading = false;
-        if (data.newTopicList.length == 0) {
+        if (_page == data.maxPage) {
           _noMore = true;
         }
       });
@@ -179,7 +178,7 @@ class _CommunityState extends State<Community>
             child: ClipOval(
               child: CachedNetworkImage(
                 imageUrl:
-                    'http://qiniu.img.hu60.cn/avatar/${list[index].uid}.jpg',
+                'http://qiniu.img.hu60.cn/avatar/${list[index].uid}.jpg',
                 placeholder: (context, url) => Image.network(_defaultAvatarUrl),
                 errorWidget: (context, url, error) =>
                     Image.network(_defaultAvatarUrl),
@@ -210,7 +209,7 @@ class _CommunityState extends State<Community>
       padding: EdgeInsets.only(bottom: 6.0),
       child: DefaultTextStyle(
         style: TextStyle(
-            fontSize: ScreenUtil.getInstance().setSp(35.0),
+          fontSize: ScreenUtil.getInstance().setSp(35.0),
         ),
         child: Row(
           children: <Widget>[

@@ -26,8 +26,9 @@ class _UserState extends State<User> with TickerProviderStateMixin {
           headerSliverBuilder: _sliverBuilder,
           body: DefaultTextStyle(
             style: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(45.0),
-                color: Colors.grey),
+              fontSize: ScreenUtil.getInstance().setSp(45.0),
+              color: Colors.grey,
+            ),
             child: ListView(
               children: <Widget>[
                 Divider(),
@@ -205,5 +206,10 @@ class _UserState extends State<User> with TickerProviderStateMixin {
         );
       },
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
   }
 }
