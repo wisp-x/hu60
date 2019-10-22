@@ -103,6 +103,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      fullscreenDialog: !user.isLogin,
                       builder: (context) => user.isLogin ? Message() : Login(),
                     ),
                   );
@@ -121,6 +122,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      fullscreenDialog: !user.isLogin,
                       builder: (context) => user.isLogin ? Letter() : Login(),
                     ),
                   );
@@ -139,6 +141,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
+                      fullscreenDialog: !user.isLogin,
                       builder: (context) => user.isLogin ? Post() : Login(),
                     ),
                   );
