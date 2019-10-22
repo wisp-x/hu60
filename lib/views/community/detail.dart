@@ -137,14 +137,12 @@ class _DetailState extends State<Detail> {
         ),
       );
     } else {
-      /// 创建分隔线
-      if (index.isOdd) {
+      /// TODO 跳过第一条数据
+      if (_page == 1 && index == 0) {
         return Divider(
           height: 0.0,
         );
       }
-
-      /// TODO 跳过第一条数据
 
       return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -188,6 +186,10 @@ class _DetailState extends State<Detail> {
               },
               onImageTap: (src) {},
             ),
+          ),
+          /// 创建分隔线
+          Divider(
+            height: 0.0,
           ),
         ],
       );
@@ -340,7 +342,7 @@ class _DetailState extends State<Detail> {
   }
 
   Future _getMore() async {
-    if (!_isLoading && !_noMore) {
+    if (!_isLoading && !_noMore && _data.maxPage > 1) {
       setState(() {
         _isLoading = true;
         _page++;
@@ -358,16 +360,13 @@ class _DetailState extends State<Detail> {
   }
 
   Future<Null> _onRefresh() async {
-    setState(() {
-      _noMore = false;
-      _page = 1;
-    });
     await _getData();
   }
 
   Future _getData() async {
     setState(() {
       _page = 1;
+      _noMore = false;
     });
     var result = await Http.request('bbs.topic.${widget.id}.${_page}.json');
     Post data = Post.fromJson(result.data);
@@ -406,6 +405,7 @@ class _DetailState extends State<Detail> {
 
   @override
   void dispose() {
+    _scrollController.dispose();
     super.dispose();
   }
 }
