@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
+import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hu60/api/http.dart';
 import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Detail extends StatefulWidget {
   final int id;
@@ -117,10 +120,16 @@ class _DetailState extends State<Detail> {
         bottom: 20.0,
       ),
       child: Html(
+        defaultTextStyle: TextStyle(
+          fontSize: ScreenUtil.getInstance().setSp(45.0),
+          fontWeight: FontWeight.w400,
+        ),
         data: _data.tContents[0].content,
+        useRichText: false,
         onLinkTap: (url) {
-          print(url);
+          _launchURL(url);
         },
+        onImageTap: (src) {},
       ),
     );
   }
@@ -209,6 +218,19 @@ class _DetailState extends State<Detail> {
         ),
       ],
     );
+  }
+
+  _launchURL(url) async {
+    var url64 = Uri.parse(url).queryParameters['url64'];
+    if (url64 != null) {
+      List<int> bytes = base64Decode(url64.replaceAll('..', '=='));
+      url = utf8.decode(bytes);
+    }
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      throw 'Could not launch $url';
+    }
   }
 
   @override
