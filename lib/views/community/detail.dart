@@ -133,7 +133,10 @@ class _DetailState extends State<Detail> {
         child: Center(
           child: Opacity(
             opacity: _isLoading ? 1.0 : 0.0,
-            child: CircularProgressIndicator(),
+            child: SpinKitHourGlass(
+                color: Colors.green,
+                size: 20.0,
+            ),
           ),
         ),
       );

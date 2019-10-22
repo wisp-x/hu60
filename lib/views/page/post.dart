@@ -110,7 +110,10 @@ class _PostState extends State<Post> {
       child: Center(
         child: Opacity(
           opacity: _isLoading ? 1.0 : 0.0,
-          child: CircularProgressIndicator(),
+          child: SpinKitDualRing(
+            color: Colors.green,
+            size: 20.0,
+          ),
         ),
       ),
     );

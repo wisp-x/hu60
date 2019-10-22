@@ -112,7 +112,10 @@ class _CommunityState extends State<Community>
       child: Center(
         child: Opacity(
           opacity: _isLoading ? 1.0 : 0.0,
-          child: CircularProgressIndicator(),
+          child: SpinKitWave(
+            color: Colors.green,
+            size: 20.0,
+          ),
         ),
       ),
     );
