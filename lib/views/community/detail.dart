@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -87,7 +88,7 @@ class _DetailState extends State<Detail> {
           onRefresh: _onRefresh,
           child: Column(
             children: <Widget>[
-              Flexible(
+              Expanded(
                 child: ListView(
                   scrollDirection: Axis.vertical,
                   shrinkWrap: true,
