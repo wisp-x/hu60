@@ -51,22 +51,22 @@ class _DetailState extends State<Detail> {
           ),
         ],
       ),
-      body: SingleChildScrollView(
-        child: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: _data == null
-              ? SpinKitFadingCircle(
-            color: Colors.green,
-            size: 50.0,
-          )
-              : Flex(
-            direction: Axis.vertical,
-            children: <Widget>[
-              _buildMeta(),
-            ],
-          ),
-        ),
-      ),
+      body: _data == null
+          ? SpinKitFadingCircle(
+              color: Colors.green,
+              size: 50.0,
+            )
+          : SingleChildScrollView(
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: Flex(
+                  direction: Axis.vertical,
+                  children: <Widget>[
+                    _buildMeta(),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 
