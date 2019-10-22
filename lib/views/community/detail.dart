@@ -29,6 +29,8 @@ class _DetailState extends State<Detail> {
 
   ScrollController _scrollController = ScrollController();
 
+  final TextEditingController _textController = TextEditingController();
+
   bool _noMore = false;
 
   bool _isLoading = false;
@@ -74,33 +76,41 @@ class _DetailState extends State<Detail> {
             )
           : RefreshIndicator(
               onRefresh: _onRefresh,
-              child: ListView(
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                controller: _scrollController,
+              child: Column(
                 children: <Widget>[
-                  Flex(
-                    direction: Axis.vertical,
-                    children: <Widget>[
-                      _buildMeta(),
-                      Container(
-                        width: double.infinity,
-                        margin: EdgeInsets.only(bottom: 15.0),
-                        padding: EdgeInsets.only(
-                            top: 10.0, left: 15.0, bottom: 10.0),
-                        child: Text(
-                          '评论列表(${_data.floorCount - 1})',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontWeight: FontWeight.bold,
-                            fontSize: ScreenUtil.getInstance().setSp(35.0),
-                          ),
+                  Flexible(
+                    child: ListView(
+                      scrollDirection: Axis.vertical,
+                      shrinkWrap: true,
+                      controller: _scrollController,
+                      children: <Widget>[
+                        Flex(
+                          direction: Axis.vertical,
+                          children: <Widget>[
+                            _buildMeta(),
+                            Container(
+                              width: double.infinity,
+                              margin: EdgeInsets.only(bottom: 15.0),
+                              padding: EdgeInsets.only(
+                                  top: 10.0, left: 15.0, bottom: 10.0),
+                              child: Text(
+                                '评论列表(${_data.floorCount - 1})',
+                                style: TextStyle(
+                                  color: Colors.black87,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize:
+                                      ScreenUtil.getInstance().setSp(35.0),
+                                ),
+                              ),
+                              color: Colors.black12,
+                            ),
+                            _buildComments()
+                          ],
                         ),
-                        color: Colors.black12,
-                      ),
-                      _buildComments()
-                    ],
+                      ],
+                    ),
                   ),
+                  _buildTextComposer()
                 ],
               ),
             ),
@@ -134,8 +144,8 @@ class _DetailState extends State<Detail> {
           child: Opacity(
             opacity: _isLoading ? 1.0 : 0.0,
             child: SpinKitHourGlass(
-                color: Colors.green,
-                size: 20.0,
+              color: Colors.green,
+              size: 20.0,
             ),
           ),
         ),
@@ -434,9 +444,67 @@ class _DetailState extends State<Detail> {
     }
   }
 
+  Widget _buildTextComposer() {
+    return IconTheme(
+      data: IconThemeData(color: Theme.of(context).accentColor),
+      child: Container(
+        color: Colors.black12,
+        padding: EdgeInsets.only(
+          top: 2.0,
+          left: 10.0,
+          right: 10.0,
+          bottom: 2.0,
+        ),
+        child: Row(
+          children: <Widget>[
+            Flexible(
+              child: Container(
+                margin: EdgeInsets.all(5.0),
+                padding: EdgeInsets.only(left: 8.0, top: 8.0, bottom: 8.0),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.all(Radius.circular(5.0)),
+                ),
+                child: TextField(
+                  controller: _textController,
+                  minLines: 1,
+                  maxLines: 10,
+                  showCursor: true,
+                  enableInteractiveSelection: true,
+//                  onSubmitted: _handleSubmitted,
+                  decoration: InputDecoration(
+                    hintText: "请勿发布不友善或者负能量的内容。",
+                    border: InputBorder.none,
+                    contentPadding: EdgeInsets.all(0.0),
+                  ),
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 10.0),
+              child: FlatButton(
+                textColor: Colors.white,
+                color: Theme.of(context).accentColor,
+                child: Text("回复"),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                onPressed: () => _handleSubmitted,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _handleSubmitted(String text) {
+    print(1);
+    _textController.clear();
+  }
+
   @override
   void dispose() {
     _scrollController.dispose();
+    _textController.dispose();
     super.dispose();
   }
 }
