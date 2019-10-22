@@ -102,7 +102,7 @@ class _CommunityState extends State<Community>
       return Padding(
         padding: const EdgeInsets.all(15.0),
         child: Center(
-          child: Text('已经到底啦~'),
+          child: Text('我也是有底线的~'),
         ),
       );
     }

@@ -86,7 +86,8 @@ class _DetailState extends State<Detail> {
                       Container(
                         width: double.infinity,
                         margin: EdgeInsets.only(bottom: 15.0),
-                        padding: EdgeInsets.all(15.0),
+                        padding: EdgeInsets.only(
+                            top: 10.0, left: 15.0, bottom: 10.0),
                         child: Text(
                           '评论列表(${_data.floorCount - 1})',
                           style: TextStyle(
@@ -112,7 +113,7 @@ class _DetailState extends State<Detail> {
       shrinkWrap: true,
       physics: NeverScrollableScrollPhysics(),
       itemBuilder: _buildCommentsRenderRow,
-      itemCount: _data.tContents.length,
+      itemCount: _data.tContents.length + 1,
     );
   }
 
@@ -137,7 +138,6 @@ class _DetailState extends State<Detail> {
         ),
       );
     } else {
-      /// TODO 跳过第一条数据
       if (_page == 1 && index == 0) {
         return Divider(
           height: 0.0,
@@ -151,8 +151,8 @@ class _DetailState extends State<Detail> {
             leading: ClipRRect(
               borderRadius: BorderRadius.circular(6.0),
               child: Container(
-                width: 50.0,
-                height: 50.0,
+                width: 40.0,
+                height: 40.0,
                 child: CachedNetworkImage(
                   imageUrl:
                       'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index].uid}.jpg?t=${DateTime.now().day}',
@@ -163,20 +163,39 @@ class _DetailState extends State<Detail> {
                 ),
               ),
             ),
+            trailing: Text(
+              index == 1 ? '沙发' : '${index}楼',
+              style: TextStyle(color: Colors.grey),
+            ),
             title: Padding(
-              padding: EdgeInsets.only(bottom: 10.0),
-              child: Text(
-                _data.tContents[index].uinfo.name,
-                style: TextStyle(fontWeight: FontWeight.bold),
+              padding: EdgeInsets.only(bottom: 1.0),
+              child: Row(
+                children: <Widget>[
+                  Container(
+                    margin: EdgeInsets.only(right: 10.0),
+                    child: Text(
+                      _data.tContents[index].uinfo.name,
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                  Text(
+                    _data.tMeta.uid == _data.tContents[index].uid ? '楼主' : '',
+                    style: TextStyle(
+                      color: Colors.deepOrangeAccent,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ],
               ),
             ),
             subtitle: _buildCommentsFoot(index),
           ),
           Container(
-            padding: EdgeInsets.all(15.0),
+            padding:
+                EdgeInsets.only(top: 0, left: 15.0, right: 15.0, bottom: 15.0),
             child: Html(
               defaultTextStyle: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(45.0),
+                fontSize: ScreenUtil.getInstance().setSp(40.0),
                 fontWeight: FontWeight.w400,
               ),
               data: _data.tContents[index].content,
@@ -187,6 +206,7 @@ class _DetailState extends State<Detail> {
               onImageTap: (src) {},
             ),
           ),
+
           /// 创建分隔线
           Divider(
             height: 0.0,
@@ -379,11 +399,19 @@ class _DetailState extends State<Detail> {
     return new Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
-        new ListTile(
+        ListTile(
           leading: new Icon(Icons.star),
           title: new Text("收藏"),
           onTap: () async {
             Navigator.pop(context);
+          },
+        ),
+        ListTile(
+          leading: new Icon(Icons.public),
+          title: new Text("WebView"),
+          onTap: () async {
+            Navigator.pop(context);
+            _launchURL("https://hu60.cn/q.php/bbs.topic.${widget.id}.html");
           },
         ),
       ],
