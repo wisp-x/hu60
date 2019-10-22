@@ -166,7 +166,7 @@ class _PostState extends State<Post> {
       setState(() {
         list.addAll(data.topicList);
         _isLoading = false;
-        if (_page == data.maxPage) {
+        if (_page >= data.maxPage) {
           _noMore = true;
         }
       });

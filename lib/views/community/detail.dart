@@ -27,10 +27,23 @@ class _DetailState extends State<Detail> {
   /// 默认头像地址
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
 
+  ScrollController _scrollController = ScrollController();
+
+  bool _noMore = false;
+
+  bool _isLoading = false;
+
   @override
   void initState() {
     super.initState();
     _getData();
+
+    _scrollController.addListener(() {
+      if (_scrollController.position.pixels >=
+          _scrollController.position.maxScrollExtent) {
+        _getMore();
+      }
+    });
   }
 
   @override
@@ -59,24 +72,81 @@ class _DetailState extends State<Detail> {
               color: Colors.green,
               size: 50.0,
             )
-          : SingleChildScrollView(
-              child: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: Flex(
-                  direction: Axis.vertical,
-                  children: <Widget>[
-                    _buildMeta(),
-                  ],
-                ),
+          : RefreshIndicator(
+              onRefresh: _onRefresh,
+              child: ListView(
+                scrollDirection: Axis.vertical,
+                shrinkWrap: true,
+                controller: _scrollController,
+                children: <Widget>[
+                  Flex(
+                    direction: Axis.vertical,
+                    children: <Widget>[
+                      _buildMeta(),
+                      Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.only(bottom: 15.0),
+                        padding: EdgeInsets.all(15.0),
+                        child: Text(
+                          '评论列表(${_data.floorCount - 1})',
+                          style: TextStyle(
+                            color: Colors.black87,
+                            fontWeight: FontWeight.bold,
+                            fontSize: ScreenUtil.getInstance().setSp(35.0),
+                          ),
+                        ),
+                        color: Colors.black12,
+                      ),
+                      _buildComments()
+                    ],
+                  ),
+                ],
               ),
             ),
     );
   }
 
-  Widget _buildMeta() {
-    return Padding(
-      padding: EdgeInsets.all(5.0),
-      child: Column(
+  Widget _buildComments() {
+    return ListView.builder(
+      scrollDirection: Axis.vertical,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      itemBuilder: _buildCommentsRenderRow,
+      itemCount: _data.tContents.length,
+    );
+  }
+
+  Widget _buildCommentsRenderRow(BuildContext context, int index) {
+    if (index == _data.tContents.length) {
+      if (_noMore) {
+        return Padding(
+          padding: const EdgeInsets.all(15.0),
+          child: Center(
+            child: Text('已经到底啦~'),
+          ),
+        );
+      }
+
+      return Padding(
+        padding: const EdgeInsets.all(15.0),
+        child: Center(
+          child: Opacity(
+            opacity: _isLoading ? 1.0 : 0.0,
+            child: CircularProgressIndicator(),
+          ),
+        ),
+      );
+    } else {
+      /// 创建分隔线
+      if (index.isOdd) {
+        return Divider(
+          height: 0.0,
+        );
+      }
+
+      /// TODO 跳过第一条数据
+
+      return Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           ListTile(
@@ -87,7 +157,7 @@ class _DetailState extends State<Detail> {
                 height: 50.0,
                 child: CachedNetworkImage(
                   imageUrl:
-                      'http://qiniu.img.hu60.cn/avatar/${_data.tMeta.uid}.jpg?t=${DateTime.now().day}',
+                      'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index].uid}.jpg?t=${DateTime.now().day}',
                   placeholder: (context, url) =>
                       Image.network(_defaultAvatarUrl),
                   errorWidget: (context, url, error) =>
@@ -98,49 +168,52 @@ class _DetailState extends State<Detail> {
             title: Padding(
               padding: EdgeInsets.only(bottom: 10.0),
               child: Text(
-                _data.tContents[0].uinfo.name,
+                _data.tContents[index].uinfo.name,
                 style: TextStyle(fontWeight: FontWeight.bold),
               ),
             ),
-            subtitle: _buildFoot(),
+            subtitle: _buildCommentsFoot(index),
           ),
-          _buildTitle(),
-          _buildContent(),
+          Container(
+            padding: EdgeInsets.all(15.0),
+            child: Html(
+              defaultTextStyle: TextStyle(
+                fontSize: ScreenUtil.getInstance().setSp(45.0),
+                fontWeight: FontWeight.w400,
+              ),
+              data: _data.tContents[index].content,
+              useRichText: false,
+              onLinkTap: (url) {
+                _launchURL(url);
+              },
+              onImageTap: (src) {},
+            ),
+          ),
         ],
-      ),
-    );
+      );
+    }
   }
 
-  Widget _buildContent() {
+  Widget _buildCommentsFoot(index) {
     return Padding(
-      padding: EdgeInsets.only(
-        top: 10.0,
-        left: 20.0,
-        right: 20.0,
-        bottom: 20.0,
-      ),
-      child: Html(
-        defaultTextStyle: TextStyle(
-          fontSize: ScreenUtil.getInstance().setSp(45.0),
-          fontWeight: FontWeight.w400,
-        ),
-        data: _data.tContents[0].content,
-        useRichText: false,
-        onLinkTap: (url) {
-          _launchURL(url);
-        },
-        onImageTap: (src) {},
-      ),
-    );
-  }
-
-  Widget _buildTitle() {
-    return ListTile(
-      title: Text(
-        _data.tMeta.title,
+      padding: EdgeInsets.only(bottom: 6.0),
+      child: DefaultTextStyle(
         style: TextStyle(
-          fontSize: ScreenUtil.getInstance().setSp(45.0),
-          fontWeight: FontWeight.bold,
+          fontSize: ScreenUtil.getInstance().setSp(35.0),
+        ),
+        child: Row(
+          children: <Widget>[
+            /// 评论时间
+            Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                TimelineUtil.format(_data.tContents[index].ctime * 1000),
+                style: TextStyle(
+                  color: Colors.black45,
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -193,11 +266,109 @@ class _DetailState extends State<Detail> {
     );
   }
 
+  Widget _buildMeta() {
+    return Padding(
+      padding: EdgeInsets.all(5.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: Container(
+                width: 50.0,
+                height: 50.0,
+                child: CachedNetworkImage(
+                  imageUrl:
+                      'http://qiniu.img.hu60.cn/avatar/${_data.tMeta.uid}.jpg?t=${DateTime.now().day}',
+                  placeholder: (context, url) =>
+                      Image.network(_defaultAvatarUrl),
+                  errorWidget: (context, url, error) =>
+                      Image.network(_defaultAvatarUrl),
+                ),
+              ),
+            ),
+            title: Padding(
+              padding: EdgeInsets.only(bottom: 10.0),
+              child: Text(
+                _data.tContents[0].uinfo.name,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ),
+            subtitle: _buildFoot(),
+          ),
+          _buildTitle(),
+          _buildContent(),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildContent() {
+    return Padding(
+      padding: EdgeInsets.only(
+        top: 10.0,
+        left: 15.0,
+        right: 15.0,
+        bottom: 15.0,
+      ),
+      child: Html(
+        defaultTextStyle: TextStyle(
+          fontSize: ScreenUtil.getInstance().setSp(45.0),
+          fontWeight: FontWeight.w400,
+        ),
+        data: _data.tContents[0].content,
+        useRichText: false,
+        onLinkTap: (url) {
+          _launchURL(url);
+        },
+        onImageTap: (src) {},
+      ),
+    );
+  }
+
+  Widget _buildTitle() {
+    return ListTile(
+      title: Text(
+        _data.tMeta.title,
+        style: TextStyle(
+          fontSize: ScreenUtil.getInstance().setSp(45.0),
+          fontWeight: FontWeight.bold,
+        ),
+      ),
+    );
+  }
+
+  Future _getMore() async {
+    if (!_isLoading && !_noMore) {
+      setState(() {
+        _isLoading = true;
+        _page++;
+      });
+      var result = await Http.request('bbs.topic.${widget.id}.${_page}.json');
+      Post data = Post.fromJson(result.data);
+      setState(() {
+        _data.tContents.addAll(data.tContents);
+        _isLoading = false;
+        if (_page >= data.maxPage) {
+          _noMore = true;
+        }
+      });
+    }
+  }
+
   Future<Null> _onRefresh() async {
+    setState(() {
+      _noMore = false;
+      _page = 1;
+    });
     await _getData();
   }
 
   Future _getData() async {
+    setState(() {
+      _page = 1;
+    });
     var result = await Http.request('bbs.topic.${widget.id}.${_page}.json');
     Post data = Post.fromJson(result.data);
     setState(() {
