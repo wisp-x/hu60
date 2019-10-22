@@ -31,6 +31,8 @@ class _DetailState extends State<Detail> {
 
   final TextEditingController _textController = TextEditingController();
 
+  FocusNode _focusNode;
+
   bool _noMore = false;
 
   bool _isLoading = false;
@@ -46,6 +48,8 @@ class _DetailState extends State<Detail> {
         _getMore();
       }
     });
+
+    _focusNode = FocusNode();
   }
 
   @override
@@ -74,46 +78,52 @@ class _DetailState extends State<Detail> {
               color: Colors.green,
               size: 50.0,
             )
-          : RefreshIndicator(
-              onRefresh: _onRefresh,
-              child: Column(
-                children: <Widget>[
-                  Flexible(
-                    child: ListView(
-                      scrollDirection: Axis.vertical,
-                      shrinkWrap: true,
-                      controller: _scrollController,
+          : GestureDetector(
+        onTap: () {
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: RefreshIndicator(
+          onRefresh: _onRefresh,
+          child: Column(
+            children: <Widget>[
+              Flexible(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  controller: _scrollController,
+                  children: <Widget>[
+                    Flex(
+                      direction: Axis.vertical,
                       children: <Widget>[
-                        Flex(
-                          direction: Axis.vertical,
-                          children: <Widget>[
-                            _buildMeta(),
-                            Container(
-                              width: double.infinity,
-                              margin: EdgeInsets.only(bottom: 15.0),
-                              padding: EdgeInsets.only(
-                                  top: 10.0, left: 15.0, bottom: 10.0),
-                              child: Text(
-                                '评论列表(${_data.floorCount - 1})',
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize:
-                                      ScreenUtil.getInstance().setSp(35.0),
-                                ),
-                              ),
-                              color: Colors.black12,
+                        _buildMeta(),
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(
+                              top: 10.0, left: 15.0, bottom: 10.0),
+                          child: Text(
+                            '评论列表(${_data.floorCount - 1})',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                              ScreenUtil.getInstance().setSp(35.0),
                             ),
-                            _buildComments()
-                          ],
+                          ),
+                          color: Colors.black12,
                         ),
+                        _buildComments()
                       ],
                     ),
-                  ),
-                  _buildTextComposer()
-                ],
+                  ],
+                ),
               ),
-            ),
+              _buildTextComposer()
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -466,12 +476,12 @@ class _DetailState extends State<Detail> {
                   borderRadius: BorderRadius.all(Radius.circular(5.0)),
                 ),
                 child: TextField(
+                  focusNode: _focusNode,
                   controller: _textController,
                   minLines: 1,
                   maxLines: 10,
                   showCursor: true,
                   enableInteractiveSelection: true,
-//                  onSubmitted: _handleSubmitted,
                   decoration: InputDecoration(
                     hintText: "请勿发布不友善或者负能量的内容。",
                     border: InputBorder.none,
@@ -497,7 +507,6 @@ class _DetailState extends State<Detail> {
   }
 
   void _handleSubmitted(String text) {
-    print(1);
     _textController.clear();
   }
 
@@ -505,6 +514,7 @@ class _DetailState extends State<Detail> {
   void dispose() {
     _scrollController.dispose();
     _textController.dispose();
+    _focusNode.dispose();
     super.dispose();
   }
 }
