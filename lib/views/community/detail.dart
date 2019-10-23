@@ -10,6 +10,7 @@ import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Detail extends StatefulWidget {
   final int id;
@@ -80,51 +81,56 @@ class _DetailState extends State<Detail> {
               size: 50.0,
             )
           : GestureDetector(
-        onTap: () {
-          // 触摸收起键盘
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  controller: _scrollController,
+              onTap: () {
+                // 触摸收起键盘
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: Column(
                   children: <Widget>[
-                    Flex(
-                      direction: Axis.vertical,
-                      children: <Widget>[
-                        _buildMeta(),
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: 15.0),
-                          padding: EdgeInsets.only(
-                              top: 10.0, left: 15.0, bottom: 10.0),
-                          child: Text(
-                            '评论列表(${_data.floorCount - 1})',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                              ScreenUtil.getInstance().setSp(35.0),
-                            ),
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        children: <Widget>[
+                          Flex(
+                            direction: Axis.vertical,
+                            children: <Widget>[
+                              _buildMeta(),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.only(bottom: 15.0),
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
+                                  left: 15.0,
+                                  bottom: 10.0,
+                                ),
+                                child: Text(
+                                  '评论列表(${_data.floorCount - 1})',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(35.0),
+                                  ),
+                                ),
+                                color: Color(
+                                  int.parse("efefef", radix: 16) | 0xFF000000,
+                                ),
+                              ),
+                              _buildComments()
+                            ],
                           ),
-                          color: Colors.black12,
-                        ),
-                        _buildComments()
-                      ],
+                        ],
+                      ),
                     ),
+                    _buildTextComposer()
                   ],
                 ),
               ),
-              _buildTextComposer()
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -163,7 +169,8 @@ class _DetailState extends State<Detail> {
       );
     } else {
       /// 跳过第一条
-      if ((_page == 1 && index == 0) || (_data.tContents[index].ctime == _data.tMeta.ctime)) {
+      if ((_page == 1 && index == 0) ||
+          (_data.tContents[index].ctime == _data.tMeta.ctime)) {
         return Divider(
           height: 0.0,
         );
@@ -435,8 +442,11 @@ class _DetailState extends State<Detail> {
           leading: new Icon(Icons.public),
           title: new Text("WebView"),
           onTap: () async {
+            SharedPreferences prefs = await SharedPreferences.getInstance();
+            String sid = prefs.get('sid');
             Navigator.pop(context);
-            _launchURL("https://hu60.cn/q.php/bbs.topic.${widget.id}.html");
+            _launchURL(
+                "https://hu60.cn/q.php/${sid != null ? sid + '/' : ''}bbs.topic.${widget.id}.html");
           },
         ),
       ],
@@ -444,6 +454,7 @@ class _DetailState extends State<Detail> {
   }
 
   _launchURL(url) async {
+    print(url);
     var url64 = Uri.parse(url).queryParameters['url64'];
     if (url64 != null) {
       List<int> bytes = base64Decode(url64.replaceAll('..', '=='));
@@ -498,7 +509,8 @@ class _DetailState extends State<Detail> {
                 textColor: Colors.white,
                 color: Theme.of(context).accentColor,
                 child: Text("回复"),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5.0)),
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(5.0)),
                 onPressed: () => _handleSubmitted,
               ),
             ),
