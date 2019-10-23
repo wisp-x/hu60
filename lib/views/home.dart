@@ -71,7 +71,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   ),
                 );
               },
-            )
+            ),
           ],
           title: Theme(
             /// 使用局部主题去除点击涟漪效果

@@ -6,6 +6,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../api/http.dart';
 import '../../store/user.dart';
@@ -100,9 +102,23 @@ class _CommunityState extends State<Community>
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: () {},
+        onPressed: () async {
+          SharedPreferences prefs = await SharedPreferences.getInstance();
+          String sid = prefs.get('sid');
+          _launchUrl(
+            "https://hu60.cn/q.php/${sid != null ? sid + '/' : ''}bbs.newtopic.0.html",
+          );
+        },
       ),
     );
+  }
+
+  _launchUrl(url) async {
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      // throw 'Could not launch $url';
+    }
   }
 
   Future _getData() async {

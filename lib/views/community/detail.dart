@@ -241,7 +241,7 @@ class _DetailState extends State<Detail> {
               data: _data.tContents[index].content,
               useRichText: false,
               onLinkTap: (url) {
-                _launchURL(url);
+                _launchUrl(url);
               },
               onImageTap: (src) {},
             ),
@@ -390,7 +390,7 @@ class _DetailState extends State<Detail> {
         data: _data.tContents[0].content,
         useRichText: false,
         onLinkTap: (url) {
-          _launchURL(url);
+          _launchUrl(url);
         },
         onImageTap: (src) {},
       ),
@@ -461,7 +461,7 @@ class _DetailState extends State<Detail> {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             String sid = prefs.get('sid');
             Navigator.pop(context);
-            _launchURL(
+            _launchUrl(
               "https://hu60.cn/q.php/${sid != null
                   ? sid + '/'
                   : ''}bbs.topic.${widget.id}.html",);
@@ -480,7 +480,7 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  _launchURL(url) async {
+  _launchUrl(url) async {
     var url64 = Uri
         .parse(url)
         .queryParameters['url64'];
