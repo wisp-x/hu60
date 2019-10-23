@@ -172,7 +172,7 @@ class _LoginState extends State<Login> {
       context: context,
       barrierDismissible: false,
       builder: (BuildContext context) {
-        return new LoadingDialog(
+        return LoadingDialog(
           text: '登录中...',
         );
       },

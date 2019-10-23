@@ -7,7 +7,9 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hu60/api/http.dart';
+import 'package:hu60/component/loading_dialog.dart';
 import 'package:hu60/model/collect.dart';
+import 'package:hu60/model/comment.dart';
 import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -84,60 +86,60 @@ class _DetailState extends State<Detail> {
       ),
       body: _data == null
           ? SpinKitFadingCircle(
-        color: Colors.green,
-        size: 50.0,
-      )
+              color: Colors.green,
+              size: 50.0,
+            )
           : GestureDetector(
-        onTap: () {
-          // 触摸收起键盘
-          FocusScope.of(context).requestFocus(FocusNode());
-        },
-        child: RefreshIndicator(
-          onRefresh: _onRefresh,
-          child: Column(
-            children: <Widget>[
-              Expanded(
-                child: ListView(
-                  scrollDirection: Axis.vertical,
-                  shrinkWrap: true,
-                  controller: _scrollController,
+              onTap: () {
+                // 触摸收起键盘
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
+              child: RefreshIndicator(
+                onRefresh: _onRefresh,
+                child: Column(
                   children: <Widget>[
-                    Flex(
-                      direction: Axis.vertical,
-                      children: <Widget>[
-                        _buildMeta(),
-                        Container(
-                          width: double.infinity,
-                          margin: EdgeInsets.only(bottom: 15.0),
-                          padding: EdgeInsets.only(
-                            top: 10.0,
-                            left: 15.0,
-                            bottom: 10.0,
+                    Expanded(
+                      child: ListView(
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        controller: _scrollController,
+                        children: <Widget>[
+                          Flex(
+                            direction: Axis.vertical,
+                            children: <Widget>[
+                              _buildMeta(),
+                              Container(
+                                width: double.infinity,
+                                margin: EdgeInsets.only(bottom: 15.0),
+                                padding: EdgeInsets.only(
+                                  top: 10.0,
+                                  left: 15.0,
+                                  bottom: 10.0,
+                                ),
+                                child: Text(
+                                  '评论列表(${_data.floorCount - 1})',
+                                  style: TextStyle(
+                                    color: Colors.black87,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize:
+                                        ScreenUtil.getInstance().setSp(35.0),
+                                  ),
+                                ),
+                                color: Color(
+                                  int.parse("efefef", radix: 16) | 0xFF000000,
+                                ),
+                              ),
+                              _buildComments()
+                            ],
                           ),
-                          child: Text(
-                            '评论列表(${_data.floorCount - 1})',
-                            style: TextStyle(
-                              color: Colors.black87,
-                              fontWeight: FontWeight.bold,
-                              fontSize:
-                              ScreenUtil.getInstance().setSp(35.0),
-                            ),
-                          ),
-                          color: Color(
-                            int.parse("efefef", radix: 16) | 0xFF000000,
-                          ),
-                        ),
-                        _buildComments()
-                      ],
+                        ],
+                      ),
                     ),
+                    _buildTextComposer()
                   ],
                 ),
               ),
-              _buildTextComposer()
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -194,10 +196,7 @@ class _DetailState extends State<Detail> {
                 height: 40.0,
                 child: CachedNetworkImage(
                   imageUrl:
-                  'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index]
-                      .uid}.jpg?t=${DateTime
-                      .now()
-                      .day}',
+                      'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index].uid}.jpg?t=${DateTime.now().day}',
                   placeholder: (context, url) =>
                       Image.network(_defaultAvatarUrl),
                   errorWidget: (context, url, error) =>
@@ -237,7 +236,7 @@ class _DetailState extends State<Detail> {
           ),
           Container(
             padding:
-            EdgeInsets.only(top: 0, left: 15.0, right: 15.0, bottom: 15.0),
+                EdgeInsets.only(top: 0, left: 15.0, right: 15.0, bottom: 15.0),
             child: Html(
               defaultTextStyle: TextStyle(
                 fontSize: ScreenUtil.getInstance().setSp(40.0),
@@ -249,6 +248,23 @@ class _DetailState extends State<Detail> {
                 _launchUrl(url);
               },
               onImageTap: (src) {},
+            ),
+          ),
+
+          ///
+          Container(
+            padding: EdgeInsets.only(
+              right: 15.0,
+              bottom: 15.0,
+            ),
+            child: Align(
+              alignment: Alignment.bottomRight,
+              child: GestureDetector(
+                child: Text('回复'),
+                onTap: () {
+                  _textController.text += "${_data.tContents[index].uinfo.name}, ";
+                },
+              ),
             ),
           ),
 
@@ -270,7 +286,6 @@ class _DetailState extends State<Detail> {
         ),
         child: Row(
           children: <Widget>[
-
             /// 评论时间
             Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -296,7 +311,6 @@ class _DetailState extends State<Detail> {
         ),
         child: Row(
           children: <Widget>[
-
             /// 板块名称
             Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -349,10 +363,7 @@ class _DetailState extends State<Detail> {
                 height: 50.0,
                 child: CachedNetworkImage(
                   imageUrl:
-                  'http://qiniu.img.hu60.cn/avatar/${_data.tMeta
-                      .uid}.jpg?t=${DateTime
-                      .now()
-                      .day}',
+                      'http://qiniu.img.hu60.cn/avatar/${_data.tMeta.uid}.jpg?t=${DateTime.now().day}',
                   placeholder: (context, url) =>
                       Image.network(_defaultAvatarUrl),
                   errorWidget: (context, url, error) =>
@@ -420,7 +431,8 @@ class _DetailState extends State<Detail> {
         _isLoading = true;
         _page++;
       });
-      var result = await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
+      var result =
+          await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
       Post data = Post.fromJson(result.data);
       setState(() {
         _data.tContents.addAll(data.tContents);
@@ -441,7 +453,8 @@ class _DetailState extends State<Detail> {
       _page = 1;
       _noMore = false;
     });
-    var result = await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
+    var result =
+        await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
     Post data = Post.fromJson(result.data);
     setState(() {
       _data = data;
@@ -466,9 +479,8 @@ class _DetailState extends State<Detail> {
           onTap: () async {
             Navigator.pop(context);
             _launchUrl(
-              "https://hu60.cn/q.php/${_sid != null
-                  ? _sid + '/'
-                  : ''}bbs.topic.${widget.id}.html",);
+              "https://hu60.cn/q.php/${_sid != null ? _sid + '/' : ''}bbs.topic.${widget.id}.html",
+            );
           },
         ),
       ],
@@ -499,9 +511,7 @@ class _DetailState extends State<Detail> {
   }
 
   _launchUrl(url) async {
-    var url64 = Uri
-        .parse(url)
-        .queryParameters['url64'];
+    var url64 = Uri.parse(url).queryParameters['url64'];
     if (url64 != null) {
       List<int> bytes = base64Decode(url64.replaceAll('..', '=='));
       url = utf8.decode(bytes);
@@ -515,9 +525,7 @@ class _DetailState extends State<Detail> {
 
   Widget _buildTextComposer() {
     return IconTheme(
-      data: IconThemeData(color: Theme
-          .of(context)
-          .accentColor),
+      data: IconThemeData(color: Theme.of(context).accentColor),
       child: Container(
         color: Colors.black12,
         padding: EdgeInsets.only(
@@ -556,13 +564,12 @@ class _DetailState extends State<Detail> {
               margin: EdgeInsets.only(left: 10.0),
               child: FlatButton(
                 textColor: Colors.white,
-                color: Theme
-                    .of(context)
-                    .accentColor,
+                color: Theme.of(context).accentColor,
                 child: Text("回复"),
                 shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5.0)),
-                onPressed: () => _handleSubmitted,
+                  borderRadius: BorderRadius.circular(5.0),
+                ),
+                onPressed: () => _reply(context),
               ),
             ),
           ],
@@ -571,8 +578,27 @@ class _DetailState extends State<Detail> {
     );
   }
 
-  void _handleSubmitted(String text) {
-    _textController.clear();
+  _reply(BuildContext context) async {
+    if (_textController.text != '') {
+      showDialog<Null>(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return LoadingDialog(
+            text: '回复中...',
+          );
+        },
+      );
+
+      var result = await Http.request("bbs.newreply.${widget.id}.1.json", data: {
+        "content": _textController.text,
+        "token": _data.token,
+        "go": "评论该帖子",
+      }, method: Http.POST);
+      Navigator.of(context).pop();
+      Comment data = Comment.fromJson(result.data);
+      Toast.show(data.notice, context);
+    }
   }
 
   @override
