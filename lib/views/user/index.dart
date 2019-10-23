@@ -18,6 +18,9 @@ class _UserState extends State<User> with TickerProviderStateMixin {
   /// 默认banner地址
   String _bannerUrl = 'assets/images/banner.jpg';
 
+  /// 默认头像地址
+  String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
+
   @override
   Widget build(BuildContext context) {
     return Consumer<UserState.User>(
@@ -26,7 +29,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
           headerSliverBuilder: _sliverBuilder,
           body: DefaultTextStyle(
             style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(45.0),
+              fontSize: ScreenUtil.getInstance().setSp(40.0),
               color: Colors.grey,
             ),
             child: ListView(
@@ -41,7 +44,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     user.uid.toString(),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: ScreenUtil.getInstance().setSp(50.0),
+                      fontSize: ScreenUtil.getInstance().setSp(45.0),
                     ),
                   ),
                 ),
@@ -55,7 +58,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     user.mail,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: ScreenUtil.getInstance().setSp(50.0),
+                      fontSize: ScreenUtil.getInstance().setSp(45.0),
                     ),
                   ),
                 ),
@@ -69,7 +72,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     user.signature,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: ScreenUtil.getInstance().setSp(50.0),
+                      fontSize: ScreenUtil.getInstance().setSp(45.0),
                     ),
                   ),
                 ),
@@ -83,7 +86,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     user.contact,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: ScreenUtil.getInstance().setSp(50.0),
+                      fontSize: ScreenUtil.getInstance().setSp(45.0),
                     ),
                   ),
                 ),
@@ -97,7 +100,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     DateUtil.getDateStrByMs(user.regtime * 1000),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
-                      fontSize: ScreenUtil.getInstance().setSp(50.0),
+                      fontSize: ScreenUtil.getInstance().setSp(45.0),
                     ),
                   ),
                 ),
@@ -107,7 +110,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     child: Text(
                       '退出登录',
                       style: TextStyle(
-                        fontSize: ScreenUtil.getInstance().setSp(40.0),
+                        fontSize: ScreenUtil.getInstance().setSp(45.0),
                         color: Colors.red,
                       ),
                     ),
@@ -117,7 +120,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
               ],
             ),
           ),
-        ),
+        )
       ),
     );
   }
@@ -134,22 +137,27 @@ class _UserState extends State<User> with TickerProviderStateMixin {
           ),
           automaticallyImplyLeading: true,
           centerTitle: true,
-          elevation: 4.0,
+          elevation: 0.0,
           forceElevated: true,
           backgroundColor: Theme.of(context).primaryColor,
           brightness: Brightness.dark,
           primary: true,
           titleSpacing: 16.0,
-          expandedHeight: 200.0,
+          expandedHeight: 350.0,
           floating: false,
           pinned: true,
           snap: false,
           flexibleSpace: FlexibleSpaceBar(
             centerTitle: true,
             title: Text(user.name),
-            background: Image.asset(
-              _bannerUrl,
+            background: CachedNetworkImage(
               fit: BoxFit.cover,
+              imageUrl:
+              'http://qiniu.img.hu60.cn/avatar/${user.uid}.jpg?t=${DateTime.now().day}',
+              placeholder: (context, url) =>
+                  Image.network(_defaultAvatarUrl),
+              errorWidget: (context, url, error) =>
+                  Image.network(_defaultAvatarUrl),
             ),
           ),
         ),
