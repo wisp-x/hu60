@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
@@ -590,11 +591,15 @@ class _DetailState extends State<Detail> {
         },
       );
 
-      var result = await Http.request("bbs.newreply.${widget.id}.1.json", data: {
-        "content": _textController.text,
-        "token": _data.token,
-        "go": "评论该帖子",
-      }, method: Http.POST);
+      var result;
+      try {
+        result = await Http.request("bbs.newreply.${widget.id}.1.json", data: {
+          "content": _textController.text,
+          "token": _data.token,
+          "go": "评论该帖子",
+        }, method: Http.POST);
+      } on DioError catch (e) {}
+
       Navigator.of(context).pop();
       Comment data = Comment.fromJson(result.data);
       Toast.show(data.notice, context);
