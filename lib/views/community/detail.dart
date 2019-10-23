@@ -162,7 +162,8 @@ class _DetailState extends State<Detail> {
         ),
       );
     } else {
-      if (_page == 1 && index == 0) {
+      /// 跳过第一条
+      if ((_page == 1 && index == 0) || (_data.tContents[index].ctime == _data.tMeta.ctime)) {
         return Divider(
           height: 0.0,
         );
