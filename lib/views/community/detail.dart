@@ -262,7 +262,7 @@ class _DetailState extends State<Detail> {
               child: GestureDetector(
                 child: Text('回复'),
                 onTap: () {
-                  _textController.text += "${_data.tContents[index].uinfo.name}, ";
+                  _textController.text += "@${_data.tContents[index].uinfo.name}, ";
                 },
               ),
             ),
