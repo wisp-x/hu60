@@ -553,6 +553,7 @@ class _DetailState extends State<Detail> {
                   minLines: 1,
                   maxLines: 10,
                   showCursor: true,
+                  textInputAction: TextInputAction.unspecified,
                   enableInteractiveSelection: true,
                   decoration: InputDecoration(
                     hintText: "请勿发布不友善或者负能量的内容。",
