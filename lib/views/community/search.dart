@@ -76,7 +76,7 @@ class _SearchState extends State<Search> {
       _isSearch = true;
     });
     var result = await Http.request(
-        'bbs.search.json?keywords=${_textController.text}&username=&p=${_page}');
+        'bbs.search.json?keywords=${_textController.text}&username=&p=${_page.toString()}');
     SearchModel.Search data = SearchModel.Search.fromJson(result.data);
     setState(() {
       _list = data.topicList;
@@ -94,7 +94,7 @@ class _SearchState extends State<Search> {
         _page++;
       });
       var result = await Http.request(
-          'bbs.search.json?keywords=${_textController.text}&username=&p=${_page}');
+          'bbs.search.json?keywords=${_textController.text}&username=&p=${_page.toString()}');
       SearchModel.Search data = SearchModel.Search.fromJson(result.data);
       setState(() {
         _maxPage = data.maxPage;

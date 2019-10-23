@@ -174,7 +174,7 @@ class _CommunityState extends State<Community>
         _isLoading = true;
         _page++;
       });
-      var result = await Http.request('index.index.json?p=${_page}');
+      var result = await Http.request('index.index.json?p=${_page.toString()}');
       Home data = Home.fromJson(result.data);
       setState(() {
         list.addAll(data.newTopicList);

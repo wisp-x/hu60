@@ -7,12 +7,14 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hu60/api/http.dart';
+import 'package:hu60/model/collect.dart';
 import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hu60/views/page/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toast/toast.dart';
 
 class Detail extends StatefulWidget {
   final int id;
@@ -27,6 +29,8 @@ class _DetailState extends State<Detail> {
   int _page = 1;
 
   var _data;
+
+  String _sid;
 
   /// 默认头像地址
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
@@ -44,6 +48,7 @@ class _DetailState extends State<Detail> {
   @override
   void initState() {
     super.initState();
+    _setUid();
     _getData();
 
     _scrollController.addListener(() {
@@ -201,7 +206,7 @@ class _DetailState extends State<Detail> {
               ),
             ),
             trailing: Text(
-              index == 1 ? '沙发' : '${index}楼',
+              index == 1 ? '沙发' : '${index.toString()}楼',
               style: TextStyle(color: Colors.grey),
             ),
             title: Padding(
@@ -415,7 +420,7 @@ class _DetailState extends State<Detail> {
         _isLoading = true;
         _page++;
       });
-      var result = await Http.request('bbs.topic.${widget.id}.${_page}.json');
+      var result = await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
       Post data = Post.fromJson(result.data);
       setState(() {
         _data.tContents.addAll(data.tContents);
@@ -436,7 +441,7 @@ class _DetailState extends State<Detail> {
       _page = 1;
       _noMore = false;
     });
-    var result = await Http.request('bbs.topic.${widget.id}.${_page}.json');
+    var result = await Http.request('bbs.topic.${widget.id}.${_page.toString()}.json');
     Post data = Post.fromJson(result.data);
     setState(() {
       _data = data;
@@ -450,25 +455,38 @@ class _DetailState extends State<Detail> {
         ListTile(
           leading: Icon(Icons.star),
           title: Text("收藏"),
-          onTap: () async {
+          onTap: () {
             Navigator.pop(context);
+            _collect(context);
           },
         ),
         ListTile(
           leading: Icon(Icons.public),
           title: Text("WebView"),
           onTap: () async {
-            SharedPreferences prefs = await SharedPreferences.getInstance();
-            String sid = prefs.get('sid');
             Navigator.pop(context);
             _launchUrl(
-              "https://hu60.cn/q.php/${sid != null
-                  ? sid + '/'
+              "https://hu60.cn/q.php/${_sid != null
+                  ? _sid + '/'
                   : ''}bbs.topic.${widget.id}.html",);
           },
         ),
       ],
     );
+  }
+
+  _setUid() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _sid = prefs.get('sid');
+    });
+  }
+
+  _collect(BuildContext context) async {
+    var result = await Http.request('bbs.setfavoritetopic.${widget.id}.json');
+    Collect data = Collect.fromJson(result.data);
+
+    Toast.show(data.notice ?? '收藏成功', context);
   }
 
   _seeUser(BuildContext context, int uid) {

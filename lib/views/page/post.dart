@@ -109,7 +109,7 @@ class _PostState extends State<Post> {
       });
       await _username;
       var result = await Http.request(
-          'bbs.search.json?keywords=&username=${_username}&p=${_page}');
+          'bbs.search.json?keywords=&username=${_username.toString()}&p=${_page.toString()}');
       Search data = Search.fromJson(result.data);
       setState(() {
         list = data.topicList;
@@ -159,7 +159,7 @@ class _PostState extends State<Post> {
         _page++;
       });
       var result = await Http.request(
-          'bbs.search.json?keywords=&username=${_username}&p=${_page}');
+          'bbs.search.json?keywords=&username=${_username.toString()}&p=${_page.toString()}');
       Search data = Search.fromJson(result.data);
       setState(() {
         list.addAll(data.topicList);
