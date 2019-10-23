@@ -59,6 +59,12 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       builder: (context, UserState.User user, _) => Scaffold(
         appBar: AppBar(
           centerTitle: true,
+          actions: <Widget>[
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () {},
+            )
+          ],
           title: Theme(
             /// 使用局部主题去除点击涟漪效果
             data: ThemeData(
