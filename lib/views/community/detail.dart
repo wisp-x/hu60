@@ -9,8 +9,10 @@ import 'package:hu60/api/http.dart';
 import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hu60/views/page/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Detail extends StatefulWidget {
   final int id;
@@ -30,6 +32,9 @@ class _DetailState extends State<Detail> {
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
 
   ScrollController _scrollController = ScrollController();
+
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
 
   final TextEditingController _textController = TextEditingController();
 
@@ -77,60 +82,83 @@ class _DetailState extends State<Detail> {
       ),
       body: _data == null
           ? SpinKitFadingCircle(
-              color: Colors.green,
-              size: 50.0,
-            )
+        color: Colors.green,
+        size: 50.0,
+      )
           : GestureDetector(
-              onTap: () {
-                // 触摸收起键盘
-                FocusScope.of(context).requestFocus(FocusNode());
-              },
-              child: RefreshIndicator(
-                onRefresh: _onRefresh,
-                child: Column(
+        onTap: () {
+          // 触摸收起键盘
+          FocusScope.of(context).requestFocus(FocusNode());
+        },
+        child: SmartRefresher(
+          controller: _refreshController,
+          enablePullDown: true,
+          enablePullUp: true,
+          onRefresh: _onRefresh,
+          header: WaterDropMaterialHeader(),
+          footer: CustomFooter(
+            builder: (BuildContext context, LoadStatus mode) {
+              Widget body;
+              if (mode == LoadStatus.idle) {
+                body = Text("上拉加载");
+              } else if (mode == LoadStatus.loading) {
+                body = CupertinoActivityIndicator();
+              } else if (mode == LoadStatus.failed) {
+                body = Text("加载失败！点击重试！");
+              } else if (mode == LoadStatus.canLoading) {
+                body = Text("松手加载更多");
+              }
+              if (_noMore) {
+                body = Text("我也是有底线的~");
+              }
+              return Container(
+                height: 55.0,
+                child: Center(child: body),
+              );
+            },
+          ),
+          child: Column(
+            children: <Widget>[
+              Expanded(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
                   children: <Widget>[
-                    Expanded(
-                      child: ListView(
-                        scrollDirection: Axis.vertical,
-                        shrinkWrap: true,
-                        controller: _scrollController,
-                        children: <Widget>[
-                          Flex(
-                            direction: Axis.vertical,
-                            children: <Widget>[
-                              _buildMeta(),
-                              Container(
-                                width: double.infinity,
-                                margin: EdgeInsets.only(bottom: 15.0),
-                                padding: EdgeInsets.only(
-                                  top: 10.0,
-                                  left: 15.0,
-                                  bottom: 10.0,
-                                ),
-                                child: Text(
-                                  '评论列表(${_data.floorCount - 1})',
-                                  style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize:
-                                        ScreenUtil.getInstance().setSp(35.0),
-                                  ),
-                                ),
-                                color: Color(
-                                  int.parse("efefef", radix: 16) | 0xFF000000,
-                                ),
-                              ),
-                              _buildComments()
-                            ],
+                    Flex(
+                      direction: Axis.vertical,
+                      children: <Widget>[
+                        _buildMeta(),
+                        Container(
+                          width: double.infinity,
+                          margin: EdgeInsets.only(bottom: 15.0),
+                          padding: EdgeInsets.only(
+                            top: 10.0,
+                            left: 15.0,
+                            bottom: 10.0,
                           ),
-                        ],
-                      ),
+                          child: Text(
+                            '评论列表(${_data.floorCount - 1})',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontWeight: FontWeight.bold,
+                              fontSize:
+                              ScreenUtil.getInstance().setSp(35.0),
+                            ),
+                          ),
+                          color: Color(
+                            int.parse("efefef", radix: 16) | 0xFF000000,
+                          ),
+                        ),
+                        _buildComments()
+                      ],
                     ),
-                    _buildTextComposer()
                   ],
                 ),
               ),
-            ),
+              _buildTextComposer()
+            ],
+          ),
+        ),
+      ),
     );
   }
 
@@ -138,114 +166,95 @@ class _DetailState extends State<Detail> {
     return ListView.builder(
       scrollDirection: Axis.vertical,
       shrinkWrap: true,
-      physics: NeverScrollableScrollPhysics(),
       itemBuilder: _buildCommentsRenderRow,
-      itemCount: _data.tContents.length + 1,
+      itemCount: _data.tContents.length,
     );
   }
 
   Widget _buildCommentsRenderRow(BuildContext context, int index) {
-    if (index == _data.tContents.length) {
-      if (_noMore) {
-        return Padding(
-          padding: const EdgeInsets.all(15.0),
-          child: Center(
-            child: Text('已经到底啦~'),
-          ),
-        );
-      }
-
-      return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Opacity(
-            opacity: _isLoading ? 1.0 : 0.0,
-            child: SpinKitHourGlass(
-              color: Colors.green,
-              size: 20.0,
-            ),
-          ),
-        ),
-      );
-    } else {
-      /// 跳过第一条
-      if ((_page == 1 && index == 0) ||
-          (_data.tContents[index].ctime == _data.tMeta.ctime)) {
-        return Divider(
-          height: 0.0,
-        );
-      }
-
-      return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: Container(
-                width: 40.0,
-                height: 40.0,
-                child: CachedNetworkImage(
-                  imageUrl:
-                      'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index].uid}.jpg?t=${DateTime.now().day}',
-                  placeholder: (context, url) =>
-                      Image.network(_defaultAvatarUrl),
-                  errorWidget: (context, url, error) =>
-                      Image.network(_defaultAvatarUrl),
-                ),
-              ),
-            ),
-            trailing: Text(
-              index == 1 ? '沙发' : '${index}楼',
-              style: TextStyle(color: Colors.grey),
-            ),
-            title: Padding(
-              padding: EdgeInsets.only(bottom: 1.0),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    margin: EdgeInsets.only(right: 10.0),
-                    child: Text(
-                      _data.tContents[index].uinfo.name,
-                      style: TextStyle(fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Text(
-                    _data.tMeta.uid == _data.tContents[index].uid ? '楼主' : '',
-                    style: TextStyle(
-                      color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            subtitle: _buildCommentsFoot(index),
-          ),
-          Container(
-            padding:
-                EdgeInsets.only(top: 0, left: 15.0, right: 15.0, bottom: 15.0),
-            child: Html(
-              defaultTextStyle: TextStyle(
-                fontSize: ScreenUtil.getInstance().setSp(40.0),
-                fontWeight: FontWeight.w400,
-              ),
-              data: _data.tContents[index].content,
-              useRichText: false,
-              onLinkTap: (url) {
-                _launchURL(url);
-              },
-              onImageTap: (src) {},
-            ),
-          ),
-
-          /// 创建分隔线
-          Divider(
-            height: 0.0,
-          ),
-        ],
+    /// 跳过第一条
+    if ((_page == 1 && index == 0) ||
+        (_data.tContents[index].ctime == _data.tMeta.ctime)) {
+      return Divider(
+        height: 0.0,
       );
     }
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        ListTile(
+          leading: ClipRRect(
+            borderRadius: BorderRadius.circular(6.0),
+            child: Container(
+              width: 40.0,
+              height: 40.0,
+              child: CachedNetworkImage(
+                imageUrl:
+                'http://qiniu.img.hu60.cn/avatar/${_data.tContents[index]
+                    .uid}.jpg?t=${DateTime
+                    .now()
+                    .day}',
+                placeholder: (context, url) =>
+                    Image.network(_defaultAvatarUrl),
+                errorWidget: (context, url, error) =>
+                    Image.network(_defaultAvatarUrl),
+              ),
+            ),
+          ),
+          trailing: Text(
+            index == 1 ? '沙发' : '${index}楼',
+            style: TextStyle(color: Colors.grey),
+          ),
+          title: Padding(
+            padding: EdgeInsets.only(bottom: 1.0),
+            child: Row(
+              children: <Widget>[
+                Container(
+                  margin: EdgeInsets.only(right: 10.0),
+                  child: Text(
+                    _data.tContents[index].uinfo.name,
+                    style: TextStyle(fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Text(
+                  _data.tMeta.uid == _data.tContents[index].uid ? '楼主' : '',
+                  style: TextStyle(
+                    color: Colors.deepOrangeAccent,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          subtitle: _buildCommentsFoot(index),
+          onTap: () {
+            _seeUser(context, _data.tContents[index].uid);
+          },
+        ),
+        Container(
+          padding:
+          EdgeInsets.only(top: 0, left: 15.0, right: 15.0, bottom: 15.0),
+          child: Html(
+            defaultTextStyle: TextStyle(
+              fontSize: ScreenUtil.getInstance().setSp(40.0),
+              fontWeight: FontWeight.w400,
+            ),
+            data: _data.tContents[index].content,
+            useRichText: false,
+            onLinkTap: (url) {
+              _launchURL(url);
+            },
+            onImageTap: (src) {},
+          ),
+        ),
+
+        /// 创建分隔线
+        Divider(
+          height: 0.0,
+        ),
+      ],
+    );
   }
 
   Widget _buildCommentsFoot(index) {
@@ -257,6 +266,7 @@ class _DetailState extends State<Detail> {
         ),
         child: Row(
           children: <Widget>[
+
             /// 评论时间
             Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -282,6 +292,7 @@ class _DetailState extends State<Detail> {
         ),
         child: Row(
           children: <Widget>[
+
             /// 板块名称
             Padding(
               padding: EdgeInsets.only(right: 10.0),
@@ -334,7 +345,10 @@ class _DetailState extends State<Detail> {
                 height: 50.0,
                 child: CachedNetworkImage(
                   imageUrl:
-                      'http://qiniu.img.hu60.cn/avatar/${_data.tMeta.uid}.jpg?t=${DateTime.now().day}',
+                  'http://qiniu.img.hu60.cn/avatar/${_data.tMeta
+                      .uid}.jpg?t=${DateTime
+                      .now()
+                      .day}',
                   placeholder: (context, url) =>
                       Image.network(_defaultAvatarUrl),
                   errorWidget: (context, url, error) =>
@@ -350,6 +364,9 @@ class _DetailState extends State<Detail> {
               ),
             ),
             subtitle: _buildFoot(),
+            onTap: () {
+              _seeUser(context, _data.tContents[0].uid);
+            },
           ),
           _buildTitle(),
           _buildContent(),
@@ -425,36 +442,50 @@ class _DetailState extends State<Detail> {
     setState(() {
       _data = data;
     });
+    _refreshController.refreshCompleted();
   }
 
   Widget _buildBottomSheet(BuildContext context) {
-    return new Column(
+    return Column(
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
         ListTile(
-          leading: new Icon(Icons.star),
-          title: new Text("收藏"),
+          leading: Icon(Icons.star),
+          title: Text("收藏"),
           onTap: () async {
             Navigator.pop(context);
           },
         ),
         ListTile(
-          leading: new Icon(Icons.public),
-          title: new Text("WebView"),
+          leading: Icon(Icons.public),
+          title: Text("WebView"),
           onTap: () async {
             SharedPreferences prefs = await SharedPreferences.getInstance();
             String sid = prefs.get('sid');
             Navigator.pop(context);
             _launchURL(
-                "https://hu60.cn/q.php/${sid != null ? sid + '/' : ''}bbs.topic.${widget.id}.html");
+              "https://hu60.cn/q.php/${sid != null
+                  ? sid + '/'
+                  : ''}bbs.topic.${widget.id}.html",);
           },
         ),
       ],
     );
   }
 
+  _seeUser(BuildContext context, int uid) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => User(uid),
+      ),
+    );
+  }
+
   _launchURL(url) async {
-    var url64 = Uri.parse(url).queryParameters['url64'];
+    var url64 = Uri
+        .parse(url)
+        .queryParameters['url64'];
     if (url64 != null) {
       List<int> bytes = base64Decode(url64.replaceAll('..', '=='));
       url = utf8.decode(bytes);
@@ -462,13 +493,15 @@ class _DetailState extends State<Detail> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      throw 'Could not launch $url';
+      // throw 'Could not launch $url';
     }
   }
 
   Widget _buildTextComposer() {
     return IconTheme(
-      data: IconThemeData(color: Theme.of(context).accentColor),
+      data: IconThemeData(color: Theme
+          .of(context)
+          .accentColor),
       child: Container(
         color: Colors.black12,
         padding: EdgeInsets.only(
@@ -506,7 +539,9 @@ class _DetailState extends State<Detail> {
               margin: EdgeInsets.only(left: 10.0),
               child: FlatButton(
                 textColor: Colors.white,
-                color: Theme.of(context).accentColor,
+                color: Theme
+                    .of(context)
+                    .accentColor,
                 child: Text("回复"),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(5.0)),

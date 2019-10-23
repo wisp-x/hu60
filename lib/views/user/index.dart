@@ -55,7 +55,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     child: Text('邮箱'),
                   ),
                   title: Text(
-                    user.mail,
+                    user.mail == '' || user.mail == null ? '没有填写邮箱' : user.mail,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: ScreenUtil.getInstance().setSp(45.0),
@@ -66,10 +66,10 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                 ListTile(
                   leading: Container(
                     width: 90.0,
-                    child: Text('个人简介'),
+                    child: Text('个人签名'),
                   ),
                   title: Text(
-                    user.signature,
+                    user.signature == '' || user.signature == null ? '你太懒了, 居然不填写个人签名' : user.signature,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: ScreenUtil.getInstance().setSp(45.0),
@@ -83,7 +83,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     child: Text('联系方式'),
                   ),
                   title: Text(
-                    user.contact,
+                    user.contact == '' || user.contact == null ? '没有填写联系方式' : user.contact,
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: ScreenUtil.getInstance().setSp(45.0),
@@ -97,7 +97,7 @@ class _UserState extends State<User> with TickerProviderStateMixin {
                     child: Text('注册时间'),
                   ),
                   title: Text(
-                    DateUtil.getDateStrByMs(user.regtime * 1000),
+                    user.regtime == 0 ? '注册太早了, 那时候还没有记录时间' : DateUtil.getDateStrByMs(user.regtime * 1000),
                     style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: ScreenUtil.getInstance().setSp(45.0),

@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../api/http.dart';
 import '../../store/user.dart';
@@ -17,8 +19,10 @@ class Community extends StatefulWidget {
 
 class _CommunityState extends State<Community>
     with AutomaticKeepAliveClientMixin {
-
   ScrollController _scrollController = ScrollController();
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   List list = List();
 
@@ -41,13 +45,6 @@ class _CommunityState extends State<Community>
   void initState() {
     super.initState();
     _getData();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
-        _getMore();
-      }
-    });
   }
 
   @override
@@ -60,8 +57,34 @@ class _CommunityState extends State<Community>
       body: Consumer<User>(
         builder: (context, User user, _) => Container(
           alignment: Alignment.center,
-          child: RefreshIndicator(
-            onRefresh: _onRefresh,
+          child: SmartRefresher(
+            controller: _refreshController,
+            enablePullDown: true,
+            enablePullUp: true,
+            header: WaterDropMaterialHeader(),
+            footer: CustomFooter(
+              builder: (BuildContext context, LoadStatus mode) {
+                Widget body;
+                if (mode == LoadStatus.idle) {
+                  body = Text("上拉加载");
+                } else if (mode == LoadStatus.loading) {
+                  body = CupertinoActivityIndicator();
+                } else if (mode == LoadStatus.failed) {
+                  body = Text("加载失败！点击重试！");
+                } else if (mode == LoadStatus.canLoading) {
+                  body = Text("松手加载更多");
+                }
+                if (_noMore) {
+                  body = Text("我也是有底线的~");
+                }
+                return Container(
+                  height: 55.0,
+                  child: Center(child: body),
+                );
+              },
+            ),
+            onRefresh: _getData,
+            onLoading: _getMore,
             child: list.length == 0
                 ? SpinKitFadingCircle(
                     color: Colors.green,
@@ -70,7 +93,7 @@ class _CommunityState extends State<Community>
                 : ListView.builder(
                     controller: _scrollController,
                     itemBuilder: _renderRow,
-                    itemCount: list.length + 1,
+                    itemCount: list.length,
                   ),
           ),
         ),
@@ -94,70 +117,39 @@ class _CommunityState extends State<Community>
         _isLoading = false;
         _noMore = false;
       });
+      _refreshController.refreshCompleted();
     }
-  }
-
-  Widget _loadMoreDataLoading() {
-    if (_noMore) {
-      return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Text('我也是有底线的~'),
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Center(
-        child: Opacity(
-          opacity: _isLoading ? 1.0 : 0.0,
-          child: SpinKitWave(
-            color: Colors.green,
-            size: 20.0,
-          ),
-        ),
-      ),
-    );
   }
 
   Widget _renderRow(BuildContext context, int index) {
-    if (index == list.length) {
-      return _loadMoreDataLoading();
-    } else {
-      /// 创建分隔线
-      if (index.isOdd) {
-        return new Divider(
-          height: 0.0,
-        );
-      }
-
-      return ListTile(
-        title: Container(
-          margin: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              buildMeta(index),
-              buildTitle(index),
-              buildFoot(index),
-            ],
-          ),
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Detail(list[index].id),
-            ),
-          );
-        },
+    /// 创建分隔线
+    if (index.isOdd) {
+      return new Divider(
+        height: 0.0,
       );
     }
-  }
 
-  Future<Null> _onRefresh() async {
-    await _getData();
+    return ListTile(
+      title: Container(
+        margin: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildMeta(index),
+            buildTitle(index),
+            buildFoot(index),
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detail(list[index].id),
+          ),
+        );
+      },
+    );
   }
 
   Future _getMore() async {
@@ -175,6 +167,7 @@ class _CommunityState extends State<Community>
           _noMore = true;
         }
       });
+      _refreshController.loadComplete();
     }
   }
 
@@ -221,7 +214,7 @@ class _CommunityState extends State<Community>
       padding: EdgeInsets.only(bottom: 6.0),
       child: DefaultTextStyle(
         style: TextStyle(
-            fontSize: ScreenUtil.getInstance().setSp(35.0),
+          fontSize: ScreenUtil.getInstance().setSp(35.0),
         ),
         child: Row(
           children: <Widget>[
@@ -284,6 +277,7 @@ class _CommunityState extends State<Community>
   @override
   void dispose() {
     _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
   }
 }

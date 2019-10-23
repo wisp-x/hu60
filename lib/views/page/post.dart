@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
@@ -9,14 +10,17 @@ import 'package:hu60/store/user.dart' as UserState;
 import 'package:hu60/model/user.dart' as UserModel;
 import 'package:hu60/views/community/detail.dart';
 import 'package:provider/provider.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class Post extends StatefulWidget {
   _PostState createState() => _PostState();
 }
 
 class _PostState extends State<Post> {
-
   ScrollController _scrollController = ScrollController();
+
+  RefreshController _refreshController =
+      RefreshController(initialRefresh: false);
 
   List list = List();
 
@@ -39,13 +43,6 @@ class _PostState extends State<Post> {
   void initState() {
     super.initState();
     _getData();
-
-    _scrollController.addListener(() {
-      if (_scrollController.position.pixels >=
-          _scrollController.position.maxScrollExtent) {
-        _getMore();
-      }
-    });
   }
 
   @override
@@ -63,18 +60,44 @@ class _PostState extends State<Post> {
         ),
         title: Text('帖子'),
       ),
-      body: RefreshIndicator(
-        onRefresh: _onRefresh,
+      body: SmartRefresher(
+        controller: _refreshController,
+        enablePullDown: true,
+        enablePullUp: true,
+        onRefresh: _getData,
+        onLoading: _getMore,
+        header: WaterDropMaterialHeader(),
+        footer: CustomFooter(
+          builder: (BuildContext context, LoadStatus mode) {
+            Widget body;
+            if (mode == LoadStatus.idle) {
+              body = Text("上拉加载");
+            } else if (mode == LoadStatus.loading) {
+              body = CupertinoActivityIndicator();
+            } else if (mode == LoadStatus.failed) {
+              body = Text("加载失败！点击重试！");
+            } else if (mode == LoadStatus.canLoading) {
+              body = Text("松手加载更多");
+            }
+            if (_noMore) {
+              body = Text("我也是有底线的~");
+            }
+            return Container(
+              height: 55.0,
+              child: Center(child: body),
+            );
+          },
+        ),
         child: list.length == 0
             ? SpinKitFadingCircle(
-          color: Colors.green,
-          size: 50.0,
-        )
+                color: Colors.green,
+                size: 50.0,
+              )
             : ListView.builder(
-          controller: _scrollController,
-          itemBuilder: _renderRow,
-          itemCount: list.length + 1,
-        ),
+                controller: _scrollController,
+                itemBuilder: _renderRow,
+                itemCount: list.length,
+              ),
       ),
     );
   }
@@ -85,77 +108,48 @@ class _PostState extends State<Post> {
         _page = 1;
       });
       await _username;
-      var result = await Http.request('bbs.search.json?keywords=&username=${_username}&p=${_page}');
+      var result = await Http.request(
+          'bbs.search.json?keywords=&username=${_username}&p=${_page}');
       Search data = Search.fromJson(result.data);
       setState(() {
         list = data.topicList;
         _isLoading = false;
         _noMore = false;
       });
+      _refreshController.refreshCompleted();
     }
   }
 
-  Widget _loadMoreDataLoading() {
-    if (_noMore) {
-      return Padding(
-        padding: const EdgeInsets.all(15.0),
-        child: Center(
-          child: Text('已经到底啦~'),
-        ),
-      );
-    }
-
-    return Padding(
-      padding: const EdgeInsets.all(15.0),
-      child: Center(
-        child: Opacity(
-          opacity: _isLoading ? 1.0 : 0.0,
-          child: SpinKitDualRing(
-            color: Colors.green,
-            size: 20.0,
-          ),
-        ),
-      ),
-    );
-  }
 
   Widget _renderRow(BuildContext context, int index) {
-    if (index == list.length) {
-      return _loadMoreDataLoading();
-    } else {
-      /// 创建分隔线
-      if (index.isOdd) {
-        return new Divider(
-          height: 0.0,
-        );
-      }
-
-      return ListTile(
-        title: Container(
-          margin: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              buildMeta(index),
-              buildTitle(index),
-              buildFoot(index),
-            ],
-          ),
-        ),
-        onTap: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => Detail(list[index].id),
-            ),
-          );
-        },
+    /// 创建分隔线
+    if (index.isOdd) {
+      return new Divider(
+        height: 0.0,
       );
     }
-  }
 
-  Future<Null> _onRefresh() async {
-    await _getData();
+    return ListTile(
+      title: Container(
+        margin: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            buildMeta(index),
+            buildTitle(index),
+            buildFoot(index),
+          ],
+        ),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detail(list[index].id),
+          ),
+        );
+      },
+    );
   }
 
   Future _getMore() async {
@@ -164,7 +158,8 @@ class _PostState extends State<Post> {
         _isLoading = true;
         _page++;
       });
-      var result = await Http.request('bbs.search.json?keywords=&username=${_username}&p=${_page}');
+      var result = await Http.request(
+          'bbs.search.json?keywords=&username=${_username}&p=${_page}');
       Search data = Search.fromJson(result.data);
       setState(() {
         list.addAll(data.topicList);
@@ -173,6 +168,7 @@ class _PostState extends State<Post> {
           _noMore = true;
         }
       });
+      _refreshController.loadComplete();
     }
   }
 
@@ -188,7 +184,7 @@ class _PostState extends State<Post> {
             child: ClipOval(
               child: CachedNetworkImage(
                 imageUrl:
-                'http://qiniu.img.hu60.cn/avatar/${list[index].uid}.jpg',
+                    'http://qiniu.img.hu60.cn/avatar/${list[index].uid}.jpg',
                 placeholder: (context, url) => Image.network(_defaultAvatarUrl),
                 errorWidget: (context, url, error) =>
                     Image.network(_defaultAvatarUrl),
@@ -282,6 +278,7 @@ class _PostState extends State<Post> {
   @override
   void dispose() {
     _scrollController.dispose();
+    _refreshController.dispose();
     super.dispose();
   }
 }
