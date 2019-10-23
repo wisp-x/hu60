@@ -211,7 +211,7 @@ class _DetailState extends State<Detail> {
                   Container(
                     margin: EdgeInsets.only(right: 10.0),
                     child: Text(
-                      _data.tContents[index].uinfo.name,
+                      _data.tContents[index].uinfo.name ?? '',
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
