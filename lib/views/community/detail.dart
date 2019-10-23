@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:html/dom.dart' as dom;
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -519,6 +520,7 @@ class _DetailState extends State<Detail> {
                 ),
                 child: TextField(
                   focusNode: _focusNode,
+                  keyboardType: TextInputType.text,
                   controller: _textController,
                   minLines: 1,
                   maxLines: 10,

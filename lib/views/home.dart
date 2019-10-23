@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../api/http.dart';
 import './community/index.dart';
+import './community/search.dart';
 import './chat/index.dart';
 import './auth/login.dart';
 import '../views/page/setting.dart';
@@ -62,7 +63,14 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => Search(),
+                  ),
+                );
+              },
             )
           ],
           title: Theme(
