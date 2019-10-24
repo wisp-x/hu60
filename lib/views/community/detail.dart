@@ -263,7 +263,8 @@ class _DetailState extends State<Detail> {
               child: GestureDetector(
                 child: Text('回复'),
                 onTap: () {
-                  _textController.text += "@${_data.tContents[index].uinfo.name}, ";
+                  _textController.text +=
+                      "@${_data.tContents[index].uinfo.name}，";
                   FocusScope.of(context).requestFocus(_focusNode);
                 },
               ),
@@ -515,7 +516,7 @@ class _DetailState extends State<Detail> {
   _launchUrl(url) async {
     var url64 = Uri.parse(url).queryParameters['url64'];
     if (url64 != null) {
-      List<int> bytes = base64Decode(url64.replaceAll('..', '=='));
+      List<int> bytes = base64Decode(url64.replaceAll('.', '='));
       url = utf8.decode(bytes);
     }
     if (await canLaunch(url)) {
@@ -593,18 +594,23 @@ class _DetailState extends State<Detail> {
         },
       );
 
-      var result;
       try {
-        result = await Http.request("bbs.newreply.${widget.id}.1.json", data: {
-          "content": _textController.text,
-          "token": _data.token,
-          "go": "评论该帖子",
-        }, method: Http.POST);
-      } on DioError catch (e) {}
+        Http.request("bbs.newreply.${widget.id}.1.json",
+                data: {
+                  "content": _textController.text,
+                  "token": _data.token,
+                  "go": "评论该帖子",
+                },
+                method: Http.POST)
+            .then((result) {
+          Navigator.of(context).pop();
+          Comment data = Comment.fromJson(result.data);
+          Toast.show(data.notice ?? '评论成功', context);
 
-      Navigator.of(context).pop();
-      Comment data = Comment.fromJson(result.data);
-      Toast.show(data.notice, context);
+          /// 重新加载数据
+          _getData();
+        });
+      } on DioError catch (e) {}
     }
   }
 

@@ -30,6 +30,10 @@ class Http {
         headers: {
           // HttpHeaders.userAgentHeader: 'dio',
         },
+        followRedirects: false,
+        validateStatus: (status) {
+          return status < 500;
+        },
       ),
     );
 
