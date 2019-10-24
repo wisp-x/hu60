@@ -220,13 +220,27 @@ class _DetailState extends State<Detail> {
                       style: TextStyle(fontWeight: FontWeight.bold),
                     ),
                   ),
-                  Text(
-                    _data.tMeta.uid == _data.tContents[index].uid ? '楼主' : '',
-                    style: TextStyle(
-                      color: Colors.deepOrangeAccent,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
+                  _data.tMeta.uid == _data.tContents[index].uid
+                      ? Container(
+                          decoration: BoxDecoration(
+                            color: Colors.teal[400],
+                            borderRadius: BorderRadius.circular(3.0),
+                          ),
+                          padding: EdgeInsets.only(
+                            top: 2.0,
+                            left: 4.0,
+                            right: 4.0,
+                            bottom: 2.0,
+                          ),
+                          child: Text(
+                            '楼主',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: ScreenUtil.getInstance().setSp(30.0),
+                            ),
+                          ),
+                        )
+                      : Text(''),
                 ],
               ),
             ),
@@ -258,16 +272,25 @@ class _DetailState extends State<Detail> {
               right: 15.0,
               bottom: 15.0,
             ),
-            child: Align(
-              alignment: Alignment.bottomRight,
-              child: GestureDetector(
-                child: Text('回复'),
-                onTap: () {
-                  _textController.text +=
-                      "@${_data.tContents[index].uinfo.name}，";
-                  FocusScope.of(context).requestFocus(_focusNode);
-                },
+            child: GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  Icon(
+                    Icons.reply,
+                    color: Colors.black54,
+                  ),
+                  Text(
+                    '回复',
+                    style: TextStyle(color: Colors.black87),
+                  ),
+                ],
               ),
+              onTap: () {
+                _textController.text +=
+                    "@${_data.tContents[index].uinfo.name}，";
+                FocusScope.of(context).requestFocus(_focusNode);
+              },
             ),
           ),
 
@@ -611,6 +634,8 @@ class _DetailState extends State<Detail> {
           _getData();
         });
       } on DioError catch (e) {}
+    } else {
+      Toast.show('回复内容不能为空', context);
     }
   }
 
