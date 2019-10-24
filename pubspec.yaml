@@ -25,8 +25,8 @@ dependencies:
   cupertino_icons: ^0.1.2
 
   dio: ^3.0.3
-  flutter_screenutil: ^0.6.0
   provider: ^3.1.0+1
+  flutter_screenutil: ^0.6.0
   json_serializable: ^3.2.3
   build_runner: ^1.7.1
   flutter_spinkit: ^4.0.0
