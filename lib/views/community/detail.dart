@@ -442,12 +442,55 @@ class _DetailState extends State<Detail> {
 
   Widget _buildTitle() {
     return ListTile(
-      title: Text(
-        _data.tMeta.title,
-        style: TextStyle(
-          fontSize: ScreenUtil.getInstance().setSp(45.0),
-          fontWeight: FontWeight.bold,
-        ),
+      title: Row(
+        children: <Widget>[
+          _data.tMeta.essence == 1 ? Container(
+            decoration: BoxDecoration(
+              color: Colors.red[400],
+              borderRadius: BorderRadius.circular(3.0),
+            ),
+            margin: EdgeInsets.only(right: 5.0),
+            padding: EdgeInsets.only(
+              top: 2.0,
+              left: 4.0,
+              right: 4.0,
+              bottom: 2.0,
+            ),
+            child: Text(
+              '精',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: ScreenUtil.getInstance().setSp(30.0),
+              ),
+            ),
+          ) : Text(''),
+          _data.tMeta.locked == 1 ? Container(
+            decoration: BoxDecoration(
+              color: Colors.red[400],
+              borderRadius: BorderRadius.circular(3.0),
+            ),
+            padding: EdgeInsets.only(
+              top: 2.0,
+              left: 4.0,
+              right: 4.0,
+              bottom: 2.0,
+            ),
+            child: Text(
+              '锁',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: ScreenUtil.getInstance().setSp(30.0),
+              ),
+            ),
+          ) : Text(''),
+          Text(
+            _data.tMeta.title,
+            style: TextStyle(
+              fontSize: ScreenUtil.getInstance().setSp(45.0),
+              fontWeight: FontWeight.bold,
+            ),
+          )
+        ],
       ),
     );
   }
@@ -596,7 +639,10 @@ class _DetailState extends State<Detail> {
                   textInputAction: TextInputAction.unspecified,
                   enableInteractiveSelection: true,
                   decoration: InputDecoration(
-                    hintText: "请勿发布不友善或者负能量的内容。",
+                    enabled: _data.tMeta.locked == 0 ? true : false,
+                    hintText: _data.tMeta.locked == 1
+                        ? '帖子已被锁定, 无法回复。'
+                        : "请勿发布不友善或者负能量的内容。",
                     border: InputBorder.none,
                     contentPadding: EdgeInsets.all(0.0),
                   ),
