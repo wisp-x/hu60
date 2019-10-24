@@ -59,6 +59,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     return Consumer<UserState.User>(
       builder: (context, UserState.User user, _) => Scaffold(
         appBar: AppBar(
+          elevation: 0.0,
           centerTitle: true,
           actions: <Widget>[
             IconButton(

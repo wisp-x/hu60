@@ -54,6 +54,7 @@ class _PostState extends State<Post> {
 
     return Scaffold(
       appBar: AppBar(
+        elevation: 0.0,
         leading: IconButton(
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
