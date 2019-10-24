@@ -29,6 +29,9 @@ class _SearchState extends State<Search> {
   /// 是否正在搜索
   bool _isSearch = false;
 
+  /// 是否没有搜索到数据
+  bool _notSearchData = false;
+
   /// 是否已经没有数据了
   bool _noMore = false;
 
@@ -74,6 +77,7 @@ class _SearchState extends State<Search> {
       _page = 1;
       _noMore = false;
       _isSearch = true;
+      _notSearchData = false;
     });
     var result = await Http.request(
       'bbs.search.json?keywords=${_textController.text}&username=&p=${_page.toString()}',
@@ -84,6 +88,9 @@ class _SearchState extends State<Search> {
       _maxPage = data.maxPage;
       _isSearch = false;
       _isLoading = false;
+      if (_list.length == 0) {
+        _notSearchData = true;
+      }
     });
     _refreshController.refreshCompleted();
   }
@@ -132,6 +139,12 @@ class _SearchState extends State<Search> {
   }
 
   Widget _buildList() {
+    if (_notSearchData) {
+      return Center(
+        child: Text('没有搜索到任何东西呢, 换一个关键字试试?'),
+      );
+    }
+
     return GestureDetector(
       onTap: () {
         // 触摸收起键盘
