@@ -24,8 +24,17 @@ class About extends StatelessWidget {
               margin: EdgeInsets.only(top: 20.0),
               color: Colors.white,
               child: ListTile(
-                title: Text('提出 BUG 或改进'),
-                trailing: Icon(Icons.chevron_right),
+                title: Text(
+                  '提出 BUG 或改进',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: Colors.black,
+                ),
                 onTap: () async {
                   String url = 'https://github.com/wisp-x/hu60';
                   if (await canLaunch(url)) {
@@ -41,8 +50,17 @@ class About extends StatelessWidget {
             Container(
               color: Colors.white,
               child: ListTile(
-                title: Text('开源库'),
-                trailing: Icon(Icons.chevron_right),
+                title: Text(
+                  '开源库',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
+                trailing: Icon(
+                  Icons.chevron_right,
+                  color: Colors.black,
+                ),
                 onTap: () {
                   Navigator.push(
                     context,
@@ -60,7 +78,13 @@ class About extends StatelessWidget {
             Container(
               color: Colors.white,
               child: ListTile(
-                title: Text('版本号'),
+                title: Text(
+                  '版本号',
+                  style: TextStyle(
+                    fontWeight: FontWeight.w400,
+                    color: Colors.black,
+                  ),
+                ),
                 trailing: Text('Version 1.0.0 (Build 1)'),
                 onTap: () {},
               ),
