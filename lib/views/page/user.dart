@@ -4,12 +4,13 @@ import 'package:common_utils/common_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hu60/api/http.dart';
+import 'package:toast/toast.dart';
 
 import '../../model/user.dart' as UserModel;
 
 // ignore: must_be_immutable
 class User extends StatefulWidget {
-  int uid;
+  var uid;
 
   User(this.uid);
 
@@ -37,6 +38,9 @@ class _UserState extends State<User> {
         setState(() {
           _user = user;
         });
+      } else {
+        Toast.show('没有找到该用户', context);
+        Navigator.of(context).pop();
       }
     });
   }

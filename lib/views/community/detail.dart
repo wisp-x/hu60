@@ -545,7 +545,22 @@ class _DetailState extends State<Detail> {
     if (await canLaunch(url)) {
       await launch(url);
     } else {
-      // throw 'Could not launch $url';
+      if (url.contains('user.info.')) {
+        RegExp reg = new RegExp(r"\d+");
+        Iterable<Match> matches = reg.allMatches(url);
+        var uid;
+        for (Match m in matches) {
+          uid = m.group(0);
+        }
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => User(uid),
+          ),
+        );
+      } else {
+        throw 'Could not launch $url';
+      }
     }
   }
 
