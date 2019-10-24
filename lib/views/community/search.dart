@@ -76,7 +76,8 @@ class _SearchState extends State<Search> {
       _isSearch = true;
     });
     var result = await Http.request(
-        'bbs.search.json?keywords=${_textController.text}&username=&p=${_page.toString()}');
+      'bbs.search.json?keywords=${_textController.text}&username=&p=${_page.toString()}',
+    );
     SearchModel.Search data = SearchModel.Search.fromJson(result.data);
     setState(() {
       _list = data.topicList;
@@ -115,7 +116,10 @@ class _SearchState extends State<Search> {
       );
     }
     return ListTile(
-      title: Text(_list[index].title),
+      title: Text(
+        _list[index].title,
+        style: TextStyle(fontWeight: FontWeight.w400),
+      ),
       onTap: () {
         Navigator.push(
           context,
