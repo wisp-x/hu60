@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class Letter extends StatefulWidget {
-  _LetterState createState() => _LetterState();
+class Index extends StatefulWidget {
+  _IndexState createState() => _IndexState();
 }
 
-class _LetterState extends State<Letter> {
+class _IndexState extends State<Index> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(

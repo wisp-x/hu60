@@ -1,7 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -14,13 +13,14 @@ import 'package:hu60/model/comment.dart';
 import 'package:hu60/model/post.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hu60/util/functions.dart';
 import 'package:hu60/views/page/user.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
 
 class Detail extends StatefulWidget {
-  final int id;
+  final id;
 
   Detail(this.id);
 
@@ -587,25 +587,34 @@ class _DetailState extends State<Detail> {
   }
 
   _launchUrl(url) async {
-    var url64 = Uri.parse(url).queryParameters['url64'];
-    if (url64 != null) {
-      List<int> bytes = base64Decode(url64.replaceAll('.', '='));
-      url = utf8.decode(bytes);
-    }
+    url = parseUrl(url);
     if (await canLaunch(url)) {
       await launch(url);
     } else {
+      var page;
+      var id;
+      if (url.contains('bbs.topic.')) {
+        RegExp reg = new RegExp(r"\d+");
+        Iterable<Match> matches = reg.allMatches(url);
+        for (Match m in matches) {
+          id = m.group(0);
+        }
+        page = Detail(id);
+      }
       if (url.contains('user.info.')) {
         RegExp reg = new RegExp(r"\d+");
         Iterable<Match> matches = reg.allMatches(url);
-        var uid;
         for (Match m in matches) {
-          uid = m.group(0);
+          id = m.group(0);
         }
+        page = User(id);
+      }
+
+      if (id != null && page != null) {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => User(uid),
+            builder: (context) => page,
           ),
         );
       } else {

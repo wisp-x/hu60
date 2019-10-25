@@ -11,7 +11,7 @@ import './community/search.dart';
 import './auth/login.dart';
 import '../views/page/setting.dart';
 import './about/index.dart';
-import '../views/page/letter.dart';
+import './letter/index.dart';
 import '../views/page/message.dart';
 import '../views/page/post.dart';
 import '../views/user/index.dart' as UserPage;
@@ -124,7 +124,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                   );
                 },
               ),
-              ListTile(
+              /*ListTile(
                 title: Text(
                   '内信',
                   style: TextStyle(
@@ -138,11 +138,11 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
                     context,
                     MaterialPageRoute(
                       fullscreenDialog: !user.isLogin,
-                      builder: (context) => user.isLogin ? Letter() : Login(),
+                      builder: (context) => user.isLogin ? Index() : Login(),
                     ),
                   );
                 },
-              ),
+              ),*/
               ListTile(
                 title: Text(
                   '帖子',
