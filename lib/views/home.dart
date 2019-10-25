@@ -238,7 +238,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
           ),
         ),
         accountEmail: Text(
-          user.contact,
+          user.signature != '' && user.signature != null ? user.signature : (user.contact ?? ''),
           style: TextStyle(
             fontSize: ScreenUtil.getInstance().setSp(38.0),
           ),
