@@ -16,7 +16,12 @@ class _SettingState extends State<Setting> {
         ),
         title: Text('系统设置'),
       ),
-      body: Text('系统设置'),
+      body: Center(
+        child: Text(
+          '这里还没有东西呢~',
+          style: TextStyle(fontWeight: FontWeight.w500, fontSize: 15.0),
+        ),
+      ),
     );
   }
 
