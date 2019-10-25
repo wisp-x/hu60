@@ -108,10 +108,15 @@ class _CommunityState extends State<Community>
                     color: Colors.green,
                     size: 50.0,
                   )
-                : ListView.builder(
+                : ListView.separated(
                     controller: _scrollController,
                     itemBuilder: _renderRow,
                     itemCount: list.length,
+                    separatorBuilder: (context, index) {
+                      return new Divider(
+                        height: 0.0,
+                      );
+                    },
                   ),
           ),
         ),
@@ -154,13 +159,6 @@ class _CommunityState extends State<Community>
   }
 
   Widget _renderRow(BuildContext context, int index) {
-    /// 创建分隔线
-    if (index.isOdd) {
-      return new Divider(
-        height: 0.0,
-      );
-    }
-
     return ListTile(
       title: Container(
         margin: EdgeInsets.only(top: index == 0 ? 10.0 : 0.0),

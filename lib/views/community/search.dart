@@ -116,28 +116,6 @@ class _SearchState extends State<Search> {
     }
   }
 
-  Widget _renderRow(BuildContext context, int index) {
-    if (index.isOdd) {
-      return Divider(
-        height: 0.0,
-      );
-    }
-    return ListTile(
-      title: Text(
-        _list[index].title,
-        style: TextStyle(fontWeight: FontWeight.w400),
-      ),
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => Detail(_list[index].id),
-          ),
-        );
-      },
-    );
-  }
-
   Widget _buildList() {
     if (_notSearchData) {
       return Center(
@@ -178,11 +156,33 @@ class _SearchState extends State<Search> {
         ),
         onRefresh: _getData,
         onLoading: _getMore,
-        child: ListView.builder(
+        child: ListView.separated(
           itemBuilder: _renderRow,
           itemCount: _list.length,
+          separatorBuilder: (context, index) {
+            return Divider(
+              height: 0.0,
+            );
+          },
         ),
       ),
+    );
+  }
+
+  Widget _renderRow(BuildContext context, int index) {
+    return ListTile(
+      title: Text(
+        _list[index].title,
+        style: TextStyle(fontWeight: FontWeight.w400),
+      ),
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => Detail(_list[index].id),
+          ),
+        );
+      },
     );
   }
 
