@@ -1,16 +1,21 @@
 # hu60
 
-h60 app.
+使用 Flutter 开发的一款虎绿林 APP, 仅供学习交流.
 
-## Getting Started
+## 使用的开源库
+- dio
+- provider
+- flutter_screenutil
+- json_serializable
+- build_runner
+- flutter_spinkit
+- cached_network_image
+- common_utils
+- shared_preferences
+- flutter_html
+- url_launcher
+- pull_to_refresh
+- toast
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## License
+- MIT
