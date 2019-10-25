@@ -151,9 +151,9 @@ class _CommunityState extends State<Community>
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            buildMeta(index),
-            buildTitle(index),
-            buildFoot(index),
+            _buildMeta(index),
+            _buildTitle(index),
+            _buildFoot(index),
           ],
         ),
       ),
@@ -187,7 +187,7 @@ class _CommunityState extends State<Community>
     }
   }
 
-  Widget buildMeta(index) {
+  Widget _buildMeta(index) {
     return Padding(
       padding: const EdgeInsets.only(top: 6.0),
       child: Row(
@@ -212,7 +212,7 @@ class _CommunityState extends State<Community>
     );
   }
 
-  Widget buildTitle(index) {
+  Widget _buildTitle(index) {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0, bottom: 8.0),
       child: Text(
@@ -225,7 +225,7 @@ class _CommunityState extends State<Community>
     );
   }
 
-  Widget buildFoot(index) {
+  Widget _buildFoot(index) {
     return Padding(
       padding: EdgeInsets.only(bottom: 6.0),
       child: DefaultTextStyle(
@@ -234,6 +234,28 @@ class _CommunityState extends State<Community>
         ),
         child: Row(
           children: <Widget>[
+            /// 是否加精
+            list[index].essence == 1 ? Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                '[精]',
+                style: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ) : Text(''),
+
+            /// 是否锁定
+            list[index].locked == 1 ? Padding(
+              padding: EdgeInsets.only(right: 10.0),
+              child: Text(
+                '[锁]',
+                style: TextStyle(
+                  color: Colors.teal,
+                ),
+              ),
+            ) : Text(''),
+
             /// 板块名称
             Padding(
               padding: EdgeInsets.only(right: 10.0),
