@@ -4,7 +4,9 @@ import 'package:common_utils/common_utils.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:hu60/api/http.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toast/toast.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../model/user.dart' as UserModel;
 
@@ -135,6 +137,23 @@ class _UserState extends State<User> {
           child: Icon(Icons.arrow_back),
           onTap: () => Navigator.pop(context),
         ),
+        actions: <Widget>[
+          Padding(
+            padding: EdgeInsets.only(right: 10.0),
+            child: GestureDetector(
+              child: Icon(Icons.public),
+              onTap: () async {
+                SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+                String url =
+                    'https://hu60.cn/q.php/${prefs.getString('sid')}/user.info.${_user.uid}.html';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+            ),
+          )
+        ],
         automaticallyImplyLeading: true,
         centerTitle: true,
         elevation: 0.0,
