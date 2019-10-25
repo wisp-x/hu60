@@ -444,52 +444,58 @@ class _DetailState extends State<Detail> {
     return ListTile(
       title: Row(
         children: <Widget>[
-          _data.tMeta.essence == 1 ? Container(
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(3.0),
-            ),
-            margin: EdgeInsets.only(right: 5.0),
-            padding: EdgeInsets.only(
-              top: 2.0,
-              left: 4.0,
-              right: 4.0,
-              bottom: 2.0,
-            ),
+          _data.tMeta.essence == 1
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red[400],
+                    borderRadius: BorderRadius.circular(3.0),
+                  ),
+                  margin: EdgeInsets.only(right: 5.0),
+                  padding: EdgeInsets.only(
+                    top: 2.0,
+                    left: 4.0,
+                    right: 4.0,
+                    bottom: 2.0,
+                  ),
+                  child: Text(
+                    '精',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil.getInstance().setSp(30.0),
+                    ),
+                  ),
+                )
+              : Text(''),
+          _data.tMeta.locked == 1
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: Colors.red[400],
+                    borderRadius: BorderRadius.circular(3.0),
+                  ),
+                  padding: EdgeInsets.only(
+                    top: 2.0,
+                    left: 4.0,
+                    right: 4.0,
+                    bottom: 2.0,
+                  ),
+                  child: Text(
+                    '锁',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil.getInstance().setSp(30.0),
+                    ),
+                  ),
+                )
+              : Text(''),
+          Expanded(
             child: Text(
-              '精',
+              _data.tMeta.title,
               style: TextStyle(
-                color: Colors.white,
-                fontSize: ScreenUtil.getInstance().setSp(30.0),
+                fontSize: ScreenUtil.getInstance().setSp(45.0),
+                fontWeight: FontWeight.bold,
               ),
             ),
-          ) : Text(''),
-          _data.tMeta.locked == 1 ? Container(
-            decoration: BoxDecoration(
-              color: Colors.red[400],
-              borderRadius: BorderRadius.circular(3.0),
-            ),
-            padding: EdgeInsets.only(
-              top: 2.0,
-              left: 4.0,
-              right: 4.0,
-              bottom: 2.0,
-            ),
-            child: Text(
-              '锁',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: ScreenUtil.getInstance().setSp(30.0),
-              ),
-            ),
-          ) : Text(''),
-          Text(
-            _data.tMeta.title,
-            style: TextStyle(
-              fontSize: ScreenUtil.getInstance().setSp(45.0),
-              fontWeight: FontWeight.bold,
-            ),
-          )
+          ),
         ],
       ),
     );
