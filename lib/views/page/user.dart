@@ -25,7 +25,7 @@ class _UserState extends State<User> {
   String _defaultAvatarUrl = 'https://hu60.cn/upload/default.jpg';
 
   var _user;
-  
+
   @override
   void initState() {
     super.initState();
@@ -50,81 +50,87 @@ class _UserState extends State<User> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _user == null ? SpinKitFadingCircle(
-        color: Colors.green,
-        size: 50.0,
-      ) : NestedScrollView(
-        headerSliverBuilder: _sliverBuilder,
-        body: DefaultTextStyle(
-          style: TextStyle(
-            fontSize: ScreenUtil.getInstance().setSp(40.0),
-            color: Colors.grey,
-          ),
-          child: ListView(
-            children: <Widget>[
-              Divider(),
-              ListTile(
-                leading: Container(
-                  width: 90.0,
-                  child: Text('UID'),
+      body: _user == null
+          ? SpinKitFadingCircle(
+              color: Colors.green,
+              size: 50.0,
+            )
+          : NestedScrollView(
+              headerSliverBuilder: _sliverBuilder,
+              body: DefaultTextStyle(
+                style: TextStyle(
+                  fontSize: ScreenUtil.getInstance().setSp(40.0),
+                  color: Colors.grey,
                 ),
-                title: Text(
-                  _user.uid.toString(),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: ScreenUtil.getInstance().setSp(45.0),
-                  ),
+                child: ListView(
+                  children: <Widget>[
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        width: 90.0,
+                        child: Text('UID'),
+                      ),
+                      title: Text(
+                        _user.uid.toString(),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: ScreenUtil.getInstance().setSp(45.0),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        width: 90.0,
+                        child: Text('个人签名'),
+                      ),
+                      title: Text(
+                        _user.signature == '' || _user.signature == null
+                            ? '这个人太懒了, 居然没有填写签名'
+                            : _user.signature,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: ScreenUtil.getInstance().setSp(45.0),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        width: 90.0,
+                        child: Text('联系方式'),
+                      ),
+                      title: Text(
+                        _user.contact == '' || _user.contact == null
+                            ? '没有填写联系方式'
+                            : _user.contact,
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: ScreenUtil.getInstance().setSp(45.0),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                    ListTile(
+                      leading: Container(
+                        width: 90.0,
+                        child: Text('注册时间'),
+                      ),
+                      title: Text(
+                        _user.regtime == 0
+                            ? '该用户是很早之前注册的, 那时候没有记录时间'
+                            : DateUtil.getDateStrByMs(_user.regtime * 1000),
+                        style: TextStyle(
+                          fontWeight: FontWeight.w500,
+                          fontSize: ScreenUtil.getInstance().setSp(45.0),
+                        ),
+                      ),
+                    ),
+                    Divider(),
+                  ],
                 ),
               ),
-              Divider(),
-              ListTile(
-                leading: Container(
-                  width: 90.0,
-                  child: Text('个人签名'),
-                ),
-                title: Text(
-                  _user.signature == '' || _user.signature == null ? '这个人太懒了, 居然没有填写签名' : _user.signature,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: ScreenUtil.getInstance().setSp(45.0),
-                  ),
-                ),
-              ),
-              Divider(),
-              ListTile(
-                leading: Container(
-                  width: 90.0,
-                  child: Text('联系方式'),
-                ),
-                title: Text(
-                  _user.contact == '' || _user.contact == null ? '没有填写联系方式' : _user.contact,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: ScreenUtil.getInstance().setSp(45.0),
-                  ),
-                ),
-              ),
-              Divider(),
-              ListTile(
-                leading: Container(
-                  width: 90.0,
-                  child: Text('注册时间'),
-                ),
-                title: Text(
-                  _user.regtime == 0
-                      ? '该用户是很早之前注册的, 那时候没有记录时间'
-                      : DateUtil.getDateStrByMs(_user.regtime * 1000),
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: ScreenUtil.getInstance().setSp(45.0),
-                  ),
-                ),
-              ),
-              Divider(),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 
@@ -138,21 +144,18 @@ class _UserState extends State<User> {
           onTap: () => Navigator.pop(context),
         ),
         actions: <Widget>[
-          Padding(
-            padding: EdgeInsets.only(right: 10.0),
-            child: GestureDetector(
-              child: Icon(Icons.public),
-              onTap: () async {
-                SharedPreferences prefs =
-                await SharedPreferences.getInstance();
-                String url =
-                    'https://hu60.cn/q.php/${prefs.getString('sid')}/user.info.${_user.uid}.html';
-                if (await canLaunch(url)) {
-                  await launch(url);
-                }
-              },
-            ),
-          )
+          IconButton(
+            icon: Icon(Icons.public),
+            color: Colors.white,
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              String url =
+                  'https://hu60.cn/q.php/${prefs.getString('sid')}/user.info.${_user.uid}.html';
+              if (await canLaunch(url)) {
+                await launch(url);
+              }
+            },
+          ),
         ],
         automaticallyImplyLeading: true,
         centerTitle: true,

@@ -1,3 +1,4 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -8,6 +9,7 @@ import 'package:hu60/util/functions.dart';
 import 'package:hu60/views/community/detail.dart';
 import 'package:hu60/views/page/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../../model/message.dart' as MessageModel;
 
@@ -49,6 +51,16 @@ class _MessageState extends State<Message> {
           icon: Icon(Icons.arrow_back),
           onPressed: () => Navigator.of(context).pop(),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.public),
+            color: Colors.white,
+            onPressed: () async {
+              SharedPreferences prefs = await SharedPreferences.getInstance();
+              _launchUrl('https://hu60.cn/q.php/${prefs.getString('sid')}/msg.index.@.html');
+            },
+          )
+        ],
         title: Text('消息'),
       ),
       body: SmartRefresher(
@@ -115,6 +127,7 @@ class _MessageState extends State<Message> {
           onImageTap: (src) {},
         ),
       ),
+      subtitle: Text("时间: ${DateUtil.getDateStrByMs(_list[index].ctime * 1000)}"),
     );
   }
 

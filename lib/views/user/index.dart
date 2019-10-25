@@ -142,21 +142,19 @@ class _UserState extends State<User> with TickerProviderStateMixin {
             onTap: () => Navigator.pop(context),
           ),
           actions: <Widget>[
-            Padding(
-              padding: EdgeInsets.only(right: 10.0),
-              child: GestureDetector(
-                child: Icon(Icons.public),
-                onTap: () async {
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  String url =
-                      'https://hu60.cn/q.php/${prefs.getString('sid')}/user.index.html';
-                  if (await canLaunch(url)) {
-                    await launch(url);
-                  }
-                },
-              ),
-            )
+            IconButton(
+              icon: Icon(Icons.public),
+              color: Colors.white,
+              onPressed: () async {
+                SharedPreferences prefs =
+                await SharedPreferences.getInstance();
+                String url =
+                    'https://hu60.cn/q.php/${prefs.getString('sid')}/user.index.html';
+                if (await canLaunch(url)) {
+                  await launch(url);
+                }
+              },
+            ),
           ],
           automaticallyImplyLeading: true,
           centerTitle: true,
