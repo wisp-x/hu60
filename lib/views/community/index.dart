@@ -25,6 +25,8 @@ class _CommunityState extends State<Community>
 
   RefreshController _refreshController =
       RefreshController(initialRefresh: false);
+  /// 是否显示“返回到顶部”按钮
+  bool showToTopBtn = false;
 
   List list = List();
 
@@ -46,6 +48,20 @@ class _CommunityState extends State<Community>
   @override
   void initState() {
     super.initState();
+
+    /// 监听滚动事件
+    /*_scrollController.addListener(() {
+      if (_scrollController.offset < 1000 && showToTopBtn) {
+        setState(() {
+          showToTopBtn = false;
+        });
+      } else if (_scrollController.offset >= 1000 && showToTopBtn == false) {
+        setState(() {
+          showToTopBtn = true;
+        });
+      }
+    });*/
+
     _getData();
   }
 
@@ -309,6 +325,13 @@ class _CommunityState extends State<Community>
           ],
         ),
       ),
+    );
+  }
+
+  _backTop() {
+    _scrollController.animateTo(.0,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease
     );
   }
 
