@@ -13,7 +13,7 @@
         keyAlias=key
         storeFile=签名文件所在位置, 例如: /Users/wispx/key.jks
     ```
-    然后即可构建发行版 API
+    然后即可构建发行版 APK
 
 ## 预览
 ![preview](./assets/images/preview.jpg)
