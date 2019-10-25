@@ -240,7 +240,7 @@ class _CommunityState extends State<Community>
               child: Text(
                 '[精]',
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: Colors.red[400],
                 ),
               ),
             ) : Text(''),
@@ -251,7 +251,7 @@ class _CommunityState extends State<Community>
               child: Text(
                 '[锁]',
                 style: TextStyle(
-                  color: Colors.teal,
+                  color: Colors.red[400],
                 ),
               ),
             ) : Text(''),
