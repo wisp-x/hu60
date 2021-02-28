@@ -10,5 +10,8 @@ void main() {
       }
     },
     home: HomeView(),
+    theme: ThemeData(
+      primarySwatch: Colors.blue,
+    ),
   ));
 }

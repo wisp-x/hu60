@@ -12,7 +12,12 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
-  final _pages = [ForumView(), ChatView(), MessageView(), UserView()];
+  final _pages = <Widget>[ForumView(), ChatView(), MessageView(), UserView()];
+
+  PageController _pageController = PageController();
+  int _index = 0;
+  // define field instance
+  GlobalKey<ConvexAppBarState> _appBarKey = GlobalKey<ConvexAppBarState>();
 
   @override
   void initState() {
@@ -25,16 +30,23 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
     _pageController.dispose();
   }
 
-  PageController _pageController = PageController();
-  int _index = 0;
-
-  // define field instance
-  GlobalKey<ConvexAppBarState> _appBarKey = GlobalKey<ConvexAppBarState>();
-
   @override
   Widget build(context) {
     return Scaffold(
-      appBar: AppBar(title: Text("虎绿林")),
+      appBar: AppBar(
+        title: Text("虎绿林"),
+        centerTitle: false,
+        elevation: 0,
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.add,
+              color: Colors.white,
+            ),
+            onPressed: null,
+          )
+        ],
+      ),
       body: PageView(
         controller: _pageController,
         children: _pages,
@@ -45,7 +57,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
       ),
       bottomNavigationBar: ConvexAppBar(
         key: _appBarKey,
-        items: [
+        items: <TabItem>[
           TabItem(icon: Icons.home, title: '首页'),
           TabItem(icon: Icons.chat, title: '聊天室'),
           TabItem(icon: Icons.email, title: '消息'),
