@@ -15,6 +15,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
 
   PageController _pageController = PageController();
   int _index = 0;
+
   // define field instance
   GlobalKey<ConvexAppBarState> _appBarKey = GlobalKey<ConvexAppBarState>();
 
@@ -42,6 +43,10 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
             icon: Icon(
               Icons.add,
             ),
+            onPressed: null,
+          ),
+          IconButton(
+            icon: Icon(Icons.search),
             onPressed: null,
           )
         ],
