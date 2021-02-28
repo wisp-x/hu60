@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/views/chat/chat_view.dart';
 import 'package:hu60/views/forum/forum_view.dart';
@@ -33,6 +32,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
   @override
   Widget build(context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).backgroundColor,
       appBar: AppBar(
         title: Text("虎绿林"),
         centerTitle: false,
@@ -41,7 +41,6 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           IconButton(
             icon: Icon(
               Icons.add,
-              color: Colors.white,
             ),
             onPressed: null,
           )
@@ -56,6 +55,9 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
         },
       ),
       bottomNavigationBar: ConvexAppBar(
+        elevation: 0,
+        activeColor: Theme.of(context).accentColor,
+        color: Theme.of(context).accentColor,
         backgroundColor: Theme.of(context).primaryColor,
         key: _appBarKey,
         items: <TabItem>[
@@ -64,7 +66,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           TabItem(icon: Icons.email, title: '消息'),
           TabItem(icon: Icons.account_circle, title: '我的'),
         ],
-        style: TabStyle.reactCircle,
+        style: TabStyle.textIn,
         initialActiveIndex: _index,
         // optional, default as 0
         onTap: (int i) => {_pageController.jumpToPage(i)},

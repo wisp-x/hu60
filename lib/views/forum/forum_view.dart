@@ -18,9 +18,13 @@ class _ForumView extends State<ForumView> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Text("Forum"),
+    return Theme(
+      data: ThemeData(),
+      child: Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
+        body: Center(
+          child: Text("hhh"),
+        ),
       ),
     );
   }
