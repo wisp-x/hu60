@@ -11,7 +11,8 @@ void main() {
     },
     home: HomeView(),
     theme: ThemeData(
-      primarySwatch: Colors.blue,
+      brightness: Brightness.light,
+      primaryColor: Color.fromRGBO(63, 154, 86, 1.0),
     ),
   ));
 }

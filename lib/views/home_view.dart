@@ -56,6 +56,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
         },
       ),
       bottomNavigationBar: ConvexAppBar(
+        backgroundColor: Theme.of(context).primaryColor,
         key: _appBarKey,
         items: <TabItem>[
           TabItem(icon: Icons.home, title: '首页'),
