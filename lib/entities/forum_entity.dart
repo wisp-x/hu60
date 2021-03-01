@@ -87,13 +87,13 @@ class TopicList extends Object {
   @JsonKey(name: 'level')
   int level;
 
-  @JsonKey(name: 'essence')
+  @JsonKey(name: 'essence', defaultValue: 0)
   int essence;
 
   @JsonKey(name: 'forum_id')
   int forumId;
 
-  @JsonKey(name: 'locked')
+  @JsonKey(name: 'locked', defaultValue: 0)
   int locked;
 
   @JsonKey(name: 'review')

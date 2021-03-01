@@ -49,6 +49,7 @@ class _ForumView extends State<ForumView>
             onTap: (int i) {
               setState(() {
                 _type = i;
+                _page = 1;
               });
               _init();
             },
@@ -69,7 +70,7 @@ class _ForumView extends State<ForumView>
           onRefresh: () async {
             setState(() {
               _page = 1;
-              _topics = [];
+              _topics.clear();
             });
             ForumEntity response = await _getData(_page);
             setState(() {
@@ -84,7 +85,8 @@ class _ForumView extends State<ForumView>
               _topics.addAll(response.topicList);
             });
             _controller.finishLoad(
-                noMore: response.currPage == response.maxPage);
+              noMore: response.currPage == response.maxPage,
+            );
           },
           slivers: [_list(context)],
         ),
@@ -99,9 +101,18 @@ class _ForumView extends State<ForumView>
         (context, index) {
           TopicList item = _topics[index];
           String avatarUrl = item.uAvatar;
-          if (avatarUrl == "/upload/default.jpg") {
+          if (avatarUrl == "/upload/default.jpg" || null == avatarUrl) {
             avatarUrl = "https://hu60.cn/upload/default.jpg";
           }
+          // TODO 部分头像会出现 404 和 403，使用 precacheImage function 预加载图像
+          // 这样操作会影响性能，但是可以通过错误回调设置正常的头像地址，等老虎修复！
+          precacheImage(
+            CachedNetworkImageProvider(avatarUrl),
+            context,
+            onError: (e, stackTrace) {
+              avatarUrl = "https://hu60.cn/upload/default.jpg";
+            },
+          );
           String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
           return ListTile(
             leading: ClipOval(
@@ -111,7 +122,37 @@ class _ForumView extends State<ForumView>
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
-            title: Text(item.title),
+            title: Text.rich(
+              TextSpan(children: [
+                WidgetSpan(
+                  child: Offstage(
+                    offstage: item.locked == 0,
+                    child: Text(
+                      "锁 ",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                WidgetSpan(
+                  child: Offstage(
+                    offstage: item.essence == 0,
+                    child: Text(
+                      "精 ",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.redAccent,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                TextSpan(text: item.title)
+              ]),
+            ),
             subtitle: Text.rich(
               TextSpan(children: [
                 WidgetSpan(
