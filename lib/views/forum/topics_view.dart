@@ -193,6 +193,9 @@ class _ForumView extends State<ForumView>
   // 初始化列表
   void _init() async {
     _backTop();
+    setState(() {
+      _topics.clear();
+    });
     ForumEntity response = await _getData(_page);
     setState(() {
       _topics = response.topicList;

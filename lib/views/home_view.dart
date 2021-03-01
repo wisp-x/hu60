@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/views/chat/chat_view.dart';
-import 'package:hu60/views/forum/forum_view.dart';
+import 'package:hu60/views/forum/topics_view.dart';
 import 'package:hu60/views/message/message_view.dart';
 import 'package:hu60/views/user/user_view.dart';
 
