@@ -211,4 +211,5 @@ class _ForumView extends State<ForumView>
       curve: Curves.ease,
     );
   }
+
 }
