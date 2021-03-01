@@ -78,10 +78,10 @@ class TopicList extends Object {
   @JsonKey(name: 'uid')
   int uid;
 
-  @JsonKey(name: 'ctime')
+  @JsonKey(name: 'ctime', defaultValue: 0)
   int ctime;
 
-  @JsonKey(name: 'mtime')
+  @JsonKey(name: 'mtime', defaultValue: 0)
   int mtime;
 
   @JsonKey(name: 'level')

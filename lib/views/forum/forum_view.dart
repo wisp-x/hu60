@@ -5,6 +5,7 @@ import 'package:hu60/entities/forum_entity.dart';
 import 'package:hu60/http.dart';
 import 'package:hu60/utils/custom_classical.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:common_utils/common_utils.dart';
 
 class ForumView extends StatefulWidget {
   @override
@@ -101,6 +102,7 @@ class _ForumView extends State<ForumView>
           if (avatarUrl == "/upload/default.jpg") {
             avatarUrl = "https://hu60.cn/upload/default.jpg";
           }
+          String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
           return ListTile(
             leading: ClipOval(
               child: CachedNetworkImage(
@@ -127,7 +129,7 @@ class _ForumView extends State<ForumView>
                     size: 15,
                   ),
                 ),
-                TextSpan(text: "${item.readCount} / 最后回复于 13 分钟前"),
+                TextSpan(text: "${item.readCount} / 最后回复于 $date"),
               ]),
             ),
             onTap: () => {},
