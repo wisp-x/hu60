@@ -70,6 +70,9 @@ class _TopicsView extends State<TopicsView>
       builder: (_) => SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
+            if (c.topics.length < index) {
+              return null;
+            }
             TopicList item = c.topics[index];
             String avatarUrl = _getAvatar(item.uAvatar);
             String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
