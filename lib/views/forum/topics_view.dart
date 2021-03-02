@@ -27,23 +27,18 @@ class _TopicsView extends State<TopicsView>
       builder: (c) {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
-          appBar: AppBar(
-            titleSpacing: 0,
-            elevation: 0,
-            backgroundColor: Theme.of(context).backgroundColor,
-            title: TabBar(
-              labelColor: Theme.of(context).accentColor,
-              indicatorColor: Theme.of(context).accentColor,
-              controller: c.tabController,
-              onTap: (int i) {
-                c.type = i;
-                c.init();
-              },
-              tabs: [
-                Tab(text: "新帖"),
-                Tab(text: "精华"),
-              ],
-            ),
+          appBar: TabBar(
+            labelColor: Theme.of(context).accentColor,
+            indicatorColor: Theme.of(context).accentColor,
+            controller: c.tabController,
+            onTap: (int i) {
+              c.type = i;
+              c.init();
+            },
+            tabs: [
+              Tab(text: "新帖"),
+              Tab(text: "精华"),
+            ],
           ),
           body: EasyRefresh.custom(
             firstRefresh: true,

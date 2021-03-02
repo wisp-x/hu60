@@ -12,7 +12,7 @@ class TopicView extends StatelessWidget {
           title: Text("主题详情"),
           titleSpacing: 0,
           elevation: 0,
-          backgroundColor: Theme.of(context).backgroundColor,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: Text("hh"),
