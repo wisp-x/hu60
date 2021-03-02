@@ -17,6 +17,7 @@ class CustomClassical {
 
   static footer() {
     return ClassicalFooter(
+      overScroll: true,
       loadText: "上拉加载更多",
       loadReadyText: "松开后开始加载",
       loadingText: "正在加载...",
