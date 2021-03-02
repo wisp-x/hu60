@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
-import 'package:hu60/entities/topics_entity.dart';
+import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/custom_classical.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:hu60/views/forum/topic_view.dart';
+import 'package:hu60/utils/user.dart';
 
 class TopicsView extends StatefulWidget {
   @override
@@ -67,7 +68,7 @@ class _TopicsView extends State<TopicsView>
               return null;
             }
             TopicList item = c.topics[index];
-            String avatarUrl = _getAvatar(item.uAvatar);
+            String avatarUrl = User.getAvatar(context, item.uAvatar);
             String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
             return ListTile(
               leading: ClipOval(
@@ -135,21 +136,5 @@ class _TopicsView extends State<TopicsView>
         ),
       ),
     );
-  }
-
-  String _getAvatar(avatarUrl) {
-    if (avatarUrl == "/upload/default.jpg" || null == avatarUrl) {
-      avatarUrl = "https://hu60.cn/upload/default.jpg";
-    }
-    // TODO 部分头像会出现 404 和 403，使用 precacheImage function 预加载图像
-    // 这样操作会影响性能，但是可以通过错误回调设置正常的头像地址，等老虎修复！
-    precacheImage(
-      CachedNetworkImageProvider(avatarUrl),
-      context,
-      onError: (e, stackTrace) {
-        avatarUrl = "https://hu60.cn/upload/default.jpg";
-      },
-    );
-    return avatarUrl;
   }
 }

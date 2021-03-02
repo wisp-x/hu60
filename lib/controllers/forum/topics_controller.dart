@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
-import 'package:hu60/entities/topics_entity.dart';
+import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/http.dart';
 
 class TopicsController extends GetxController with SingleGetTickerProviderMixin {

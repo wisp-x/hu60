@@ -58,20 +58,20 @@ TopicList _$TopicListFromJson(Map<String, dynamic> json) {
     json['title'] as String,
     json['read_count'] as int,
     json['uid'] as int,
-    json['ctime'] as int,
-    json['mtime'] as int,
+    json['ctime'] as int ?? 0,
+    json['mtime'] as int ?? 0,
     json['level'] as int,
-    json['essence'] as int,
+    json['essence'] as int ?? 0,
     json['forum_id'] as int,
-    json['locked'] as int,
+    json['locked'] as int ?? 0,
     json['review'] as int,
     json['forum_name'] as String,
     json['reply_count'] as int,
     json['uinfo'] == null
         ? null
         : Uinfo.fromJson(json['uinfo'] as Map<String, dynamic>),
-    json['_u_name'] as String,
-    json['_u_avatar'] as String,
+    json['_u_name'] as String ?? '-',
+    json['_u_avatar'] as String ?? 'https://hu60.cn/upload/default.jpg',
   );
 }
 
