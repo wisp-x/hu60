@@ -6,6 +6,7 @@ import 'package:hu60/entities/forum_entity.dart';
 import 'package:hu60/utils/custom_classical.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:hu60/views/forum/topic_view.dart';
 
 class TopicsView extends StatefulWidget {
   @override
@@ -21,46 +22,43 @@ class _TopicsView extends State<TopicsView>
 
   @override
   Widget build(BuildContext context) {
-    return Theme(
-      data: ThemeData(),
-      child: GetBuilder<TopicsController>(
-        init: TopicsController(),
-        builder: (c) {
-          return Scaffold(
+    return GetBuilder<TopicsController>(
+      init: TopicsController(),
+      builder: (c) {
+        return Scaffold(
+          backgroundColor: Theme.of(context).backgroundColor,
+          appBar: AppBar(
+            titleSpacing: 0,
+            elevation: 0,
             backgroundColor: Theme.of(context).backgroundColor,
-            appBar: AppBar(
-              titleSpacing: 0,
-              elevation: 0,
-              backgroundColor: Theme.of(context).backgroundColor,
-              title: TabBar(
-                labelColor: Theme.of(context).accentColor,
-                indicatorColor: Theme.of(context).accentColor,
-                controller: c.tabController,
-                onTap: (int i) {
-                  c.type = i;
-                  c.init();
-                },
-                tabs: [
-                  Tab(text: "新帖"),
-                  Tab(text: "精华"),
-                ],
-              ),
+            title: TabBar(
+              labelColor: Theme.of(context).accentColor,
+              indicatorColor: Theme.of(context).accentColor,
+              controller: c.tabController,
+              onTap: (int i) {
+                c.type = i;
+                c.init();
+              },
+              tabs: [
+                Tab(text: "新帖"),
+                Tab(text: "精华"),
+              ],
             ),
-            body: EasyRefresh.custom(
-              firstRefresh: true,
-              enableControlFinishRefresh: false,
-              enableControlFinishLoad: true,
-              controller: c.easyRefreshController,
-              scrollController: c.scrollController,
-              header: CustomClassical.header(),
-              footer: CustomClassical.footer(),
-              onRefresh: c.onRefresh,
-              onLoad: c.onLoad,
-              slivers: [_list(context)],
-            ),
-          );
-        },
-      ),
+          ),
+          body: EasyRefresh.custom(
+            firstRefresh: true,
+            enableControlFinishRefresh: false,
+            enableControlFinishLoad: true,
+            controller: c.easyRefreshController,
+            scrollController: c.scrollController,
+            header: CustomClassical.header(),
+            footer: CustomClassical.footer(),
+            onRefresh: c.onRefresh,
+            onLoad: c.onLoad,
+            slivers: [_list(context)],
+          ),
+        );
+      },
     );
   }
 
@@ -135,7 +133,7 @@ class _TopicsView extends State<TopicsView>
                   TextSpan(text: "${item.readCount} / 最后回复于 $date"),
                 ]),
               ),
-              onTap: () => {},
+              onTap: () => Get.to(TopicView()),
             );
           },
           childCount: c.topics.length,
