@@ -38,7 +38,6 @@ class _TopicsView extends State<TopicsView>
                 controller: c.tabController,
                 onTap: (int i) {
                   c.type = i;
-                  c.page = 1;
                   c.init();
                 },
                 tabs: [

@@ -23,6 +23,7 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   // 初始化列表
   void init() async {
     _backTop();
+    page = 1;
     ForumEntity response = await getData(page);
     topics = response.topicList;
     easyRefreshController.resetLoadState();
