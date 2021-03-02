@@ -60,7 +60,7 @@ class TopicView extends StatelessWidget {
           return _buildMeta(context, c, item);
         }
 
-        return ListTile(title: Text("哈哈哈"));
+        return _buildComments(context, c, item, index);
       },
       itemCount: c.topic.tContents.length,
     );
@@ -106,21 +106,106 @@ class TopicView extends StatelessWidget {
             ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 8),
-              child: Text("发布于 $date   ${meta.readCount} 人浏览"),
+              child: Text(
+                "发布于 $date   ${meta.readCount} 人浏览 ${c.topic.floorCount} 人回复",
+              ),
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 15, top: 5, right: 15, bottom: 5),
-            child: Text(
-              meta.title,
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.bold,
+            padding: EdgeInsets.only(left: 15, right: 15),
+            child: Column(
+              children: <Widget>[
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Text(
+                    meta.title,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(bottom: 10),
+                  child: Divider(
+                    height: 1,
+                    color: Colors.grey,
+                  ),
+                ),
+                Text(item.content),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(top: 10),
+            child: Container(
+              height: 40,
+              alignment: Alignment.centerLeft,
+              width: double.maxFinite,
+              color: Colors.grey[300],
+              child: Padding(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                child: Text(
+                  "回复列表(${c.topic.floorCount})",
+                  style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
+    );
+  }
+
+  Widget _buildComments(
+    BuildContext context,
+    TopicController c,
+    TContents item,
+    int index,
+  ) {
+    String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Container(
+          child: ListTile(
+            leading: ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: CachedNetworkImage(
+                height: 40,
+                width: 40,
+                imageUrl: User.getAvatar(context, item.uAvatar),
+                placeholder: (context, url) => CircularProgressIndicator(),
+                errorWidget: (context, url, error) => Icon(Icons.error),
+              ),
+            ),
+            title: Text(item.uName),
+            subtitle: Padding(
+              padding: EdgeInsets.only(top: 2),
+              child: Text(date),
+            ),
+            trailing: Text(
+              "# $index",
+              style: TextStyle(
+                color: Colors.grey,
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+          child: Text(item.content),
+        ),
+        Offstage(
+          offstage: index == c.topic.floorCount,
+          child: Divider(
+            height: 1,
+            color: Colors.grey,
+          ),
+        ),
+      ],
     );
   }
 }

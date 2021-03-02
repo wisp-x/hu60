@@ -22,7 +22,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           actions: <Widget>[
             IconButton(
               icon: Icon(
-                Icons.add,
+                Icons.edit,
               ),
               onPressed: null,
             ),
