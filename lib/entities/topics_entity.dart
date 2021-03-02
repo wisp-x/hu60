@@ -1,10 +1,10 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'forum_entity.g.dart';
+part 'topics_entity.g.dart';
 
 
 @JsonSerializable()
-class ForumEntity extends Object {
+class TopicsEntity extends Object {
 
   @JsonKey(name: 'fName')
   String fName;
@@ -30,11 +30,11 @@ class ForumEntity extends Object {
   @JsonKey(name: 'topicList')
   List<TopicList> topicList;
 
-  ForumEntity(this.fName,this.fIndex,this.topicCount,this.currPage,this.maxPage,this.onlyEssence,this.childForum,this.topicList,);
+  TopicsEntity(this.fName,this.fIndex,this.topicCount,this.currPage,this.maxPage,this.onlyEssence,this.childForum,this.topicList,);
 
-  factory ForumEntity.fromJson(Map<String, dynamic> srcJson) => _$ForumEntityFromJson(srcJson);
+  factory TopicsEntity.fromJson(Map<String, dynamic> srcJson) => _$TopicsEntityFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$ForumEntityToJson(this);
+  Map<String, dynamic> toJson() => _$TopicsEntityToJson(this);
 
 }
 

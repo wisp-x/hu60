@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
-import 'package:hu60/entities/forum_entity.dart';
+import 'package:hu60/entities/topics_entity.dart';
 import 'package:hu60/http.dart';
 
 class TopicsController extends GetxController with SingleGetTickerProviderMixin {
@@ -24,7 +24,7 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   void init() async {
     _backTop();
     page = 1;
-    ForumEntity response = await getData(page);
+    TopicsEntity response = await getData(page);
     topics = response.topicList;
     easyRefreshController.resetLoadState();
     update();
@@ -34,7 +34,7 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   Future onRefresh() async {
     page = 1;
     topics.clear();
-    ForumEntity response = await getData(page);
+    TopicsEntity response = await getData(page);
     topics = response.topicList;
     easyRefreshController.resetLoadState();
     update();
@@ -43,7 +43,7 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   // 加载下一页数据
   Future onLoad() async {
     page++;
-    ForumEntity response = await getData(page);
+    TopicsEntity response = await getData(page);
     topics.addAll(response.topicList);
     easyRefreshController.finishLoad(
       noMore: response.currPage == response.maxPage,
@@ -52,12 +52,12 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   }
 
   // 获取数据
-  Future<ForumEntity> getData(int page) async {
+  Future<TopicsEntity> getData(int page) async {
     var response = await Http.request(
       "/bbs.forum.0.$page.$type.json?_uinfo=name,avatar",
       method: Http.POST,
     );
-    return ForumEntity.fromJson(response.data);
+    return TopicsEntity.fromJson(response.data);
   }
 
   // 回到顶部

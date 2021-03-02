@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
-import 'package:hu60/entities/forum_entity.dart';
+import 'package:hu60/entities/topics_entity.dart';
 import 'package:hu60/utils/custom_classical.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
@@ -128,7 +128,7 @@ class _TopicsView extends State<TopicsView>
                   TextSpan(text: "${item.readCount} / 最后回复于 $date"),
                 ]),
               ),
-              onTap: () => Get.to(TopicView()),
+              onTap: () => Get.to(() => TopicView(id: item.id)),
             );
           },
           childCount: c.topics.length,

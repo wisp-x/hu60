@@ -1,13 +1,13 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'forum_entity.dart';
+part of 'topics_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-ForumEntity _$ForumEntityFromJson(Map<String, dynamic> json) {
-  return ForumEntity(
+TopicsEntity _$TopicsEntityFromJson(Map<String, dynamic> json) {
+  return TopicsEntity(
     json['fName'] as String,
     json['fIndex'] as List,
     json['topicCount'] as int,
@@ -25,7 +25,7 @@ ForumEntity _$ForumEntityFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ForumEntityToJson(ForumEntity instance) =>
+Map<String, dynamic> _$TopicsEntityToJson(TopicsEntity instance) =>
     <String, dynamic>{
       'fName': instance.fName,
       'fIndex': instance.fIndex,
