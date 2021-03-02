@@ -115,6 +115,7 @@ class TopicView extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 15, right: 15),
             child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
                   padding: EdgeInsets.only(bottom: 10),
