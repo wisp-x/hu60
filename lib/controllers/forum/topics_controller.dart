@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum_entity.dart';
-
-import '../../http.dart';
+import 'package:hu60/http.dart';
 
 class TopicsController extends GetxController with SingleGetTickerProviderMixin {
   TabController tabController; // 选项卡控制器
@@ -11,7 +10,7 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
   ScrollController scrollController;
   int page = 1; // 页码
   int type = 0; // 类型，0:新帖，1:精华贴
-  List<TopicList> topics = List<TopicList>().obs; // 帖子列表
+  List<TopicList> topics = List<TopicList>(); // 帖子列表
 
   @override
   void onInit() {
