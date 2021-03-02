@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
-import 'package:hu60/views/chat/chat_view.dart';
-import 'package:hu60/views/forum/topics_view.dart';
-import 'package:hu60/views/message/message_view.dart';
-import 'package:hu60/views/user/user_view.dart';
+import 'package:hu60/controllers/home_controller.dart';
+import 'package:get/get.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -11,24 +9,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
-  final _pages = <Widget>[ForumView(), ChatView(), MessageView(), UserView()];
-
-  PageController _pageController = PageController();
-  int _index = 0;
-
-  // define field instance
-  GlobalKey<ConvexAppBarState> _appBarKey = GlobalKey<ConvexAppBarState>();
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _pageController.dispose();
-  }
+  final HomeController c = Get.put(HomeController());
 
   @override
   Widget build(context) {
@@ -52,11 +33,11 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
         ],
       ),
       body: PageView(
-        controller: _pageController,
-        children: _pages,
+        controller: c.pageController,
+        children: c.pages,
         onPageChanged: (int i) {
-          setState(() => _index = i);
-          _appBarKey.currentState.animateTo(i);
+          c.index = i;
+          c.appBarKey.currentState.animateTo(i);
         },
       ),
       bottomNavigationBar: ConvexAppBar(
@@ -64,7 +45,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
         activeColor: Theme.of(context).accentColor,
         color: Theme.of(context).accentColor,
         backgroundColor: Theme.of(context).primaryColor,
-        key: _appBarKey,
+        key: c.appBarKey,
         items: <TabItem>[
           TabItem(icon: Icons.home, title: '首页'),
           TabItem(icon: Icons.chat, title: '聊天室'),
@@ -72,9 +53,9 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           TabItem(icon: Icons.account_circle, title: '我的'),
         ],
         style: TabStyle.textIn,
-        initialActiveIndex: _index,
+        initialActiveIndex: c.index,
         // optional, default as 0
-        onTap: (int i) => {_pageController.jumpToPage(i)},
+        onTap: (int i) => {c.pageController.jumpToPage(i)},
       ),
     );
   }
