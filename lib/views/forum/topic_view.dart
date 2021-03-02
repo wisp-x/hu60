@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
@@ -107,7 +108,7 @@ class TopicView extends StatelessWidget {
             subtitle: Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                "发布于 $date   ${meta.readCount} 人浏览 ${c.topic.floorCount} 人回复",
+                "发布于 $date   ${meta.readCount}人浏览  ${c.topic.floorCount}人回复",
               ),
             ),
           ),
@@ -132,7 +133,9 @@ class TopicView extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                Text(item.content),
+                Html(
+                  data: item.content,
+                ),
               ],
             ),
           ),
@@ -146,7 +149,7 @@ class TopicView extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Text(
-                  "回复列表(${c.topic.floorCount})",
+                  "回复列表(${c.topic.floorCount - 1})",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                   ),
@@ -196,7 +199,9 @@ class TopicView extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16, bottom: 10),
-          child: Text(item.content),
+          child: Html(
+            data: item.content ?? "", // TODO 处理控制台报错
+          ),
         ),
         Offstage(
           offstage: index == c.topic.floorCount,

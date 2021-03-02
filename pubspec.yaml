@@ -40,6 +40,11 @@ dependencies:
   cached_network_image: ^2.5.0
   common_utils: ^1.2.4
   loading_indicator: ^1.2.0
+  flutter_html: ^1.3.0
+
+# TODO 重写 flutter_svg 插件，等待 flutter_html 升级依赖
+dependency_overrides:
+  flutter_svg: ^0.18.0
 
 dev_dependencies:
   flutter_test:
