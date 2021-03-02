@@ -105,7 +105,7 @@ class TopicView extends StatelessWidget {
               ]),
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 10),
+              padding: EdgeInsets.only(top: 8),
               child: Text("发布于 $date   ${meta.readCount} 人浏览"),
             ),
           ),
