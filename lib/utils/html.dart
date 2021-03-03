@@ -4,7 +4,9 @@ import 'package:flutter_html/html_parser.dart';
 import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
+import 'package:hu60/views/common/photo_view_screen.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:get/get.dart';
 
 class Html {
   static decode(String content) {
@@ -14,13 +16,37 @@ class Html {
         print(exception);
       },
       customRender: {
-        "a": (
+        "img": (
           RenderContext context,
           Widget child,
           Map<String, String> attrs,
           dom.Element element,
         ) {
           print(attrs);
+          switch (attrs["class"]) {
+            case "userimg":
+              return GestureDetector(
+                child: Image.network(attrs["src"]),
+                onTap: () {
+                  Get.to(
+                    () => PhotoViewScreen(
+                      imageProvider: NetworkImage(attrs["src"]),
+                      heroTag: "simple",
+                    ),
+                  );
+                },
+              );
+              break;
+            default:
+              return null;
+          }
+        },
+        "a": (
+          RenderContext context,
+          Widget child,
+          Map<String, String> attrs,
+          dom.Element element,
+        ) {
           switch (attrs["class"]) {
             case "userlink": // 链接
               return _buildOpenUrlWidget(attrs, element);
@@ -43,7 +69,7 @@ class Html {
                   return _buildOpenUrlWidget(attrs, element);
                 }
               }
-              return child;
+              return null;
           }
         }
       },
