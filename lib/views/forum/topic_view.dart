@@ -1,10 +1,12 @@
 import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_html/flutter_html.dart';
+import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
+import 'package:hu60/utils/custom_classical.dart';
+import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:common_utils/common_utils.dart';
@@ -19,13 +21,13 @@ class TopicView extends StatelessWidget {
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
+        backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(
           title: Text("主题详情"),
           titleSpacing: 0,
           elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        backgroundColor: Theme.of(context).backgroundColor,
         body: c.loading ? _loading(context) : _buildBody(context, c),
       ),
     );
@@ -52,17 +54,30 @@ class TopicView extends StatelessWidget {
 
   // 构建内容
   Widget _buildBody(BuildContext context, TopicController c) {
-    return ListView.builder(
-      physics: BouncingScrollPhysics(),
-      itemBuilder: (BuildContext context, int index) {
-        TContents item = c.topic.tContents[index];
-        if (index == 0) {
-          return _buildMeta(context, c, item);
-        }
+    return EasyRefresh.custom(
+      enableControlFinishRefresh: false,
+      enableControlFinishLoad: true,
+      controller: c.easyRefreshController,
+      scrollController: c.scrollController,
+      header: CustomClassical.header(),
+      footer: CustomClassical.footer(),
+      onRefresh: c.onRefresh,
+      onLoad: c.onLoad,
+      slivers: [
+        SliverList(
+          delegate: SliverChildBuilderDelegate(
+            (context, index) {
+              TContents item = c.contents[index];
+              if (index == 0) {
+                return _buildMeta(context, c, item);
+              }
 
-        return _buildComments(context, c, item, index);
-      },
-      itemCount: c.topic.tContents.length,
+              return _buildComments(context, c, item, index);
+            },
+            childCount: c.contents.length,
+          ),
+        ),
+      ],
     );
   }
 
@@ -137,9 +152,7 @@ class TopicView extends StatelessWidget {
                     color: Colors.grey,
                   ),
                 ),
-                Html(
-                  data: item.content,
-                ),
+                Html.decode(item.content),
               ],
             ),
           ),
@@ -203,9 +216,7 @@ class TopicView extends StatelessWidget {
         ),
         Padding(
           padding: EdgeInsets.only(left: 16, right: 16, bottom: 10),
-          child: Html(
-            data: item.content ?? "", // TODO 处理控制台报错
-          ),
+          child: Html.decode(item.content),
         ),
         Offstage(
           offstage: index == c.topic.floorCount,
