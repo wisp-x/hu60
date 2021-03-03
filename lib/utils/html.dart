@@ -9,8 +9,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
 class Html {
-  List<String> images = [];
-
   static decode(String content) {
     return flutterHtml.Html(
       data: content,
@@ -24,7 +22,6 @@ class Html {
           Map<String, String> attrs,
           dom.Element element,
         ) {
-          print(attrs);
           switch (attrs["class"]) {
             case "userimg":
               return GestureDetector(
@@ -38,6 +35,17 @@ class Html {
                     ),
                   );
                 },
+              );
+              break;
+            case "hu60_face":
+              return WidgetSpan(
+                alignment: ui.PlaceholderAlignment.middle,
+                child: Container(
+                  margin: EdgeInsets.only(left: 2, right: 2),
+                  width: 30,
+                  height: 30,
+                  child: Image.network(attrs["src"]),
+                ),
               );
               break;
             default:
