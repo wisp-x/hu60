@@ -25,7 +25,13 @@ class Html {
           switch (attrs["class"]) {
             case "userimg":
               return GestureDetector(
-                child: Image.network(attrs["src"]),
+                child: Container(
+                  margin: EdgeInsets.only(top: 5, bottom: 5),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(6.0),
+                    child: Image.network(attrs["src"]),
+                  ),
+                ),
                 onTap: () {
                   Get.to(
                     () => PhotoGallery(

@@ -1,24 +1,23 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicController extends GetxController {
   TopicController({this.id});
   final id; // 帖子ID
-
-  EasyRefreshController easyRefreshController;
+  RefreshController refreshController;
   ScrollController scrollController;
   int page = 1; // 页码
   TopicEntity topic;
-  List<TContents> contents; // 内容列表
+  List<TContents> contents = []; // 内容列表
   bool loading = false; // 是否正在获取
 
   @override
   void onInit() async {
     super.onInit();
-    easyRefreshController = EasyRefreshController();
+    refreshController = RefreshController(initialRefresh: false);
     scrollController = ScrollController();
     init();
   }
@@ -29,7 +28,6 @@ class TopicController extends GetxController {
     TopicEntity response = await getData(id, page);
     topic = response;
     contents = topic.tContents;
-    easyRefreshController.resetLoadState();
     update();
   }
 
@@ -40,18 +38,15 @@ class TopicController extends GetxController {
     TopicEntity response = await getData(id, page);
     topic = response;
     contents = topic.tContents;
-    easyRefreshController.resetLoadState();
+    refreshController.refreshCompleted();
     update();
   }
 
   // 加载下一页数据
-  Future onLoad() async {
+  Future onLoading() async {
     page++;
     TopicEntity response = await getData(id, page);
     contents.addAll(response.tContents);
-    easyRefreshController.finishLoad(
-      noMore: response.currPage == response.maxPage,
-    );
     update();
   }
 
@@ -62,8 +57,14 @@ class TopicController extends GetxController {
       "/bbs.topic.$id.$page.json?_uinfo=name,avatar",
       method: Http.POST,
     );
+    TopicEntity result = TopicEntity.fromJson(response.data);
+    if (result.currPage == result.maxPage) {
+      refreshController.loadNoData();
+    } else {
+      refreshController.loadComplete();
+    }
     loading = false;
     update();
-    return TopicEntity.fromJson(response.data);
+    return result;
   }
 }

@@ -1,23 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/http.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicsController extends GetxController with SingleGetTickerProviderMixin {
   TabController tabController; // 选项卡控制器
-  EasyRefreshController easyRefreshController;
+  RefreshController refreshController;
   ScrollController scrollController;
   int page = 1; // 页码
   int type = 0; // 类型，0:新帖，1:精华贴
   List<TopicList> topics = List<TopicList>(); // 帖子列表
+  bool loading = false;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
+    refreshController = RefreshController(initialRefresh: false);
     tabController = TabController(length: 2, vsync: this);
-    easyRefreshController = EasyRefreshController();
     scrollController = ScrollController();
+
+    TopicsEntity response = await getData(page);
+    topics = response.topicList;
+    update();
   }
 
   // 初始化列表
@@ -26,7 +31,6 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
     page = 1;
     TopicsEntity response = await getData(page);
     topics = response.topicList;
-    easyRefreshController.resetLoadState();
     update();
   }
 
@@ -36,28 +40,34 @@ class TopicsController extends GetxController with SingleGetTickerProviderMixin 
     topics.clear();
     TopicsEntity response = await getData(page);
     topics = response.topicList;
-    easyRefreshController.resetLoadState();
+    refreshController.refreshCompleted();
     update();
   }
 
   // 加载下一页数据
-  Future onLoad() async {
+  Future onLoading() async {
     page++;
     TopicsEntity response = await getData(page);
     topics.addAll(response.topicList);
-    easyRefreshController.finishLoad(
-      noMore: response.currPage == response.maxPage,
-    );
     update();
   }
 
   // 获取数据
   Future<TopicsEntity> getData(int page) async {
+    loading = true;
     var response = await Http.request(
       "/bbs.forum.0.$page.$type.json?_uinfo=name,avatar",
       method: Http.POST,
     );
-    return TopicsEntity.fromJson(response.data);
+    TopicsEntity result = TopicsEntity.fromJson(response.data);
+    if (result.currPage == result.maxPage) {
+      refreshController.loadNoData();
+    } else {
+      refreshController.loadComplete();
+    }
+    loading = false;
+    update();
+    return result;
   }
 
   // 回到顶部

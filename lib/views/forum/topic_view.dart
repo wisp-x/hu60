@@ -1,15 +1,15 @@
 import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyrefresh/easy_refresh.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
-import 'package:hu60/utils/custom_classical.dart';
 import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
+import 'package:hu60/utils/utils.dart';
 import 'package:loading_indicator/loading_indicator.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicView extends StatelessWidget {
   TopicView({@required this.id});
@@ -28,56 +28,33 @@ class TopicView extends StatelessWidget {
           elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
         ),
-        body: c.loading ? _loading(context) : _buildBody(context, c),
-      ),
-    );
-  }
-
-  // 加载组件
-  Widget _loading(BuildContext context) {
-    return Center(
-      child: Container(
-        width: 50,
-        height: 50,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            LoadingIndicator(
-              indicatorType: Indicator.pacman,
-              color: Theme.of(context).hintColor,
-            )
-          ],
-        ),
+        body: c.loading ? Utils.loading(context) : _buildBody(context, c),
       ),
     );
   }
 
   // 构建内容
   Widget _buildBody(BuildContext context, TopicController c) {
-    return EasyRefresh.custom(
-      enableControlFinishRefresh: false,
-      enableControlFinishLoad: true,
-      controller: c.easyRefreshController,
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      header: WaterDropHeader(),
+      footer: ClassicFooter(),
+      controller: c.refreshController,
+      primary: false,
       scrollController: c.scrollController,
-      header: CustomClassical.header(),
-      footer: CustomClassical.footer(),
       onRefresh: c.onRefresh,
-      onLoad: c.onLoad,
-      slivers: [
-        SliverList(
-          delegate: SliverChildBuilderDelegate(
-            (context, index) {
-              TContents item = c.contents[index];
-              if (index == 0) {
-                return _buildMeta(context, c, item);
-              }
+      onLoading: c.onLoading,
+      child: ListView.builder(
+        itemCount: c.contents.length,
+        itemBuilder: (BuildContext context, int index) {
+        TContents item = c.contents[index];
+        if (index == 0) {
+          return _buildMeta(context, c, item);
+        }
 
-              return _buildComments(context, c, item, index);
-            },
-            childCount: c.contents.length,
-          ),
-        ),
-      ],
+        return _buildComments(context, c, item, index);
+      },),
     );
   }
 
@@ -126,7 +103,7 @@ class TopicView extends StatelessWidget {
             subtitle: Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                "发布于 $date   ${meta.readCount}人浏览  ${c.topic.floorCount}人回复",
+                "发布于 $date  ${meta.readCount}人浏览  ${c.topic.floorCount - 1}人回复",
               ),
             ),
           ),
