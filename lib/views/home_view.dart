@@ -21,14 +21,18 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           elevation: 0,
           actions: <Widget>[
             IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               icon: Icon(
                 Icons.edit,
               ),
-              onPressed: null,
+              onPressed: () => {},
             ),
             IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
               icon: Icon(Icons.search),
-              onPressed: null,
+              onPressed: () {},
             )
           ],
         ),
