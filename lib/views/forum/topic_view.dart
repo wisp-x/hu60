@@ -1,5 +1,4 @@
-import 'dart:ui';
-
+import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
@@ -87,7 +86,10 @@ class TopicView extends StatelessWidget {
             ),
             title: Text.rich(
               TextSpan(children: [
-                WidgetSpan(child: Text("${meta.uName} ")),
+                WidgetSpan(
+                  alignment: ui.PlaceholderAlignment.middle,
+                  child: Text("${meta.uName} "),
+                ),
                 WidgetSpan(
                   child: Container(
                     padding: EdgeInsets.only(left: 3, right: 3),
@@ -98,6 +100,7 @@ class TopicView extends StatelessWidget {
                     child: Text(
                       c.topic.fName,
                       style: TextStyle(
+                        fontSize: 15,
                         color: Colors.white,
                       ),
                     ),
