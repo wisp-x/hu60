@@ -42,34 +42,39 @@ class _PhotoGalleryState extends State<PhotoGallery> {
             bottom: 0,
             right: 0,
             child: Container(
-                child: PhotoViewGallery.builder(
-              scrollPhysics: const BouncingScrollPhysics(),
-              builder: (BuildContext context, int index) {
-                return PhotoViewGalleryPageOptions(
-                  imageProvider: NetworkImage(widget.images[index]),
-                  heroAttributes: widget.heroTag.isNotEmpty
-                      ? PhotoViewHeroAttributes(tag: widget.heroTag)
-                      : null,
-                );
-              },
-              itemCount: widget.images.length,
-              loadFailedChild: Container(),
-              backgroundDecoration: null,
-              pageController: widget.controller,
-              enableRotation: true,
-              onPageChanged: (index) {
-                setState(() {
-                  currentIndex = index;
-                });
-              },
-            )),
+              child: PhotoViewGallery.builder(
+                scrollPhysics: const BouncingScrollPhysics(),
+                builder: (BuildContext context, int index) {
+                  return PhotoViewGalleryPageOptions(
+                    imageProvider: NetworkImage(
+                      widget.images[index],
+                    ),
+                    heroAttributes: widget.heroTag.isNotEmpty
+                        ? PhotoViewHeroAttributes(tag: widget.heroTag)
+                        : null,
+                  );
+                },
+                itemCount: widget.images.length,
+                loadFailedChild: Container(),
+                backgroundDecoration: null,
+                pageController: widget.controller,
+                enableRotation: true,
+                onPageChanged: (index) {
+                  setState(() {
+                    currentIndex = index;
+                  });
+                },
+              ),
+            ),
           ),
           Positioned(
             top: MediaQuery.of(context).padding.top + 15,
             width: MediaQuery.of(context).size.width,
             child: Center(
-              child: Text("${currentIndex + 1}/${widget.images.length}",
-                  style: TextStyle(color: Colors.white, fontSize: 16)),
+              child: Text(
+                "${currentIndex + 1}/${widget.images.length}",
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
           ),
           Positioned(

@@ -60,9 +60,7 @@ class _TopicsView extends State<TopicsView>
 
   // 构建列表项
   Widget _list(BuildContext context, TopicsController c) {
-    if (c.loading) {
-      return Utils.loading(context);
-    }
+    if (c.loading) return Utils.loading(context);
     return ListView.builder(
       itemCount: c.topics.length,
       itemBuilder: (BuildContext context, int index) {

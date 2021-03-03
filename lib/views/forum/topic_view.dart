@@ -7,7 +7,6 @@ import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
-import 'package:loading_indicator/loading_indicator.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -48,13 +47,14 @@ class TopicView extends StatelessWidget {
       child: ListView.builder(
         itemCount: c.contents.length,
         itemBuilder: (BuildContext context, int index) {
-        TContents item = c.contents[index];
-        if (index == 0) {
-          return _buildMeta(context, c, item);
-        }
+          TContents item = c.contents[index];
+          if (index == 0) {
+            return _buildMeta(context, c, item);
+          }
 
-        return _buildComments(context, c, item, index);
-      },),
+          return _buildComments(context, c, item, index);
+        },
+      ),
     );
   }
 
@@ -103,7 +103,7 @@ class TopicView extends StatelessWidget {
             subtitle: Padding(
               padding: EdgeInsets.only(top: 8),
               child: Text(
-                "发布于 $date  ${meta.readCount}人浏览  ${c.topic.floorCount - 1}人回复",
+                "发布于 $date  ${meta.readCount}次点击  ${c.topic.floorCount - 1}人回复",
               ),
             ),
           ),
@@ -192,7 +192,7 @@ class TopicView extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: EdgeInsets.only(left: 16, right: 16, bottom: 10),
+          padding: EdgeInsets.only(left: 6, right: 6, bottom: 10),
           child: Html.decode(item.content),
         ),
         Offstage(
