@@ -108,12 +108,12 @@ class TopicView extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: EdgeInsets.only(left: 15, right: 15),
+            padding: EdgeInsets.only(left: 10, right: 10),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(left: 5, right: 5, bottom: 10),
                   child: Text(
                     meta.title,
                     style: TextStyle(
@@ -123,7 +123,7 @@ class TopicView extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(left: 5, right: 5),
                   child: Divider(
                     height: 1,
                     color: Colors.grey,

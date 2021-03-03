@@ -18,6 +18,7 @@ void main() {
       enableBallisticLoad: true,
       // 可以通过惯性滑动触发加载更多
       child: GetMaterialApp(
+        debugShowMaterialGrid: false,
         locale: Locale('zh', 'CH'),
         routingCallback: (routing) {
           if (routing.current == '/second') {
