@@ -4,11 +4,13 @@ import 'package:flutter_html/html_parser.dart';
 import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
-import 'package:hu60/views/common/photo_view_screen.dart';
+import 'package:hu60/views/common/photo_gallery.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 
 class Html {
+  List<String> images = [];
+
   static decode(String content) {
     return flutterHtml.Html(
       data: content,
@@ -29,9 +31,10 @@ class Html {
                 child: Image.network(attrs["src"]),
                 onTap: () {
                   Get.to(
-                    () => PhotoViewScreen(
-                      imageProvider: NetworkImage(attrs["src"]),
-                      heroTag: "simple",
+                    () => PhotoGallery(
+                      index: 0,
+                      images: [attrs["src"]],
+                      heroTag: attrs["src"],
                     ),
                   );
                 },
