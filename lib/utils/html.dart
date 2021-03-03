@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as flutterHtml;
 import 'package:flutter_html/html_parser.dart';
+import 'package:flutter_html/image_render.dart';
 import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
@@ -13,7 +14,10 @@ class Html {
     return flutterHtml.Html(
       data: content,
       onImageError: (dynamic exception, StackTrace stackTrace) {
-        print(exception);
+        print("加载错误 $exception");
+      },
+      customImageRenders: {
+        base64DataUriMatcher(): base64ImageRender(),
       },
       customRender: {
         "img": (
@@ -22,6 +26,7 @@ class Html {
           Map<String, String> attrs,
           dom.Element element,
         ) {
+          if (element == null) return null;
           switch (attrs["class"]) {
             case "userimg":
               return GestureDetector(
@@ -55,6 +60,7 @@ class Html {
               );
               break;
             default:
+              // TODO 解决图片加载错误的问题
               return null;
           }
         },
