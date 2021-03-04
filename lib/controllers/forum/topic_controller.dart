@@ -9,6 +9,8 @@ class TopicController extends GetxController {
   final id; // 帖子ID
   RefreshController refreshController;
   ScrollController scrollController;
+  TextEditingController textController;
+  FocusNode focusNode;
   int page = 1; // 页码
   TopicEntity topic;
   List<TContents> contents = []; // 内容列表
@@ -19,7 +21,16 @@ class TopicController extends GetxController {
     super.onInit();
     refreshController = RefreshController(initialRefresh: false);
     scrollController = ScrollController();
+    textController = TextEditingController();
+    focusNode = FocusNode();
     init();
+    focusNode.addListener(() {
+      if (focusNode.hasFocus) {
+        print(1);
+      } else {
+        print(2);
+      }
+    });
   }
 
   // 初始化列表

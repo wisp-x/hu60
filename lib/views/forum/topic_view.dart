@@ -46,27 +46,56 @@ class TopicView extends StatelessWidget {
 
   // 构建内容
   Widget _buildBody(BuildContext context, TopicController c) {
-    return SmartRefresher(
-      enablePullDown: true,
-      enablePullUp: true,
-      header: WaterDropHeader(),
-      footer: ClassicFooter(),
-      controller: c.refreshController,
-      primary: false,
-      scrollController: c.scrollController,
-      onRefresh: c.onRefresh,
-      onLoading: c.onLoading,
-      child: ListView.builder(
-        itemCount: c.contents.length,
-        itemBuilder: (BuildContext context, int index) {
-          TContents item = c.contents[index];
-          if (index == 0) {
-            return _buildMeta(context, c, item);
-          }
+    return Column(
+      children: <Widget>[
+        Expanded(
+          child: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: true,
+            header: WaterDropHeader(),
+            footer: ClassicFooter(),
+            controller: c.refreshController,
+            primary: false,
+            scrollController: c.scrollController,
+            onRefresh: c.onRefresh,
+            onLoading: c.onLoading,
+            child: ListView.builder(
+              itemCount: c.contents.length,
+              itemBuilder: (BuildContext context, int index) {
+                TContents item = c.contents[index];
+                if (index == 0) {
+                  return _buildMeta(context, c, item);
+                }
 
-          return _buildComments(context, c, item, index);
-        },
-      ),
+                return _buildComments(context, c, item, index);
+              },
+            ),
+          ),
+        ),
+        GestureDetector(
+          onTap: () {
+            // TODO 打开评论框
+          },
+          child: Container(
+            width: double.infinity,
+            color: Colors.white,
+            padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
+            child: Container(
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 10,
+                left: 20,
+                right: 20,
+              ),
+              decoration: BoxDecoration(
+                color: Color(0xc8ececec),
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Text("说点什么吧..."),
+            ),
+          ),
+        ),
+      ],
     );
   }
 
@@ -215,6 +244,55 @@ class TopicView extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildReplyWidget(BuildContext context, TopicController c) {
+    return Container(
+      color: Colors.white,
+      padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
+      child: Row(
+        children: <Widget>[
+          Flexible(
+            child: TextField(
+              maxLength: null,
+              focusNode: c.focusNode,
+              controller: c.textController,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.only(
+                  left: 15,
+                  top: 10,
+                  bottom: 10,
+                  right: 15,
+                ),
+                enabledBorder: OutlineInputBorder(
+                  // 未选中时候的颜色
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    color: Color(0xff6d6d6d),
+                  ),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  // 选中时外边框颜色
+                  borderRadius: BorderRadius.circular(50),
+                  borderSide: BorderSide(
+                    color: Color(0xff6d6d6d),
+                  ),
+                ),
+                hintText: "说点什么吧～",
+              ),
+            ),
+          ),
+          Container(
+            margin: EdgeInsets.symmetric(horizontal: 4.0),
+            child: IconButton(
+              //new
+              icon: Icon(Icons.send),
+              onPressed: () => {},
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

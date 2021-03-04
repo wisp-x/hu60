@@ -49,9 +49,12 @@ class Html {
                   color: Color(0xFFFF7474),
                   borderRadius: BorderRadius.circular(6.0),
                 ),
-                child: Text(element.text, style: TextStyle(
-                  color: Colors.white,
-                ),),
+                child: Text(
+                  element.text,
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
+                ),
               );
               break;
             default:
