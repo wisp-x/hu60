@@ -219,7 +219,35 @@ class TopicView extends StatelessWidget {
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
-            title: Text(item.uName),
+            title: Text.rich(
+              TextSpan(
+                children: <InlineSpan>[
+                  WidgetSpan(
+                    alignment: ui.PlaceholderAlignment.middle,
+                    child: Text("${item.uName} "),
+                  ),
+                  WidgetSpan(
+                    child: Offstage(
+                      offstage: item.uid != c.topic.tMeta.uid,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 3, right: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          color: Colors.red[400],
+                        ),
+                        child: Text(
+                          "楼主",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 2),
               child: Text(date),
