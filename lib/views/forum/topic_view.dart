@@ -26,6 +26,18 @@ class TopicView extends StatelessWidget {
           titleSpacing: 0,
           elevation: 0,
           backgroundColor: Theme.of(context).primaryColor,
+          actions: <Widget>[
+            IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              icon: Icon(
+                Icons.open_in_new_outlined,
+              ),
+              onPressed: () {
+                Utils.openUrl("https://hu60.cn/q.php/bbs.topic.$id.html");
+              },
+            ),
+          ],
         ),
         body: c.loading ? Utils.loading(context) : _buildBody(context, c),
       ),

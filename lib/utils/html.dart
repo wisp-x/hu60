@@ -30,11 +30,39 @@ class Html {
             fontSize: 16,
             inherit: false,
             wordSpacing: 0.0,
-            letterSpacing: 2,
+            letterSpacing: 1.4,
           ),
         ),
       },
       customRender: {
+        "div": (
+          RenderContext context,
+          Widget child,
+          Map<String, String> attrs,
+          dom.Element element,
+        ) {
+          // TODO 跳过用户自定义的样式
+          if (attrs["class"].contains("usercss")) {
+            return Text(element.text);
+          }
+
+          switch (attrs["class"]) {
+            case "tp info-box":
+              return Container(
+                padding: EdgeInsets.only(left: 10, right: 10),
+                decoration: BoxDecoration(
+                  color: Color(0xFFFF7474),
+                  borderRadius: BorderRadius.circular(6.0),
+                ),
+                child: Text(element.text, style: TextStyle(
+                  color: Colors.white,
+                ),),
+              );
+              break;
+            default:
+              return null;
+          }
+        },
         "img": (
           RenderContext context,
           Widget child,
