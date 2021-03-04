@@ -13,7 +13,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class Html {
   static decode(String content) {
-    // TODO 修复内联标签引起的崩溃问题
+    // 内联样式标签不规范会引起的崩溃问题, 直接正则替换掉内联样式
+    RegExp regExp = RegExp(r"""style\s*=\s*('[^']*'|"[^"]*")""");
+    content = content.replaceAll(regExp, "");
     return flutterHtml.Html(
       data: content,
       onImageError: (dynamic exception, StackTrace stackTrace) {
@@ -23,10 +25,14 @@ class Html {
         base64DataUriMatcher(): base64ImageRender(),
       },
       style: {
-        "*": Style(
-          fontWeight: FontWeight.w400,
-          fontSize: FontSize.rem(1.25),
-        )
+        "*": Style.fromTextStyle(
+          TextStyle(
+            fontSize: 16,
+            inherit: false,
+            wordSpacing: 0.0,
+            letterSpacing: 2,
+          ),
+        ),
       },
       customRender: {
         "img": (
