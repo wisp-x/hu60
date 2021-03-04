@@ -128,18 +128,18 @@ class _TopicsView extends State<TopicsView>
                 child: Icon(
                   Icons.chat,
                   color: Colors.black26,
-                  size: 15,
+                  size: 16,
                 ),
               ),
-              TextSpan(text: "${item.replyCount} / "),
+              TextSpan(text: " ${item.replyCount}  "),
               WidgetSpan(
                 child: Icon(
                   Icons.remove_red_eye,
                   color: Colors.black26,
-                  size: 15,
+                  size: 17,
                 ),
               ),
-              TextSpan(text: "${item.readCount} / 最后回复于 $date"),
+              TextSpan(text: " ${item.readCount} / 最后回复于 $date"),
             ]),
           ),
           onTap: () => Get.to(() => TopicView(id: item.id)),
