@@ -127,14 +127,14 @@ class Html {
               alignment: ui.PlaceholderAlignment.middle,
               child: Text(
                 element.text,
-                style: TextStyle(fontSize: 17, color: Colors.blue[400]),
+                style: TextStyle(fontSize: 18, color: Colors.blue[400]),
               ),
             ),
             WidgetSpan(
               alignment: ui.PlaceholderAlignment.middle,
               child: Icon(
                 Icons.open_in_new_rounded,
-                size: 18,
+                size: 19,
                 color: Colors.blue[400],
               ),
             )
