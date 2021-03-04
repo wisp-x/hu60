@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as flutterHtml;
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/image_render.dart';
+import 'package:flutter_html/style.dart';
 import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
@@ -21,13 +22,18 @@ class Html {
       customImageRenders: {
         base64DataUriMatcher(): base64ImageRender(),
       },
+      style: {
+        "*": Style(
+          fontSize: FontSize.rem(1.25),
+        )
+      },
       customRender: {
         "img": (
-            RenderContext context,
-            Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
-            ) {
+          RenderContext context,
+          Widget child,
+          Map<String, String> attrs,
+          dom.Element element,
+        ) {
           if (element == null) return null;
           if (attrs["src"] == null || attrs["src"] == "") {
             return Text(element.text);
@@ -44,7 +50,7 @@ class Html {
                 ),
                 onTap: () {
                   Get.to(
-                        () => PhotoGallery(
+                    () => PhotoGallery(
                       index: 0,
                       images: [attrs["src"]],
                       heroTag: attrs["src"],
@@ -76,11 +82,11 @@ class Html {
           }
         },
         "a": (
-            RenderContext context,
-            Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
-            ) {
+          RenderContext context,
+          Widget child,
+          Map<String, String> attrs,
+          dom.Element element,
+        ) {
           switch (attrs["class"]) {
             case "userlink": // 链接
               return _buildOpenUrlWidget(attrs, element);
@@ -120,14 +126,14 @@ class Html {
               alignment: ui.PlaceholderAlignment.middle,
               child: Text(
                 element.text,
-                style: TextStyle(color: Colors.blue[400]),
+                style: TextStyle(fontSize: 17, color: Colors.blue[400]),
               ),
             ),
             WidgetSpan(
               alignment: ui.PlaceholderAlignment.middle,
               child: Icon(
                 Icons.open_in_new_rounded,
-                size: 17,
+                size: 18,
                 color: Colors.blue[400],
               ),
             )

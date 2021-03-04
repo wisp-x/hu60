@@ -108,7 +108,7 @@ class _TopicsView extends State<TopicsView>
               ),
               WidgetSpan(
                 child: Offstage(
-                  offstage: item.level == -1,
+                  offstage: item.level != -1,
                   child: Text(
                     "沉 ",
                     style: TextStyle(
