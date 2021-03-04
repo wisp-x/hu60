@@ -284,7 +284,6 @@ class TopicView extends StatelessWidget {
           Flexible(
             child: TextField(
               maxLength: null,
-              focusNode: c.focusNode,
               controller: c.textController,
               decoration: InputDecoration(
                 contentPadding: EdgeInsets.only(
