@@ -41,11 +41,6 @@ class Html {
           Map<String, String> attrs,
           dom.Element element,
         ) {
-          // TODO 跳过用户自定义的样式
-          if (attrs["class"].contains("usercss")) {
-            return Text(element.text);
-          }
-
           switch (attrs["class"]) {
             case "tp info-box":
               return Container(

@@ -175,7 +175,6 @@ class TopicView extends StatelessWidget {
     int index,
   ) {
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
-    // TODO 完善楼层被删除的样式
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
