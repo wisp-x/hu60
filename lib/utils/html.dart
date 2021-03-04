@@ -8,95 +8,110 @@ import 'package:html/dom.dart' as dom;
 import 'package:hu60/views/common/photo_gallery.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class Html {
   static decode(String content) {
-    return flutterHtml.Html(
-      data: content,
-      onImageError: (dynamic exception, StackTrace stackTrace) {
-        print("加载错误 $exception");
-      },
-      customImageRenders: {
-        base64DataUriMatcher(): base64ImageRender(),
-      },
-      customRender: {
-        "img": (
-          RenderContext context,
-          Widget child,
-          Map<String, String> attrs,
-          dom.Element element,
-        ) {
-          if (element == null) return null;
-          switch (attrs["class"]) {
-            case "userimg":
-              return GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(6.0),
+    // TODO 修复内联标签引起的崩溃问题
+    try {
+      return flutterHtml.Html(
+        data: content,
+        onImageError: (dynamic exception, StackTrace stackTrace) {
+          print("加载错误 $exception");
+        },
+        customImageRenders: {
+          base64DataUriMatcher(): base64ImageRender(),
+        },
+        customRender: {
+          "img": (
+              RenderContext context,
+              Widget child,
+              Map<String, String> attrs,
+              dom.Element element,
+              ) {
+            if (element == null) return null;
+            if (attrs["src"] == null || attrs["src"] == "") {
+              return Text(element.text);
+            }
+            switch (attrs["class"]) {
+              case "userimg":
+                return GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6.0),
+                      child: Image.network(attrs["src"]),
+                    ),
+                  ),
+                  onTap: () {
+                    Get.to(
+                          () => PhotoGallery(
+                        index: 0,
+                        images: [attrs["src"]],
+                        heroTag: attrs["src"],
+                      ),
+                    );
+                  },
+                );
+                break;
+              case "hu60_face":
+                return WidgetSpan(
+                  alignment: ui.PlaceholderAlignment.middle,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 2, right: 2),
+                    width: 30,
+                    height: 30,
                     child: Image.network(attrs["src"]),
                   ),
-                ),
-                onTap: () {
-                  Get.to(
-                    () => PhotoGallery(
-                      index: 0,
-                      images: [attrs["src"]],
-                      heroTag: attrs["src"],
-                    ),
-                  );
-                },
-              );
-              break;
-            case "hu60_face":
-              return WidgetSpan(
-                alignment: ui.PlaceholderAlignment.middle,
-                child: Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  width: 30,
-                  height: 30,
-                  child: Image.network(attrs["src"]),
-                ),
-              );
-              break;
-            default:
-              // TODO 解决图片加载错误的问题
-              return null;
+                );
+                break;
+              default:
+                return CachedNetworkImage(
+                  imageUrl: attrs["src"],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Text(
+                    "图片加载失败",
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                );
+            }
+          },
+          "a": (
+              RenderContext context,
+              Widget child,
+              Map<String, String> attrs,
+              dom.Element element,
+              ) {
+            switch (attrs["class"]) {
+              case "userlink": // 链接
+                return _buildOpenUrlWidget(attrs, element);
+                break;
+              case "userat": // @ 符号
+                return Text(
+                  element.text,
+                  style: TextStyle(color: Colors.blue[400]),
+                );
+                break;
+              case "userinfo": // @ 符号后面的文字
+                return Text(
+                  element.text,
+                  style: TextStyle(color: Colors.blue[400]),
+                );
+                break;
+              default:
+                if (attrs["class"] == null && attrs["href"] != null) {
+                  if (canLaunch(attrs["href"]) != null) {
+                    return _buildOpenUrlWidget(attrs, element);
+                  }
+                }
+                return null;
+            }
           }
         },
-        "a": (
-          RenderContext context,
-          Widget child,
-          Map<String, String> attrs,
-          dom.Element element,
-        ) {
-          switch (attrs["class"]) {
-            case "userlink": // 链接
-              return _buildOpenUrlWidget(attrs, element);
-              break;
-            case "userat": // @ 符号
-              return Text(
-                element.text,
-                style: TextStyle(color: Colors.blue[400]),
-              );
-              break;
-            case "userinfo": // @ 符号后面的文字
-              return Text(
-                element.text,
-                style: TextStyle(color: Colors.blue[400]),
-              );
-              break;
-            default:
-              if (attrs["class"] == null && attrs["href"] != null) {
-                if (canLaunch(attrs["href"]) != null) {
-                  return _buildOpenUrlWidget(attrs, element);
-                }
-              }
-              return null;
-          }
-        }
-      },
-    );
+      );
+    } catch (e) {
+      print(e);
+    }
   }
 
   static _buildOpenUrlWidget(Map<String, String> attrs, dom.Element element) {
