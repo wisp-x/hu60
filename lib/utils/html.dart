@@ -24,6 +24,7 @@ class Html {
       },
       style: {
         "*": Style(
+          fontWeight: FontWeight.w400,
           fontSize: FontSize.rem(1.25),
         )
       },
