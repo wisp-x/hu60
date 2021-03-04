@@ -106,6 +106,19 @@ class _TopicsView extends State<TopicsView>
                   ),
                 ),
               ),
+              WidgetSpan(
+                child: Offstage(
+                  offstage: item.level == -1,
+                  child: Text(
+                    "沉 ",
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: Colors.redAccent,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+              ),
               TextSpan(text: item.title)
             ]),
           ),
