@@ -9,6 +9,7 @@ import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:common_utils/common_utils.dart';
+import 'package:hu60/views/component/comment.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicView extends StatelessWidget {
@@ -79,7 +80,9 @@ class TopicView extends StatelessWidget {
               backgroundColor: Colors.white,
               context: context,
               builder: (BuildContext context) {
-                return _buildReplyWidget(context, c);
+                return Comment(
+                  controller: c.textController,
+                );
               },
             ).then((val) {
               print(val);
@@ -286,75 +289,6 @@ class TopicView extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildReplyWidget(BuildContext context, TopicController c) {
-    return Container(
-      height: 190,
-      color: Colors.white,
-      padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
-      child: Column(
-        children: <Widget>[
-          TextField(
-            maxLines: 3,
-            keyboardType: TextInputType.multiline,
-            controller: c.textController,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              enabledBorder: OutlineInputBorder(
-                // 未选中时候的颜色
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide(
-                  color: Color(0xffbfbfbf),
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                // 选中时外边框颜色
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide(
-                  color: Color(0xff6d6d6d),
-                ),
-              ),
-              hintText: "说点什么吧～",
-            ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                icon: Icon(
-                  Icons.tag_faces,
-                  size: 30,
-                  color: Color(0xff5a5a5a),
-                ),
-                onPressed: () {},
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 5,
-                    bottom: 5,
-                    left: 10,
-                    right: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Theme.of(context).accentColor,
-                  ),
-                  child: Text(
-                    "发送",
-                    style: TextStyle(color: Colors.white),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
     );
   }
 }
