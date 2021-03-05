@@ -25,7 +25,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(Icons.edit),
-              onPressed: () => Get.to(() => LoginView()),
+              onPressed: () => Get.to(() => LoginView(), fullscreenDialog: true),
             ),
             IconButton(
               splashColor: Colors.transparent,
