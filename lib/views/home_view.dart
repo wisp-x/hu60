@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
+import 'package:hu60/views/user/login_view.dart';
 
 class HomeView extends StatefulWidget {
   @override
@@ -24,7 +25,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(Icons.edit),
-              onPressed: () => {},
+              onPressed: () => Get.to(() => LoginView()),
             ),
             IconButton(
               splashColor: Colors.transparent,

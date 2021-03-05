@@ -54,12 +54,13 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Container(
-        color: Colors.white,
         padding: EdgeInsets.all(10),
+        color: Colors.white,
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             TextField(
+              autofocus: true,
               maxLines: 3,
               keyboardType: TextInputType.multiline,
               controller: widget.controller,

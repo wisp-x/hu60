@@ -13,12 +13,9 @@ import 'package:hu60/views/component/comment.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicView extends StatelessWidget {
-  TopicView({@required this.id});
-
-  final id;
-
   @override
   Widget build(BuildContext context) {
+    var id = Get.arguments["id"];
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
