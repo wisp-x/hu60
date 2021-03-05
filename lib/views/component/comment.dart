@@ -2,7 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class Comment extends StatefulWidget {
-  final controller;
+  final TextEditingController controller;
   final faceUrl = "https://hu60.cn/tpl/classic/img/face/";
   final List<Map<String, String>> faces = [
     {"id": "e586b7", "name": "冷"},
@@ -52,93 +52,104 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          TextField(
-            maxLines: 3,
-            keyboardType: TextInputType.multiline,
-            controller: widget.controller,
-            decoration: InputDecoration(
-              contentPadding: EdgeInsets.all(10),
-              enabledBorder: OutlineInputBorder(
-                // 未选中时候的颜色
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide(
-                  color: Color(0xffbfbfbf),
+    return SingleChildScrollView(
+      child: Container(
+        color: Colors.white,
+        padding: EdgeInsets.all(10),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            TextField(
+              maxLines: 3,
+              keyboardType: TextInputType.multiline,
+              controller: widget.controller,
+              decoration: InputDecoration(
+                contentPadding: EdgeInsets.all(10),
+                enabledBorder: OutlineInputBorder(
+                  // 未选中时候的颜色
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(
+                    color: Color(0xffbfbfbf),
+                  ),
                 ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                // 选中时外边框颜色
-                borderRadius: BorderRadius.circular(6),
-                borderSide: BorderSide(
-                  color: Color(0xff6d6d6d),
+                focusedBorder: OutlineInputBorder(
+                  // 选中时外边框颜色
+                  borderRadius: BorderRadius.circular(6),
+                  borderSide: BorderSide(
+                    color: Color(0xff6d6d6d),
+                  ),
                 ),
+                hintText: "请勿发布不友善或者负能量的内容，与人为善，比聪明更重要！",
               ),
-              hintText: "请勿发布不友善或者负能量的内容，与人为善，比聪明更重要！",
             ),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              IconButton(
-                splashColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                icon: Icon(
-                  Icons.tag_faces,
-                  size: 30,
-                  color: Color(0xff5a5a5a),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                IconButton(
+                  splashColor: Colors.transparent,
+                  highlightColor: Colors.transparent,
+                  icon: Icon(
+                    Icons.tag_faces,
+                    size: 30,
+                    color: Color(0xff5a5a5a),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      openFace = !openFace;
+                      _height = openFace ? 90 : 0;
+                    });
+                  },
                 ),
-                onPressed: () {
-                  setState(() {
-                    openFace = !openFace;
-                    _height = openFace ? 90 : 0;
-                  });
+                GestureDetector(
+                  onTap: () {},
+                  child: Container(
+                    padding: EdgeInsets.only(
+                      top: 5,
+                      bottom: 5,
+                      left: 10,
+                      right: 10,
+                    ),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: Theme.of(context).accentColor,
+                    ),
+                    child: Text(
+                      "发送",
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            AnimatedContainer(
+              duration: Duration(milliseconds: 160),
+              height: _height,
+              child: GridView.builder(
+                itemCount: widget.faces.length,
+                itemBuilder: (BuildContext context, int index) {
+                  var face = widget.faces[index];
+                  return GestureDetector(
+                    onTap: () {
+                      widget.controller.text =
+                      "${widget.controller.text}{${face["name"]}}";
+                      widget.controller.selection = TextSelection.fromPosition(
+                        TextPosition(offset: widget.controller.text.length),
+                      );
+                    },
+                    child: CachedNetworkImage(
+                      imageUrl: "${widget.faceUrl}${face["id"]}.gif",
+                    ),
+                  );
                 },
-              ),
-              GestureDetector(
-                onTap: () {},
-                child: Container(
-                  padding: EdgeInsets.only(
-                    top: 5,
-                    bottom: 5,
-                    left: 10,
-                    right: 10,
-                  ),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(4),
-                    color: Theme.of(context).accentColor,
-                  ),
-                  child: Text(
-                    "发送",
-                    style: TextStyle(color: Colors.white),
-                  ),
+                gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+                  maxCrossAxisExtent: 40,
+                  mainAxisSpacing: 8.0,
+                  crossAxisSpacing: 8.0,
                 ),
               ),
-            ],
-          ),
-          AnimatedContainer(
-            duration: Duration(milliseconds: 200),
-            height: _height,
-            child: GridView.builder(
-              itemCount: widget.faces.length,
-              itemBuilder: (BuildContext context, int index) {
-                var face = widget.faces[index];
-                return CachedNetworkImage(
-                  imageUrl: "${widget.faceUrl}${face["id"]}.gif",
-                );
-              },
-              gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-                maxCrossAxisExtent: 40,
-                mainAxisSpacing: 8.0,
-                crossAxisSpacing: 8.0,
-              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

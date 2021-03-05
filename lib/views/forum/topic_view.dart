@@ -77,6 +77,7 @@ class TopicView extends StatelessWidget {
         GestureDetector(
           onTap: () {
             showModalBottomSheet(
+              isScrollControlled: true,
               backgroundColor: Colors.white,
               context: context,
               builder: (BuildContext context) {
