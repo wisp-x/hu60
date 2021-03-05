@@ -42,6 +42,7 @@ void main() {
           return locale;
         },
         theme: ThemeData(
+          // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.red),
           brightness: Brightness.light,
           primaryColor: Colors.white,
           accentColor: Color.fromRGBO(63, 154, 86, 1.0),

@@ -129,7 +129,12 @@ class TopicView extends StatelessWidget {
               TextSpan(children: [
                 WidgetSpan(
                   alignment: ui.PlaceholderAlignment.middle,
-                  child: Text("${meta.uName} "),
+                  child: Text(
+                    "${meta.uName} ",
+                    style: TextStyle(
+                      fontSize: 18,
+                    ),
+                  ),
                 ),
                 WidgetSpan(
                   child: Container(
@@ -141,7 +146,7 @@ class TopicView extends StatelessWidget {
                     child: Text(
                       c.topic.fName,
                       style: TextStyle(
-                        fontSize: 15,
+                        fontSize: 16,
                         color: Colors.white,
                       ),
                     ),
@@ -150,7 +155,7 @@ class TopicView extends StatelessWidget {
               ]),
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 8),
+              padding: EdgeInsets.only(top: 9),
               child: Text(
                 "发布于 $date  ${meta.readCount}次点击  ${c.topic.floorCount - 1}人回复",
               ),
@@ -188,7 +193,7 @@ class TopicView extends StatelessWidget {
               height: 40,
               alignment: Alignment.centerLeft,
               width: double.maxFinite,
-              color: Colors.grey[300],
+              color: Color(0xffe7e7e7),
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Text(
@@ -257,7 +262,7 @@ class TopicView extends StatelessWidget {
               ),
             ),
             subtitle: Padding(
-              padding: EdgeInsets.only(top: 2),
+              padding: EdgeInsets.only(top: 5),
               child: Text(date),
             ),
             trailing: Text(

@@ -30,7 +30,7 @@ class Html {
             fontSize: 16,
             inherit: false,
             wordSpacing: 0.0,
-            letterSpacing: 1.4,
+            // letterSpacing: 1.4,
           ),
         ),
       },
@@ -44,6 +44,7 @@ class Html {
           switch (attrs["class"]) {
             case "tp info-box":
               return Container(
+                width: double.infinity,
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
                   color: Color(0xFFFF7474),
