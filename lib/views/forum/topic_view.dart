@@ -1,5 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
@@ -121,7 +122,7 @@ class TopicView extends StatelessWidget {
                 height: 50,
                 width: 50,
                 imageUrl: User.getAvatar(context, meta.uAvatar),
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) => CupertinoActivityIndicator(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),
@@ -228,7 +229,7 @@ class TopicView extends StatelessWidget {
                 height: 40,
                 width: 40,
                 imageUrl: User.getAvatar(context, item.uAvatar),
-                placeholder: (context, url) => CircularProgressIndicator(),
+                placeholder: (context, url) => CupertinoActivityIndicator(),
                 errorWidget: (context, url, error) => Icon(Icons.error),
               ),
             ),

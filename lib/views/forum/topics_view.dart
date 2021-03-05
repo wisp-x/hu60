@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
@@ -74,7 +75,7 @@ class _TopicsView extends State<TopicsView>
           leading: ClipOval(
             child: CachedNetworkImage(
               imageUrl: avatarUrl,
-              placeholder: (context, url) => CircularProgressIndicator(),
+              placeholder: (context, url) => CupertinoActivityIndicator(),
               errorWidget: (context, url, error) => Icon(Icons.error),
             ),
           ),
