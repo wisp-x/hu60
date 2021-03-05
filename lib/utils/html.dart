@@ -45,6 +45,7 @@ class Html {
             case "tp info-box":
               return Container(
                 width: double.infinity,
+                alignment: Alignment.center,
                 padding: EdgeInsets.only(left: 10, right: 10),
                 decoration: BoxDecoration(
                   color: Color(0xFFFF7474),

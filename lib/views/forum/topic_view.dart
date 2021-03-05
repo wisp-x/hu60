@@ -246,6 +246,26 @@ class TopicView extends StatelessWidget {
                   ),
                   WidgetSpan(
                     child: Offstage(
+                      offstage: item.uid != 1,
+                      child: Container(
+                        margin: EdgeInsets.only(right: 5),
+                        padding: EdgeInsets.only(left: 3, right: 3),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                          color: Color(0xff197bcb),
+                        ),
+                        child: Text(
+                          "站长",
+                          style: TextStyle(
+                            fontSize: 15,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  WidgetSpan(
+                    child: Offstage(
                       offstage: item.uid != c.topic.tMeta.uid,
                       child: Container(
                         padding: EdgeInsets.only(left: 3, right: 3),
