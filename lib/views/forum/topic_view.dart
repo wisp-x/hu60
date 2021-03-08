@@ -42,53 +42,38 @@ class TopicView extends StatelessWidget {
                   builder: (context) {
                     var meta = c.topic.tMeta;
                     return CupertinoActionSheet(
-                      actions: <Widget>[
-                        CupertinoActionSheetAction(
-                          child: Text('浏览器打开'),
-                          onPressed: () async {
-                            Get.back();
-                            String url = await Http.getBaseUrl();
-                            Utils.openUrl("$url/bbs.topic.$id.html");
-                          },
-                        ),
-                        Offstage(
-                          offstage: !c.loading && meta.uid != _home.user.uid,
-                          child: CupertinoActionSheetAction(
-                            child: Text('修改'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        ),
-                        Offstage(
-                          offstage: !c.loading && meta.uid != _home.user.uid,
-                          child: CupertinoActionSheetAction(
-                            child: Text('移动'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        ),
-                        Offstage(
-                          offstage: !c.loading && meta.uid != _home.user.uid,
-                          child: CupertinoActionSheetAction(
-                            child: Text('沉底'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        ),
-                        Offstage(
-                          offstage: !c.loading && meta.uid != _home.user.uid,
-                          child: CupertinoActionSheetAction(
-                            isDestructiveAction: true,
-                            child: Text('删除'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        ),
-                      ],
+                      actions: !c.loading && meta.uid != _home.user.uid
+                          ? <Widget>[
+                              _openUrlAction(id),
+                            ]
+                          : <Widget>[
+                              _openUrlAction(id),
+                              CupertinoActionSheetAction(
+                                child: Text("修改"),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: Text("移动"),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: Text("下沉"),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                isDestructiveAction: true,
+                                child: Text('删除'),
+                                onPressed: () {
+                                  Get.back();
+                                },
+                              ),
+                            ],
                       cancelButton: CupertinoActionSheetAction(
                         child: Text('取消'),
                         onPressed: () {
@@ -104,6 +89,17 @@ class TopicView extends StatelessWidget {
         ),
         body: c.loading ? Utils.loading(context) : _buildBody(context, c),
       ),
+    );
+  }
+
+  Widget _openUrlAction(id) {
+    return CupertinoActionSheetAction(
+      child: Text('浏览器打开'),
+      onPressed: () async {
+        Get.back();
+        String url = await Http.getBaseUrl();
+        Utils.openUrl("$url/bbs.topic.$id.html");
+      },
     );
   }
 
