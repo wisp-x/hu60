@@ -88,7 +88,7 @@ class _NewTopicView extends State<NewTopicView> {
                     borderSide: BorderSide(color: Color(0xffa5a5a5)),
                   ),
                   filled: true,
-                  fillColor: Color(0xffeeeeee),
+                  fillColor: Color(0xc3f3f3f3),
                 ),
               ),
             ),
