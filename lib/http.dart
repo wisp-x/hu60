@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:hu60/controllers/home_controller.dart';
+import 'package:hu60/views/user/login_view.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart' as GetX;
 
@@ -38,6 +39,7 @@ class Http {
             preferences.remove("sid");
             HomeController controller = GetX.Get.put(HomeController());
             controller.logout();
+            GetX.Get.off(() => LoginView(), fullscreenDialog: true);
           }
           return status < 500;
         },
