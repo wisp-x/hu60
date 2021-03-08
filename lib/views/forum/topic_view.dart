@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
+import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:hu60/views/component/comment.dart';
+import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicView extends StatelessWidget {
@@ -73,16 +75,20 @@ class TopicView extends StatelessWidget {
         ),
         GestureDetector(
           onTap: () {
-            showModalBottomSheet(
-              isScrollControlled: true,
-              backgroundColor: Colors.white,
-              context: context,
-              builder: (BuildContext context) {
-                return Comment(
-                  controller: c.textController,
-                );
-              },
-            ).then((val) {});
+            if (Get.find<HomeController>().isLogin) {
+              showModalBottomSheet(
+                isScrollControlled: true,
+                backgroundColor: Colors.white,
+                context: context,
+                builder: (BuildContext context) {
+                  return Comment(
+                    controller: c.textController,
+                  );
+                },
+              ).then((val) {});
+            } else {
+              Get.to(() => LoginView(), fullscreenDialog: true);
+            }
           },
           child: Container(
             width: double.infinity,

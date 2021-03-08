@@ -49,7 +49,7 @@ class Http {
         onRequest: (RequestOptions options) async {
           String sid = preferences.get("sid");
           if (sid != null) {
-            options.baseUrl += "/${sid}1";
+            options.baseUrl += "/$sid";
           }
           return options;
         },

@@ -41,7 +41,9 @@ class HomeController extends GetxController {
     update();
   }
 
-  logout() {
+  logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.remove("sid");
     this.isLogin = false;
     update();
   }

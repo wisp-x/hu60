@@ -139,6 +139,7 @@ class _LoginView extends State<LoginView> {
                           await SharedPreferences.getInstance();
                       prefs.setString("sid", response.data["sid"]);
                       var res = await Http.request("/user.index.json");
+                      print(res);
                       if (res.data != "") {
                         UserEntity entity = UserEntity.fromJson(res.data);
                         controller.setUser(entity);
