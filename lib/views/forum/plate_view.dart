@@ -89,6 +89,7 @@ class _PlateView extends State<PlateView> {
                   child: Text(
                     element.name,
                     style: TextStyle(
+                      fontSize: 18,
                       color: Colors.white,
                     ),
                   ),
