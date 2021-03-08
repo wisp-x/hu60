@@ -6,6 +6,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
+import 'package:hu60/http.dart';
 import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
@@ -17,7 +18,8 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 class TopicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    var id = Get.arguments["id"];
+    HomeController _home = Get.put(HomeController());
+    var id = Get.arguments["id"] ?? 0;
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
@@ -32,10 +34,70 @@ class TopicView extends StatelessWidget {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(
-                Icons.open_in_new_outlined,
+                Icons.more_horiz_rounded,
               ),
               onPressed: () {
-                Utils.openUrl("https://hu60.cn/q.php/bbs.topic.$id.html");
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) {
+                    var meta = c.topic.tMeta;
+                    return CupertinoActionSheet(
+                      actions: <Widget>[
+                        CupertinoActionSheetAction(
+                          child: Text('浏览器打开'),
+                          onPressed: () async {
+                            Get.back();
+                            String url = await Http.getBaseUrl();
+                            Utils.openUrl("$url/bbs.topic.$id.html");
+                          },
+                        ),
+                        Offstage(
+                          offstage: !c.loading && meta.uid != _home.user.uid,
+                          child: CupertinoActionSheetAction(
+                            child: Text('修改'),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ),
+                        Offstage(
+                          offstage: !c.loading && meta.uid != _home.user.uid,
+                          child: CupertinoActionSheetAction(
+                            child: Text('移动'),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ),
+                        Offstage(
+                          offstage: !c.loading && meta.uid != _home.user.uid,
+                          child: CupertinoActionSheetAction(
+                            child: Text('沉底'),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ),
+                        Offstage(
+                          offstage: !c.loading && meta.uid != _home.user.uid,
+                          child: CupertinoActionSheetAction(
+                            isDestructiveAction: true,
+                            child: Text('删除'),
+                            onPressed: () {
+                              Get.back();
+                            },
+                          ),
+                        ),
+                      ],
+                      cancelButton: CupertinoActionSheetAction(
+                        child: Text('取消'),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                    );
+                  },
+                );
               },
             ),
           ],

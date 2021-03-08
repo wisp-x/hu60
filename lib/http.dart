@@ -14,6 +14,8 @@ class Http {
   static const String PATCH = 'patch';
   static const String DELETE = 'delete';
 
+  static const String API_URL = 'https://hu60.cn/q.php';
+
   static Http getInstance() {
     if (_instance == null) {
       _instance = Http();
@@ -21,11 +23,21 @@ class Http {
     return _instance;
   }
 
+  static getBaseUrl() async {
+    SharedPreferences preferences = await SharedPreferences.getInstance();
+    String sid = preferences.get("sid");
+    String url = API_URL;
+    if (sid != null) {
+      url += "/$sid";
+    }
+    return url;
+  }
+
   static request(String url, {data, method}) async {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     dio = Dio(
       BaseOptions(
-        baseUrl: "https://hu60.cn/q.php",
+        baseUrl: API_URL,
         connectTimeout: 5000,
         receiveTimeout: 5000,
         contentType: Headers.formUrlEncodedContentType,
