@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class Comment extends StatefulWidget {
   final TextEditingController controller;
-  final faceUrl = "https://hu60.cn/tpl/classic/img/face/";
+  final faceUrl = "https://hu60.cn/img/face/";
   final List<Map<String, String>> faces = [
     {"id": "e586b7", "name": "冷"},
     {"id": "e58b89e5bcba", "name": "勉强"},
@@ -38,6 +38,8 @@ class Comment extends StatefulWidget {
     {"id": "e9bb91e7babf", "name": "黑线"},
     {"id": "e4b88de9ab98e585b4", "name": "不高兴"},
     {"id": "e4b996", "name": "乖"},
+    {"id": "e78b97e5a4b4", "name": "狗头"},
+    {"id": "e59b9ee5a4b4e79c8b", "name": "回头看"},
   ];
 
   Comment({Key key, @required this.controller}) : super(key: key);
