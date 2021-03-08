@@ -12,6 +12,7 @@ import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:hu60/views/component/comment.dart';
+import 'package:hu60/views/forum/plate_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -56,14 +57,21 @@ class TopicView extends StatelessWidget {
                               ),
                               CupertinoActionSheetAction(
                                 child: Text("移动"),
-                                onPressed: () {
+                                onPressed: () async {
                                   Get.back();
+                                  var data = await Get.to(PlateView());
+                                  if (data != null) {
+                                    c.move(context, c.topic, data["id"], () {});
+                                  }
                                 },
                               ),
                               CupertinoActionSheetAction(
                                 child: Text("下沉"),
                                 onPressed: () {
                                   Get.back();
+                                  c.sink(context, c.topic, () {
+                                    c.refreshController.requestRefresh();
+                                  });
                                 },
                               ),
                               CupertinoActionSheetAction(
@@ -71,6 +79,9 @@ class TopicView extends StatelessWidget {
                                 child: Text('删除'),
                                 onPressed: () {
                                   Get.back();
+                                  c.delete(context, c.topic, () {
+                                    c.refreshController.requestRefresh();
+                                  });
                                 },
                               ),
                             ],
