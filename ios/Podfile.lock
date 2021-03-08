@@ -69,8 +69,8 @@ SPEC CHECKSUMS:
   Toast: 91b396c56ee72a5790816f40d3a94dd357abc196
   url_launcher: 6fef411d543ceb26efce54b05a0a40bfd74cbbef
   video_player: 9cc823b1d9da7e8427ee591e8438bfbcde500e6e
-  wakelock: bfc7955c418d0db797614075aabbc58a39ab5107
-  webview_flutter: d2b4d6c66968ad042ad94cbb791f5b72b4678a96
+  wakelock: b0843b2479edbf6504d8d262c2959446f35373aa
+  webview_flutter: 9f491a9b5a66f2573946a389b2677987b0ff8c0b
 
 PODFILE CHECKSUM: ac18d8c2735430a8cfba53e9cb362aceac9751ae
 

@@ -6,6 +6,9 @@ import 'package:hu60/views/chat/chat_view.dart';
 import 'package:hu60/views/forum/topics_view.dart';
 import 'package:hu60/views/message/message_view.dart';
 import 'package:hu60/views/user/user_view.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../http.dart';
 
 class HomeController extends GetxController {
   final pages = <Widget>[TopicsView(), ChatView(), MessageView(), UserView()];
@@ -14,4 +17,24 @@ class HomeController extends GetxController {
   UserEntity user; // 用户数据
   // define field instance
   final GlobalKey<ConvexAppBarState> appBarKey = GlobalKey<ConvexAppBarState>();
+
+  onInit() async {
+    super.onInit();
+    // 初始化用户数据
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String sid = prefs.getString("sid");
+    if (sid != "" && sid != null) {
+      var res = await Http.request("/user.index.json");
+      if (res.data != "") {
+        UserEntity entity = UserEntity.fromJson(res.data);
+        this.user = entity;
+        update();
+      }
+    }
+  }
+
+  setUser(UserEntity user) {
+    this.user = user;
+    update();
+  }
 }

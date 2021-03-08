@@ -126,8 +126,8 @@ class _LoginView extends State<LoginView> {
                       method: Http.POST,
                       data: {
                         "type": 1,
-                        "name": "熊二哈",
-                        "pass": "",
+                        "name": nameController.text,
+                        "pass": passwordController.text,
                         "go": 1,
                       },
                     );
@@ -138,7 +138,14 @@ class _LoginView extends State<LoginView> {
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString("sid", response.data["sid"]);
-                      // TODO 登录
+                      var res = await Http.request("/user.index.json");
+                      if (res.data != "") {
+                        UserEntity entity = UserEntity.fromJson(res.data);
+                        controller.setUser(entity);
+                        Get.back();
+                      } else {
+                        Fluttertoast.showToast(msg: "登录失败");
+                      }
                     }
                   },
                 )
