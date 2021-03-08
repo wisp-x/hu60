@@ -1,5 +1,9 @@
+import 'package:dio/dio.dart' as dio;
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:hu60/http.dart';
 import 'package:hu60/views/forum/plate_view.dart';
 
 class NewTopicView extends StatefulWidget {
@@ -8,6 +12,7 @@ class NewTopicView extends StatefulWidget {
 }
 
 class _NewTopicView extends State<NewTopicView> {
+  int _plateId = 0;
   TextEditingController _plateController = TextEditingController();
   TextEditingController _titleController = TextEditingController();
   TextEditingController _contentController = TextEditingController();
@@ -27,7 +32,42 @@ class _NewTopicView extends State<NewTopicView> {
             splashColor: Colors.transparent,
             icon: Icon(Icons.done_outlined),
             highlightColor: Colors.transparent,
-            onPressed: () {},
+            onPressed: () {
+              if (_plateId == 0) {
+                return Fluttertoast.showToast(msg: "请选择板块");
+              }
+              if (_titleController.text == "") {
+                return Fluttertoast.showToast(msg: "请输入标题");
+              }
+              if (_contentController.text == "") {
+                return Fluttertoast.showToast(msg: "请输入内容");
+              }
+
+              showCupertinoDialog(
+                context: context,
+                builder: (context) {
+                  return CupertinoAlertDialog(
+                    title: Text('确认发布？'),
+                    actions: [
+                      CupertinoDialogAction(
+                        child: Text('确认'),
+                        onPressed: () async {
+                          Get.back();
+                          _submit(context);
+                        },
+                      ),
+                      CupertinoDialogAction(
+                        child: Text('取消'),
+                        isDestructiveAction: true,
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
         ],
       ),
@@ -53,7 +93,12 @@ class _NewTopicView extends State<NewTopicView> {
               ),
               onTap: () async {
                 var data = await Get.to(PlateView());
-                _plateController.text = data != null ? data["name"] : "";
+                if (data != null) {
+                  setState(() {
+                    _plateId = data["id"];
+                  });
+                  _plateController.text = data["name"];
+                }
               },
             ),
             Padding(
@@ -96,5 +141,28 @@ class _NewTopicView extends State<NewTopicView> {
         ),
       ),
     );
+  }
+
+  void _submit(BuildContext context) async {
+    dio.Response response = await Http.request(
+      "/bbs.newtopic.$_plateId.json",
+      method: Http.GET,
+    );
+    dio.Response res = await Http.request(
+      "/bbs.newtopic.$_plateId.json",
+      method: Http.POST,
+      data: {
+        "title": _titleController.text,
+        "content": _contentController.text,
+        "go": 1,
+        "token": response.data["token"],
+      },
+    );
+    if (res.data["success"]) {
+      Fluttertoast.showToast(msg: "发布成功");
+      Get.back(result: true);
+    } else {
+      Fluttertoast.showToast(msg: res.data["notice"]);
+    }
   }
 }

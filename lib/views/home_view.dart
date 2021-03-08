@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
+import 'package:hu60/controllers/forum/topics_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:hu60/views/forum/new_topic_view.dart';
@@ -26,9 +27,15 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(Icons.edit),
-              onPressed: () {
+              onPressed: () async {
                 if (c.isLogin) {
-                  return Get.to(() => NewTopicView());
+                  var res = await Get.to(() => NewTopicView());
+                  if (res != null && res) {
+                    // 发布成功，刷新
+                    Get.find<TopicsController>()
+                        .refreshController
+                        .requestRefresh();
+                  }
                 } else {
                   return Get.to(() => LoginView(), fullscreenDialog: true);
                 }
