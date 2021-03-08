@@ -82,9 +82,7 @@ class TopicView extends StatelessWidget {
                   controller: c.textController,
                 );
               },
-            ).then((val) {
-              print(val);
-            });
+            ).then((val) {});
           },
           child: Container(
             width: double.infinity,

@@ -1,5 +1,7 @@
 import 'package:dio/dio.dart';
+import 'package:hu60/controllers/home_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:get/get.dart' as GetX;
 
 class Http {
   static Dio dio;
@@ -31,6 +33,12 @@ class Http {
         },
         followRedirects: false,
         validateStatus: (status) {
+          // 302 则表示未登录
+          if (status == 302) {
+            preferences.remove("sid");
+            HomeController controller = GetX.Get.put(HomeController());
+            controller.logout();
+          }
           return status < 500;
         },
       ),
@@ -41,7 +49,7 @@ class Http {
         onRequest: (RequestOptions options) async {
           String sid = preferences.get("sid");
           if (sid != null) {
-            options.baseUrl += "/$sid";
+            options.baseUrl += "/${sid}1";
           }
           return options;
         },

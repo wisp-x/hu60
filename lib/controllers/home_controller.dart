@@ -15,6 +15,7 @@ class HomeController extends GetxController {
   final PageController pageController = PageController();
   int index = 0; // 当前导航索引
   UserEntity user; // 用户数据
+  bool isLogin = false;
   // define field instance
   final GlobalKey<ConvexAppBarState> appBarKey = GlobalKey<ConvexAppBarState>();
 
@@ -28,6 +29,7 @@ class HomeController extends GetxController {
       if (res.data != "") {
         UserEntity entity = UserEntity.fromJson(res.data);
         this.user = entity;
+        this.isLogin = true;
         update();
       }
     }
@@ -35,6 +37,12 @@ class HomeController extends GetxController {
 
   setUser(UserEntity user) {
     this.user = user;
+    this.isLogin = true;
+    update();
+  }
+
+  logout() {
+    this.isLogin = false;
     update();
   }
 }

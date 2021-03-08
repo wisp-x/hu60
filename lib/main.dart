@@ -20,7 +20,7 @@ void main() {
       child: GetMaterialApp(
         debugShowMaterialGrid: false,
         locale: Locale('zh', 'CH'),
-        routingCallback: (routing) {
+        routingCallback: (Routing routing) {
           if (routing.current == '/second') {
             // 如果登录。。。
           }
