@@ -82,9 +82,8 @@ class _PlateView extends State<PlateView> {
                     bottom: 6,
                   ),
                   decoration: BoxDecoration(
-                    color: element.notopic == 1
-                        ? Colors.grey
-                        : Color(0xd2158fc4),
+                    color:
+                        element.notopic == 1 ? Colors.grey : Color(0xd2158fc4),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -115,7 +114,7 @@ class _PlateView extends State<PlateView> {
         );
       });
       if (element.child.length > 0) {
-        return _makeTree(element.child, parent, layer+1);
+        return _makeTree(element.child, parent, layer + 1);
       }
     });
   }
