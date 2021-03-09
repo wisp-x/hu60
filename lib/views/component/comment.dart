@@ -1,8 +1,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:get/get.dart';
+import 'package:hu60/http.dart';
 
 class Comment extends StatefulWidget {
   final TextEditingController controller;
+  final id; // 帖子ID
+  final Function callback; // 回复成功后的回调
   final faceUrl = "https://hu60.cn/img/face/";
   final List<Map<String, String>> faces = [
     {"id": "e586b7", "name": "冷"},
@@ -42,7 +48,12 @@ class Comment extends StatefulWidget {
     {"id": "e59b9ee5a4b4e79c8b", "name": "回头看"},
   ];
 
-  Comment({Key key, @required this.controller}) : super(key: key);
+  Comment({
+    Key key,
+    @required this.id,
+    @required this.controller,
+    this.callback,
+  }) : super(key: key);
 
   @override
   _Comment createState() => _Comment();
@@ -50,6 +61,7 @@ class Comment extends StatefulWidget {
 
 class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
   bool openFace = false;
+  bool loading = false;
   double _height = 0;
 
   @override
@@ -104,7 +116,6 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                   },
                 ),
                 GestureDetector(
-                  onTap: () {},
                   child: Container(
                     padding: EdgeInsets.only(
                       top: 5,
@@ -121,6 +132,39 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
+                  onTap: () async {
+                    if (loading) return;
+                    setState(() {
+                      loading = true;
+                    });
+                    dio.Response getToken = await Http.request(
+                      "/bbs.newreply.${widget.id}.json",
+                      method: Http.GET,
+                    );
+                    dio.Response response = await Http.request(
+                      "/bbs.newreply.${widget.id}.json",
+                      method: Http.POST,
+                      data: {
+                        "content": "<!-- markdown -->${widget.controller.text}",
+                        "token": getToken.data["token"],
+                        "go": 1,
+                      },
+                    );
+                    setState(() {
+                      loading = false;
+                    });
+                    if (response.data["success"]) {
+                      Get.back();
+                      if (widget.callback != null) {
+                        widget.callback();
+                      }
+                      Fluttertoast.showToast(msg: "回复成功");
+                    } else {
+                      Fluttertoast.showToast(
+                        msg: response.data["notice"] ?? "回复失败",
+                      );
+                    }
+                  },
                 ),
               ],
             ),
@@ -133,10 +177,10 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                   var face = widget.faces[index];
                   return GestureDetector(
                     onTap: () {
-                      widget.controller.text =
-                          "${widget.controller.text}{${face["name"]}}";
+                      String text = widget.controller.text;
+                      widget.controller.text = "$text{${face["name"]}}";
                       widget.controller.selection = TextSelection.fromPosition(
-                        TextPosition(offset: widget.controller.text.length),
+                        TextPosition(offset: text.length),
                       );
                     },
                     child: CachedNetworkImage(

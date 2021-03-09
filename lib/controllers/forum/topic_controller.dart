@@ -7,7 +7,7 @@ import 'package:hu60/http.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class TopicController extends GetxController {
-  TopicController({this.id});
+  TopicController({@required this.id});
 
   final id; // 帖子ID
   RefreshController refreshController;
