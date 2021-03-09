@@ -29,6 +29,8 @@ class Http {
     String url = API_URL;
     if (sid != null) {
       url += "/$sid";
+    } else {
+      GetX.Get.put(HomeController()).logout();
     }
     return url;
   }
@@ -46,13 +48,6 @@ class Http {
         },
         followRedirects: false,
         validateStatus: (status) {
-          // 302 则表示未登录
-          if (status == 302) {
-            preferences.remove("sid");
-            HomeController controller = GetX.Get.put(HomeController());
-            controller.logout();
-            GetX.Get.off(() => LoginView(), fullscreenDialog: true);
-          }
           return status < 500;
         },
       ),

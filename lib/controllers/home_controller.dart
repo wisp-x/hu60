@@ -46,6 +46,7 @@ class HomeController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("sid");
     this.isLogin = false;
+    this.user = UserEntity(0, "", "", "", 0, false, false, false);
     update();
   }
 }

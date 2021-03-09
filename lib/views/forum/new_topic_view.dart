@@ -152,8 +152,9 @@ class _NewTopicView extends State<NewTopicView> {
       "/bbs.newtopic.$_plateId.json",
       method: Http.POST,
       data: {
+        "markdown": "on",
         "title": _titleController.text,
-        "content": _contentController.text,
+        "content": "<!-- markdown --> ${_contentController.text}",
         "go": 1,
         "token": response.data["token"],
       },

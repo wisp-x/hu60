@@ -12,6 +12,7 @@ import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:hu60/views/component/comment.dart';
+import 'package:hu60/views/forum/edit_topic_view.dart';
 import 'package:hu60/views/forum/plate_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -20,7 +21,7 @@ class TopicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeController _home = Get.put(HomeController());
-    var id = Get.arguments["id"] ?? 0;
+    var id = 99150; //Get.arguments["id"] ?? 0;
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
@@ -50,11 +51,16 @@ class TopicView extends StatelessWidget {
                           : <Widget>[
                               _openUrlAction(id),
                               CupertinoActionSheetAction(
-                                child: Text("修改"),
-                                onPressed: () {
-                                  Get.back();
-                                },
-                              ),
+                                  child: Text("修改"),
+                                  onPressed: () async {
+                                    Get.back();
+                                    var data = await Get.to(
+                                      EditTopicView(id: id),
+                                    );
+                                    if (data != null && data) {
+                                      c.refreshController.requestRefresh();
+                                    }
+                                  }),
                               CupertinoActionSheetAction(
                                 child: Text("移动"),
                                 onPressed: () async {
