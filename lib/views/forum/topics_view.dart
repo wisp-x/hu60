@@ -9,6 +9,7 @@ import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'dart:ui' as ui;
 
 class TopicsView extends StatefulWidget {
   @override
@@ -62,8 +63,16 @@ class _TopicsView extends State<TopicsView>
   // 构建列表项
   Widget _list(BuildContext context, TopicsController c) {
     if (c.loading) return Utils.loading(context);
-    return ListView.builder(
+    return ListView.separated(
       itemCount: c.topics.length,
+      separatorBuilder: (BuildContext context, int index) => Container(
+        margin: EdgeInsets.only(top: 15),
+        padding: EdgeInsets.only(left: 20, right: 20),
+        child: Divider(
+          height: 1.0,
+          color: Color(0xffcecece),
+        ),
+      ),
       itemBuilder: (BuildContext context, int index) {
         if (c.topics.length < index) {
           return null;
@@ -71,77 +80,154 @@ class _TopicsView extends State<TopicsView>
         TopicList item = c.topics[index];
         String avatarUrl = User.getAvatar(context, item.uAvatar);
         String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
-        return ListTile(
-          leading: ClipOval(
-            child: CachedNetworkImage(
-              imageUrl: avatarUrl,
-              placeholder: (context, url) => CupertinoActivityIndicator(),
-              errorWidget: (context, url, error) => Icon(Icons.error),
+        return GestureDetector(
+          child: Padding(
+            padding: EdgeInsets.only(left: 20, top: 15, right: 20),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    Container(
+                      width: 25,
+                      height: 25,
+                      margin: EdgeInsets.only(right: 5),
+                      child: ClipOval(
+                        child: CachedNetworkImage(
+                          imageUrl: avatarUrl,
+                          placeholder: (_, url) => CupertinoActivityIndicator(),
+                          errorWidget: (context, url, error) => Center(
+                            child: Icon(Icons.error),
+                          ),
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
+                            WidgetSpan(
+                              alignment: ui.PlaceholderAlignment.middle,
+                              child: Container(
+                                margin: EdgeInsets.only(right: 5),
+                                child: Text(
+                                  item.uName,
+                                  style: TextStyle(fontSize: 17),
+                                ),
+                              ),
+                            ),
+                            WidgetSpan(
+                              alignment: ui.PlaceholderAlignment.middle,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 3, right: 3),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4.0),
+                                  ),
+                                  color: Colors.green[400],
+                                ),
+                                child: Text(
+                                  item.forumName,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Padding(
+                  padding: EdgeInsets.only(top: 8, bottom: 8),
+                  child: Text.rich(
+                    TextSpan(children: [
+                      WidgetSpan(
+                        alignment: ui.PlaceholderAlignment.middle,
+                        child: Offstage(
+                          offstage: item.locked == 0,
+                          child: Text(
+                            "锁 ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      WidgetSpan(
+                        alignment: ui.PlaceholderAlignment.middle,
+                        child: Offstage(
+                          offstage: item.essence == 0,
+                          child: Text(
+                            "精 ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      WidgetSpan(
+                        alignment: ui.PlaceholderAlignment.middle,
+                        child: Offstage(
+                          offstage: item.level != -1,
+                          child: Text(
+                            "沉 ",
+                            style: TextStyle(
+                              fontSize: 17,
+                              color: Colors.redAccent,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ),
+                      ),
+                      TextSpan(
+                        text: item.title,
+                        style: TextStyle(
+                          fontSize: 17,
+                        ),
+                      )
+                    ]),
+                  ),
+                ),
+                Text.rich(
+                  TextSpan(children: [
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.chat,
+                        color: Colors.grey,
+                        size: 16,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " ${item.replyCount}  ",
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                    WidgetSpan(
+                      child: Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.grey,
+                        size: 17,
+                      ),
+                    ),
+                    TextSpan(
+                      text: " ${item.readCount} · 最后回复于 $date",
+                      style: TextStyle(
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ]),
+                )
+              ],
             ),
-          ),
-          title: Text.rich(
-            TextSpan(children: [
-              WidgetSpan(
-                child: Offstage(
-                  offstage: item.locked == 0,
-                  child: Text(
-                    "锁 ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.grey,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              WidgetSpan(
-                child: Offstage(
-                  offstage: item.essence == 0,
-                  child: Text(
-                    "精 ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              WidgetSpan(
-                child: Offstage(
-                  offstage: item.level != -1,
-                  child: Text(
-                    "沉 ",
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.redAccent,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ),
-              TextSpan(text: item.title)
-            ]),
-          ),
-          subtitle: Text.rich(
-            TextSpan(children: [
-              WidgetSpan(
-                child: Icon(
-                  Icons.chat,
-                  color: Colors.black26,
-                  size: 16,
-                ),
-              ),
-              TextSpan(text: " ${item.replyCount}  "),
-              WidgetSpan(
-                child: Icon(
-                  Icons.remove_red_eye,
-                  color: Colors.black26,
-                  size: 17,
-                ),
-              ),
-              TextSpan(text: " ${item.readCount} · 最后回复于 $date"),
-            ]),
           ),
           onTap: () => Get.to(() => TopicView(id: item.id)),
         );

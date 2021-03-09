@@ -11,7 +11,7 @@ class TopicsController extends GetxController
   ScrollController scrollController;
   int page = 1; // 页码
   int type = 0; // 类型，0:新帖，1:精华贴
-  List<TopicList> topics = List<TopicList>(); // 帖子列表
+  List<TopicList> topics = []; // 帖子列表
   bool loading = false;
 
   @override
