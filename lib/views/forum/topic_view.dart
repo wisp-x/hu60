@@ -61,7 +61,9 @@ class TopicView extends StatelessWidget {
                                   Get.back();
                                   var data = await Get.to(PlateView());
                                   if (data != null) {
-                                    c.move(context, c.topic, data["id"], () {});
+                                    c.move(context, id, data["id"], () {
+                                      c.refreshController.requestRefresh();
+                                    });
                                   }
                                 },
                               ),

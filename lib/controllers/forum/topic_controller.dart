@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
@@ -102,7 +103,10 @@ class TopicController extends GetxController {
 
   // 删除帖子
   void delete(
-      BuildContext context, TopicEntity topic, Function callback) async {
+    BuildContext context,
+    TopicEntity topic,
+    Function callback,
+  ) async {
     showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -133,34 +137,20 @@ class TopicController extends GetxController {
   // 移动帖子
   void move(
     BuildContext context,
-    TopicEntity topic,
-    int id, // 板块ID
+    int id, // 帖子ID
+    int plateId, // 板块ID
     Function callback,
   ) async {
-    showCupertinoDialog(
-      context: context,
-      builder: (context) {
-        return CupertinoAlertDialog(
-          title: Text("移动帖子"),
-          content: Text("确认移动帖子吗？"),
-          actions: [
-            CupertinoDialogAction(
-              isDestructiveAction: true,
-              child: Text('确认'),
-              onPressed: () async {
-                Get.back();
-                callback();
-              },
-            ),
-            CupertinoDialogAction(
-              child: Text('取消'),
-              onPressed: () {
-                Get.back();
-              },
-            ),
-          ],
-        );
-      },
+    var response = await Http.request(
+      "/bbs.movetopic.$id.json",
+      method: Http.POST,
+      data: {"newFid": plateId, "go": 1},
     );
+    if (response.data["success"]) {
+      callback();
+      Fluttertoast.showToast(msg: "移动成功");
+    } else {
+      Fluttertoast.showToast(msg: "移动失败");
+    }
   }
 }

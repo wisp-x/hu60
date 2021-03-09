@@ -37,7 +37,7 @@ class Http {
     SharedPreferences preferences = await SharedPreferences.getInstance();
     dio = Dio(
       BaseOptions(
-        baseUrl: API_URL,
+        baseUrl: await getBaseUrl(),
         connectTimeout: 5000,
         receiveTimeout: 5000,
         contentType: Headers.formUrlEncodedContentType,
@@ -61,10 +61,6 @@ class Http {
     dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options) async {
-          String sid = preferences.get("sid");
-          if (sid != null) {
-            options.baseUrl += "/$sid";
-          }
           return options;
         },
         onResponse: (Response response) async {
