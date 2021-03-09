@@ -94,7 +94,7 @@ class _PlateView extends State<PlateView> {
                   ),
                   decoration: BoxDecoration(
                     color:
-                    element.notopic == 1 ? Colors.grey : Color(0xd2158fc4),
+                        element.notopic == 1 ? Colors.grey : Color(0xd2158fc4),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(

@@ -2,10 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'user_entity.g.dart';
 
-
 @JsonSerializable()
 class UserEntity extends Object {
-
   @JsonKey(name: 'uid')
   int uid;
 
@@ -30,12 +28,19 @@ class UserEntity extends Object {
   @JsonKey(name: 'siteAdmin')
   bool siteAdmin;
 
-  UserEntity(this.uid,this.name,this.signature,this.contact,this.regtime,this.hasRegPhone,this.floorReverse,this.siteAdmin,);
+  UserEntity(
+    this.uid,
+    this.name,
+    this.signature,
+    this.contact,
+    this.regtime,
+    this.hasRegPhone,
+    this.floorReverse,
+    this.siteAdmin,
+  );
 
-  factory UserEntity.fromJson(Map<String, dynamic> srcJson) => _$UserEntityFromJson(srcJson);
+  factory UserEntity.fromJson(Map<String, dynamic> srcJson) =>
+      _$UserEntityFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
-
 }
-
-

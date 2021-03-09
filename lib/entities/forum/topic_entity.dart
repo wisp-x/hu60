@@ -2,10 +2,8 @@ import 'package:json_annotation/json_annotation.dart';
 
 part 'topic_entity.g.dart';
 
-
 @JsonSerializable()
 class TopicEntity extends Object {
-
   @JsonKey(name: 'fName')
   String fName;
 
@@ -39,36 +37,47 @@ class TopicEntity extends Object {
   @JsonKey(name: 'token')
   String token;
 
-  TopicEntity(this.fName,this.fIndex,this.tMeta,this.floorCount,this.currPage,this.maxPage,this.isLogin,this.tContents,this.blockedReply,this.floorReverse,this.token,);
+  TopicEntity(
+    this.fName,
+    this.fIndex,
+    this.tMeta,
+    this.floorCount,
+    this.currPage,
+    this.maxPage,
+    this.isLogin,
+    this.tContents,
+    this.blockedReply,
+    this.floorReverse,
+    this.token,
+  );
 
-  factory TopicEntity.fromJson(Map<String, dynamic> srcJson) => _$TopicEntityFromJson(srcJson);
+  factory TopicEntity.fromJson(Map<String, dynamic> srcJson) =>
+      _$TopicEntityFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$TopicEntityToJson(this);
-
 }
-
 
 @JsonSerializable()
 class FIndex extends Object {
-
   @JsonKey(name: 'id')
   int id;
 
   @JsonKey(name: 'name')
   String name;
 
-  FIndex(this.id,this.name,);
+  FIndex(
+    this.id,
+    this.name,
+  );
 
-  factory FIndex.fromJson(Map<String, dynamic> srcJson) => _$FIndexFromJson(srcJson);
+  factory FIndex.fromJson(Map<String, dynamic> srcJson) =>
+      _$FIndexFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$FIndexToJson(this);
-
 }
-
 
 @JsonSerializable()
 class TMeta extends Object {
-
   @JsonKey(name: 'title')
   String title;
 
@@ -102,18 +111,28 @@ class TMeta extends Object {
   @JsonKey(name: '_u_avatar')
   String uAvatar;
 
-  TMeta(this.title,this.readCount,this.uid,this.ctime,this.mtime,this.essence,this.locked,this.review,this.level,this.uName,this.uAvatar,);
+  TMeta(
+    this.title,
+    this.readCount,
+    this.uid,
+    this.ctime,
+    this.mtime,
+    this.essence,
+    this.locked,
+    this.review,
+    this.level,
+    this.uName,
+    this.uAvatar,
+  );
 
-  factory TMeta.fromJson(Map<String, dynamic> srcJson) => _$TMetaFromJson(srcJson);
+  factory TMeta.fromJson(Map<String, dynamic> srcJson) =>
+      _$TMetaFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$TMetaToJson(this);
-
 }
-
 
 @JsonSerializable()
 class TContents extends Object {
-
   @JsonKey(name: 'uid')
   int uid;
 
@@ -159,27 +178,41 @@ class TContents extends Object {
   @JsonKey(name: '_u_avatar')
   String uAvatar;
 
-  TContents(this.uid,this.ctime,this.mtime,this.content,this.floor,this.id,this.topicId,this.review,this.locked,this.uinfo,this.canEdit,this.canDel,this.canSink,this.uName,this.uAvatar,);
+  TContents(
+    this.uid,
+    this.ctime,
+    this.mtime,
+    this.content,
+    this.floor,
+    this.id,
+    this.topicId,
+    this.review,
+    this.locked,
+    this.uinfo,
+    this.canEdit,
+    this.canDel,
+    this.canSink,
+    this.uName,
+    this.uAvatar,
+  );
 
-  factory TContents.fromJson(Map<String, dynamic> srcJson) => _$TContentsFromJson(srcJson);
+  factory TContents.fromJson(Map<String, dynamic> srcJson) =>
+      _$TContentsFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$TContentsToJson(this);
-
 }
-
 
 @JsonSerializable()
 class Uinfo extends Object {
-
   @JsonKey(name: 'name')
   String name;
 
-  Uinfo(this.name,);
+  Uinfo(
+    this.name,
+  );
 
-  factory Uinfo.fromJson(Map<String, dynamic> srcJson) => _$UinfoFromJson(srcJson);
+  factory Uinfo.fromJson(Map<String, dynamic> srcJson) =>
+      _$UinfoFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$UinfoToJson(this);
-
 }
-
-

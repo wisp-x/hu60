@@ -134,7 +134,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                   return GestureDetector(
                     onTap: () {
                       widget.controller.text =
-                      "${widget.controller.text}{${face["name"]}}";
+                          "${widget.controller.text}{${face["name"]}}";
                       widget.controller.selection = TextSelection.fromPosition(
                         TextPosition(offset: widget.controller.text.length),
                       );

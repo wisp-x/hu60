@@ -117,9 +117,11 @@ class TopicController extends GetxController {
   }
 
   // 删除帖子
-  void delete(BuildContext context,
-      TopicEntity topic,
-      Function callback,) async {
+  void delete(
+    BuildContext context,
+    TopicEntity topic,
+    Function callback,
+  ) async {
     showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -148,10 +150,12 @@ class TopicController extends GetxController {
   }
 
   // 移动帖子
-  void move(BuildContext context,
-      int id, // 帖子ID
-      int plateId, // 板块ID
-      Function callback,) async {
+  void move(
+    BuildContext context,
+    int id, // 帖子ID
+    int plateId, // 板块ID
+    Function callback,
+  ) async {
     dio.Response response = await Http.request(
       "/bbs.movetopic.$id.json",
       method: Http.POST,

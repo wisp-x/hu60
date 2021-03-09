@@ -16,6 +16,7 @@ class HomeController extends GetxController {
   int index = 0; // 当前导航索引
   UserEntity user; // 用户数据
   bool isLogin = false;
+
   // define field instance
   final GlobalKey<ConvexAppBarState> appBarKey = GlobalKey<ConvexAppBarState>();
 

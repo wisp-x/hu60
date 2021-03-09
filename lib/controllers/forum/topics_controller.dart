@@ -4,7 +4,8 @@ import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/http.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class TopicsController extends GetxController with SingleGetTickerProviderMixin {
+class TopicsController extends GetxController
+    with SingleGetTickerProviderMixin {
   TabController tabController; // 选项卡控制器
   RefreshController refreshController;
   ScrollController scrollController;
