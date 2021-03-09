@@ -31,28 +31,28 @@ class TopicView extends StatelessWidget {
         appBar: AppBar(
           title: Text("主题详情"),
           titleSpacing: 0,
-              elevation: 0,
-              backgroundColor: Theme.of(context).primaryColor,
-              actions: <Widget>[
-                IconButton(
-                  splashColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  icon: Icon(
-                    Icons.more_horiz_rounded,
-                  ),
-                  onPressed: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        var meta = c.topic.tMeta;
-                        return CupertinoActionSheet(
-                          actions: !c.loading && meta.uid != _home.user.uid
-                              ? <Widget>[
-                            _openUrlAction(id),
-                          ]
-                              : <Widget>[
-                            _openUrlAction(id),
-                            CupertinoActionSheetAction(
+          elevation: 0,
+          backgroundColor: Theme.of(context).primaryColor,
+          actions: <Widget>[
+            IconButton(
+              splashColor: Colors.transparent,
+              highlightColor: Colors.transparent,
+              icon: Icon(
+                Icons.more_horiz_rounded,
+              ),
+              onPressed: () {
+                showCupertinoModalPopup(
+                  context: context,
+                  builder: (context) {
+                    var meta = c.topic.tMeta;
+                    return CupertinoActionSheet(
+                      actions: !c.loading && meta.uid != _home.user.uid
+                          ? <Widget>[
+                              _openUrlAction(id),
+                            ]
+                          : <Widget>[
+                              _openUrlAction(id),
+                              CupertinoActionSheetAction(
                                 child: Text("修改"),
                                 onPressed: () async {
                                   Get.back();
@@ -62,59 +62,60 @@ class TopicView extends StatelessWidget {
                                   if (data != null && data) {
                                     c.refreshController.requestRefresh();
                                   }
-                                }),
-                            CupertinoActionSheetAction(
-                              child: Text("移动"),
-                              onPressed: () async {
-                                Get.back();
-                                var data = await Get.to(PlateView());
-                                if (data != null) {
-                                  c.move(context, id, data["id"], () {
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: Text("移动"),
+                                onPressed: () async {
+                                  Get.back();
+                                  var data = await Get.to(PlateView());
+                                  if (data != null) {
+                                    c.move(context, id, data["id"], () {
+                                      c.refreshController.requestRefresh();
+                                    });
+                                  }
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: Text("下沉"),
+                                onPressed: () {
+                                  Get.back();
+                                  c.sink(context, c.topic, () {
                                     c.refreshController.requestRefresh();
                                   });
-                                }
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("下沉"),
-                              onPressed: () {
-                                Get.back();
-                                c.sink(context, c.topic, () {
-                                  c.refreshController.requestRefresh();
-                                });
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              isDestructiveAction: true,
-                              child: Text('删除'),
-                              onPressed: () {
-                                Get.back();
-                                c.delete(
-                                  context,
-                                  id,
-                                  c.content.id,
-                                      () {
-                                    Get.back();
-                                  },
-                                );
-                              },
-                            ),
-                          ],
-                          cancelButton: CupertinoActionSheetAction(
-                            child: Text('取消'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        );
-                      },
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                isDestructiveAction: true,
+                                child: Text('删除'),
+                                onPressed: () {
+                                  Get.back();
+                                  c.delete(
+                                    context,
+                                    id,
+                                    c.content.id,
+                                    () {
+                                      Get.back();
+                                    },
+                                  );
+                                },
+                              ),
+                            ],
+                      cancelButton: CupertinoActionSheetAction(
+                        child: Text('取消'),
+                        onPressed: () {
+                          Get.back();
+                        },
+                      ),
                     );
                   },
-                ),
-              ],
+                );
+              },
             ),
-            body: c.loading ? Utils.loading(context) : _buildBody(context, c),
-          ),
+          ],
+        ),
+        body: c.loading ? Utils.loading(context) : _buildBody(context, c),
+      ),
     );
   }
 
@@ -157,27 +158,31 @@ class TopicView extends StatelessWidget {
             ),
           ),
         ),
-        GestureDetector(
-          onTap: () {
-            c.textController.text = "";
-            _toggleCommentModal(context, c);
-          },
-          child: Container(
-            width: double.infinity,
-            color: Colors.white,
-            padding: EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
+        Offstage(
+          offstage: c.content.locked == 1,
+          child: GestureDetector(
+            onTap: () {
+              c.textController.text = "";
+              _toggleCommentModal(context, c);
+            },
             child: Container(
-              padding: EdgeInsets.only(
-                top: 10,
-                bottom: 10,
-                left: 20,
-                right: 20,
+              width: double.infinity,
+              color: Colors.white,
+              padding:
+                  EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
+              child: Container(
+                padding: EdgeInsets.only(
+                  top: 10,
+                  bottom: 10,
+                  left: 20,
+                  right: 20,
+                ),
+                decoration: BoxDecoration(
+                  color: Color(0xc8ececec),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: Text("说点什么吧..."),
               ),
-              decoration: BoxDecoration(
-                color: Color(0xc8ececec),
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Text("说点什么吧..."),
             ),
           ),
         ),
@@ -288,10 +293,12 @@ class TopicView extends StatelessWidget {
     );
   }
 
-  Widget _buildComments(BuildContext context,
-      TopicController c,
-      TContents item,
-      int index,) {
+  Widget _buildComments(
+    BuildContext context,
+    TopicController c,
+    TContents item,
+    int index,
+  ) {
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -368,6 +375,7 @@ class TopicView extends StatelessWidget {
               ),
             ),
             onTap: () {
+              if (c.content.locked == 1) return;
               c.textController.text = "@${item.uName}，";
               _toggleCommentModal(context, c);
             },
