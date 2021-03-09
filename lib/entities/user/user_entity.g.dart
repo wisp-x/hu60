@@ -16,6 +16,8 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
     json['hasRegPhone'] as bool,
     json['floorReverse'] as bool,
     json['siteAdmin'] as bool,
+    json['permissions'] as List,
+    json['_u_avatar'] as String,
   );
 }
 
@@ -29,4 +31,6 @@ Map<String, dynamic> _$UserEntityToJson(UserEntity instance) =>
       'hasRegPhone': instance.hasRegPhone,
       'floorReverse': instance.floorReverse,
       'siteAdmin': instance.siteAdmin,
+      'permissions': instance.permissions,
+      '_u_avatar': instance.uAvatar,
     };

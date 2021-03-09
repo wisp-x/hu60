@@ -28,6 +28,12 @@ class UserEntity extends Object {
   @JsonKey(name: 'siteAdmin')
   bool siteAdmin;
 
+  @JsonKey(name: 'permissions')
+  List<dynamic> permissions;
+
+  @JsonKey(name: '_u_avatar')
+  String uAvatar;
+
   UserEntity(
     this.uid,
     this.name,
@@ -37,6 +43,8 @@ class UserEntity extends Object {
     this.hasRegPhone,
     this.floorReverse,
     this.siteAdmin,
+    this.permissions,
+    this.uAvatar,
   );
 
   factory UserEntity.fromJson(Map<String, dynamic> srcJson) =>
