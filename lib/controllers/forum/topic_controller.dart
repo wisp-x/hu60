@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
@@ -86,7 +87,21 @@ class TopicController extends GetxController {
               child: Text('确认'),
               onPressed: () async {
                 Get.back();
-                callback();
+                dio.Response getToken = await Http.request(
+                  "/bbs.sinktopic.$id.json",
+                  method: Http.GET,
+                );
+                dio.Response response = await Http.request(
+                  "/bbs.sinktopic.$id.json",
+                  method: Http.POST,
+                  data: {"token": getToken.data["token"], "go": 1},
+                );
+                if (response.data["success"]) {
+                  callback();
+                  Fluttertoast.showToast(msg: "下沉成功");
+                } else {
+                  Fluttertoast.showToast(msg: "下沉失败");
+                }
               },
             ),
             CupertinoDialogAction(
@@ -102,11 +117,9 @@ class TopicController extends GetxController {
   }
 
   // 删除帖子
-  void delete(
-    BuildContext context,
-    TopicEntity topic,
-    Function callback,
-  ) async {
+  void delete(BuildContext context,
+      TopicEntity topic,
+      Function callback,) async {
     showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -135,13 +148,11 @@ class TopicController extends GetxController {
   }
 
   // 移动帖子
-  void move(
-    BuildContext context,
-    int id, // 帖子ID
-    int plateId, // 板块ID
-    Function callback,
-  ) async {
-    var response = await Http.request(
+  void move(BuildContext context,
+      int id, // 帖子ID
+      int plateId, // 板块ID
+      Function callback,) async {
+    dio.Response response = await Http.request(
       "/bbs.movetopic.$id.json",
       method: Http.POST,
       data: {"newFid": plateId, "go": 1},
