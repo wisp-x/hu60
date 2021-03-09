@@ -14,7 +14,8 @@ class TopicController extends GetxController {
   ScrollController scrollController;
   TextEditingController textController;
   int page = 1; // 页码
-  TopicEntity topic;
+  TopicEntity topic; // 帖子数据
+  TContents content; // 帖子楼层数据
   List<TContents> contents = []; // 内容列表
   bool loading = false; // 是否正在获取
 
@@ -33,6 +34,7 @@ class TopicController extends GetxController {
     TopicEntity response = await getData(id, page);
     topic = response;
     contents = topic.tContents;
+    setContent();
     update();
   }
 
@@ -43,6 +45,7 @@ class TopicController extends GetxController {
     TopicEntity response = await getData(id, page);
     topic = response;
     contents = topic.tContents;
+    setContent();
     refreshController.refreshCompleted();
     update();
   }
@@ -52,6 +55,7 @@ class TopicController extends GetxController {
     page++;
     TopicEntity response = await getData(id, page);
     contents.addAll(response.tContents);
+    setContent();
     update();
   }
 
@@ -71,6 +75,21 @@ class TopicController extends GetxController {
     loading = false;
     update();
     return result;
+  }
+
+  // 设置帖子楼层内容数据
+  void setContent() {
+    var content = contents.firstWhere(
+      (content) => content.topicId == id,
+      orElse: () => null,
+    );
+    if (content != null) {
+      this.content = content;
+    } else {
+      Fluttertoast.showToast(
+        msg: "楼层数据异常",
+      );
+    }
   }
 
   // 下沉帖子

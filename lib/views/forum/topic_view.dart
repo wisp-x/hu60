@@ -21,7 +21,7 @@ class TopicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeController _home = Get.put(HomeController());
-    var id = Get.arguments["id"] ?? 0;
+    var id = 99150; //Get.arguments != null ? (Get.arguments["id"] ?? 0) : 0;
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
@@ -90,7 +90,7 @@ class TopicView extends StatelessWidget {
                                   c.delete(
                                     context,
                                     id,
-                                    c.topic.tContents[0].id,
+                                    c.content.id,
                                     () {
                                       Get.back();
                                     },
