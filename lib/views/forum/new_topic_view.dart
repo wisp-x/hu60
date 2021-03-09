@@ -154,7 +154,7 @@ class _NewTopicView extends State<NewTopicView> {
       data: {
         "markdown": "on",
         "title": _titleController.text,
-        "content": "<!-- markdown --> ${_contentController.text}",
+        "content": "<!-- markdown -->\r\n${_contentController.text}",
         "go": 1,
         "token": response.data["token"],
       },

@@ -137,6 +137,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                     setState(() {
                       loading = true;
                     });
+                    String text = widget.controller.text;
                     dio.Response getToken = await Http.request(
                       "/bbs.newreply.${widget.id}.json",
                       method: Http.GET,
@@ -145,7 +146,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                       "/bbs.newreply.${widget.id}.json",
                       method: Http.POST,
                       data: {
-                        "content": "<!-- markdown -->${widget.controller.text}",
+                        "content": "<!-- markdown -->\r\n$text",
                         "token": getToken.data["token"],
                         "go": 1,
                       },

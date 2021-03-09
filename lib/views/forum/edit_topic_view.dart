@@ -140,7 +140,7 @@ class _EditTopicView extends State<EditTopicView> {
       data: {
         "markdown": "on",
         "title": _titleController.text,
-        "content": "<!-- markdown --> ${_contentController.text}",
+        "content": "<!-- markdown -->\r\n${_contentController.text}",
         "go": 1,
         "token": token,
       },

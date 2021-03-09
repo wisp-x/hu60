@@ -143,7 +143,7 @@ class _TopicsView extends State<TopicsView>
               TextSpan(text: " ${item.readCount} · 最后回复于 $date"),
             ]),
           ),
-          onTap: () => Get.to(() => TopicView(id: 99166)),
+          onTap: () => Get.to(() => TopicView(id: 99166)), // TODO
         );
       },
     );
