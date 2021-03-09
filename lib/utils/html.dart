@@ -27,7 +27,7 @@ class Html {
       style: {
         "*": Style.fromTextStyle(
           TextStyle(
-            fontSize: 16,
+            fontSize: 17.5,
             inherit: false,
             wordSpacing: 0.0,
             // letterSpacing: 1.4,
