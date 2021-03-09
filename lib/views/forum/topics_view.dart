@@ -81,6 +81,7 @@ class _TopicsView extends State<TopicsView>
         String avatarUrl = User.getAvatar(context, item.uAvatar);
         String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
         return GestureDetector(
+          behavior: HitTestBehavior.opaque,
           child: Padding(
             padding: EdgeInsets.only(left: 20, top: 15, right: 20),
             child: Column(
