@@ -230,7 +230,7 @@ class _TopicsView extends State<TopicsView>
               ],
             ),
           ),
-          onTap: () => Get.to(() => TopicView(id: item.id)),
+          onTap: () => Get.to(() => TopicView(id: 99168)),
         );
       },
     );

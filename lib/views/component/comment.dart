@@ -7,7 +7,9 @@ import 'package:hu60/http.dart';
 
 class Comment extends StatefulWidget {
   final TextEditingController controller;
-  final id; // 帖子ID
+  final topicId; // 帖子ID
+  final contentId; // 楼层ID
+  final isEdit; // 是否是编辑
   final Function callback; // 回复成功后的回调
   final faceUrl = "https://hu60.cn/img/face/";
   final List<Map<String, String>> faces = [
@@ -50,7 +52,9 @@ class Comment extends StatefulWidget {
 
   Comment({
     Key key,
-    @required this.id,
+    @required this.topicId,
+    this.contentId,
+    this.isEdit = false,
     @required this.controller,
     this.callback,
   }) : super(key: key);
@@ -128,43 +132,27 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                       color: Theme.of(context).accentColor,
                     ),
                     child: Text(
-                      "发送",
+                      widget.isEdit ? "保存修改" : "发送",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),
                   onTap: () async {
+                    if (widget.controller.text == "") {
+                      Fluttertoast.showToast(msg: "请输入内容");
+                      return;
+                    }
                     if (loading) return;
                     setState(() {
                       loading = true;
                     });
-                    String text = widget.controller.text;
-                    dio.Response getToken = await Http.request(
-                      "/bbs.newreply.${widget.id}.json",
-                      method: Http.GET,
-                    );
-                    dio.Response response = await Http.request(
-                      "/bbs.newreply.${widget.id}.json",
-                      method: Http.POST,
-                      data: {
-                        "content": "<!-- markdown -->\r\n$text",
-                        "token": getToken.data["token"],
-                        "go": 1,
-                      },
-                    );
+                    if (!widget.isEdit) {
+                      await _newCallback();
+                    } else {
+                      await _editCallback();
+                    }
                     setState(() {
                       loading = false;
                     });
-                    if (response.data["success"]) {
-                      Get.back();
-                      if (widget.callback != null) {
-                        widget.callback();
-                      }
-                      Fluttertoast.showToast(msg: "回复成功");
-                    } else {
-                      Fluttertoast.showToast(
-                        msg: response.data["notice"] ?? "回复失败",
-                      );
-                    }
                   },
                 ),
               ],
@@ -200,5 +188,63 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
         ),
       ),
     );
+  }
+
+  // 发布新回复回调
+  _newCallback() async {
+    String text = widget.controller.text;
+    dio.Response getToken = await Http.request(
+      "/bbs.newreply.${widget.topicId}.json",
+      method: Http.GET,
+    );
+    dio.Response response = await Http.request(
+      "/bbs.newreply.${widget.topicId}.json",
+      method: Http.POST,
+      data: {
+        "content": "<!-- markdown -->\r\n$text",
+        "token": getToken.data["token"],
+        "go": 1,
+      },
+    );
+    if (response.data["success"]) {
+      Get.back();
+      if (widget.callback != null) {
+        widget.callback();
+      }
+      Fluttertoast.showToast(msg: "回复成功");
+    } else {
+      Fluttertoast.showToast(
+        msg: response.data["notice"] ?? "回复失败",
+      );
+    }
+  }
+
+  // 编辑回复回调
+  _editCallback() async {
+    String text = widget.controller.text;
+    dio.Response getToken = await Http.request(
+      "/bbs.edittopic.${widget.topicId}.${widget.contentId}.json",
+      method: Http.GET,
+    );
+    dio.Response response = await Http.request(
+      "/bbs.edittopic.${widget.topicId}.${widget.contentId}.json",
+      method: Http.POST,
+      data: {
+        "content": "<!-- markdown -->\r\n$text",
+        "token": getToken.data["token"],
+        "go": 1,
+      },
+    );
+    if (response.data["success"]) {
+      Get.back();
+      if (widget.callback != null) {
+        widget.callback();
+      }
+      Fluttertoast.showToast(msg: "修改成功");
+    } else {
+      Fluttertoast.showToast(
+        msg: response.data["notice"] ?? "修改失败",
+      );
+    }
   }
 }

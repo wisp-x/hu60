@@ -16,6 +16,7 @@ import 'package:hu60/views/forum/edit_topic_view.dart';
 import 'package:hu60/views/forum/plate_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:dio/dio.dart' as dio;
 
 class TopicView extends StatelessWidget {
   final int id; // 帖子ID
@@ -163,13 +164,19 @@ class TopicView extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               c.textController.text = "";
-              _toggleCommentModal(context, c);
+              _toggleCommentModal(context, c, () {
+                c.refreshController.requestRefresh();
+              });
             },
             child: Container(
               width: double.infinity,
               color: Colors.white,
-              padding:
-                  EdgeInsets.only(top: 10, bottom: 30, left: 10, right: 10),
+              padding: EdgeInsets.only(
+                top: 10,
+                bottom: 30,
+                left: 10,
+                right: 10,
+              ),
               child: Container(
                 padding: EdgeInsets.only(
                   top: 10,
@@ -299,6 +306,7 @@ class TopicView extends StatelessWidget {
     TContents item,
     int index,
   ) {
+    HomeController _home = Get.put(HomeController());
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -377,13 +385,125 @@ class TopicView extends StatelessWidget {
             onTap: () {
               if (c.content.locked == 1) return;
               c.textController.text = "@${item.uName}，";
-              _toggleCommentModal(context, c);
+              _toggleCommentModal(context, c, () {
+                c.refreshController.requestRefresh();
+              });
             },
           ),
         ),
         Padding(
           padding: EdgeInsets.only(left: 6, right: 6, bottom: 10),
           child: Html.decode(item.content),
+        ),
+        Container(
+          margin: EdgeInsets.only(right: 20, bottom: 10),
+          child: DefaultTextStyle(
+            style: TextStyle(
+              fontSize: 17,
+              color: Colors.grey,
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Offstage(
+                  offstage: c.content.locked == 1,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Text.rich(
+                      TextSpan(
+                        children: <InlineSpan>[
+                          WidgetSpan(
+                            child: Icon(
+                              Icons.reply,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                          ),
+                          TextSpan(text: "回复"),
+                        ],
+                      ),
+                    ),
+                    onTap: () {
+                      c.textController.text = "@${item.uName}，";
+                      _toggleCommentModal(context, c, () {
+                        c.refreshController.requestRefresh();
+                      });
+                    },
+                  ),
+                ),
+                Offstage(
+                  offstage: item.uid != _home.user.uid || item.locked == 1,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 8),
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.edit,
+                                color: Colors.grey,
+                                size: 20,
+                              ),
+                            ),
+                            TextSpan(text: "编辑"),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () async {
+                      dio.Response floor = await Http.request(
+                        "/bbs.edittopic.$id.${item.id}.json?_content=text",
+                        method: Http.GET,
+                      );
+                      String content = floor.data["content"];
+                      c.textController.text =
+                          content.replaceAll("<!-- markdown -->\r\n", "");
+                      _toggleCommentModal(context, c, () {
+                        // TODO 动态修改楼层内容
+                        c.refreshController.requestRefresh();
+                      }, isEdit: true, contentId: item.id);
+                    },
+                  ),
+                ),
+                Offstage(
+                  offstage: item.uid != _home.user.uid || item.locked == 1,
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      margin: EdgeInsets.only(left: 8),
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.delete,
+                                color: Colors.red[300],
+                                size: 20,
+                              ),
+                            ),
+                            TextSpan(
+                              text: "删除",
+                              style: TextStyle(
+                                color: Colors.red[300],
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      c.delete(context, id, item.id, () {
+                        // TODO 动态修改楼层内容
+                        c.refreshController.requestRefresh();
+                      });
+                    },
+                  ),
+                ),
+              ],
+            ),
+          ),
         ),
         Offstage(
           offstage: index == c.topic.floorCount,
@@ -397,7 +517,13 @@ class TopicView extends StatelessWidget {
   }
 
   // 打开评论框
-  _toggleCommentModal(BuildContext context, TopicController c) {
+  _toggleCommentModal(
+    BuildContext context,
+    TopicController c,
+    Function callback, {
+    int contentId: 0,
+    bool isEdit: false,
+  }) {
     if (Get.find<HomeController>().isLogin) {
       showModalBottomSheet(
         isScrollControlled: true,
@@ -405,9 +531,11 @@ class TopicView extends StatelessWidget {
         context: context,
         builder: (BuildContext context) {
           return Comment(
-            id: id,
+            topicId: id,
+            contentId: contentId,
+            isEdit: isEdit,
             controller: c.textController,
-            callback: () => c.refreshController.requestRefresh(),
+            callback: () => callback(),
           );
         },
       ).then((val) {});

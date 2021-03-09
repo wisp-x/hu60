@@ -137,18 +137,27 @@ class TopicController extends GetxController {
     );
   }
 
-  // 删除帖子
+  // 删除帖子or删除楼层
   void delete(
     BuildContext context,
     int topicId, // 帖子ID
     int contentId, // 楼层ID
     Function callback,
   ) async {
+    dio.Response meta = await Http.request(
+      "/bbs.deltopic.$topicId.$contentId.json",
+      method: Http.GET,
+    );
+    String title = "删除楼层";
+    if (meta.data["tMeta"]["content_id"] == contentId) {
+      title = "删除帖子";
+    }
+
     showCupertinoDialog(
       context: context,
       builder: (context) {
         return CupertinoAlertDialog(
-          title: Text("删除帖子"),
+          title: Text(title),
           content: Text("删除后不可恢复，确认删除吗？"),
           actions: [
             CupertinoDialogAction(
@@ -156,10 +165,6 @@ class TopicController extends GetxController {
               child: Text('确认'),
               onPressed: () async {
                 Get.back();
-                dio.Response meta = await Http.request(
-                  "/bbs.deltopic.$topicId.$contentId.json",
-                  method: Http.GET,
-                );
                 dio.Response response = await Http.request(
                   "/bbs.deltopic.$topicId.$contentId.json",
                   method: Http.POST,
