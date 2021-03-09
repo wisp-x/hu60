@@ -100,7 +100,9 @@ class TopicController extends GetxController {
                   callback();
                   Fluttertoast.showToast(msg: "下沉成功");
                 } else {
-                  Fluttertoast.showToast(msg: "下沉失败");
+                  Fluttertoast.showToast(
+                    msg: response.data["notice"] ?? "下沉失败",
+                  );
                 }
               },
             ),
@@ -119,7 +121,8 @@ class TopicController extends GetxController {
   // 删除帖子
   void delete(
     BuildContext context,
-    TopicEntity topic,
+    int topicId, // 帖子ID
+    int contentId, // 楼层ID
     Function callback,
   ) async {
     showCupertinoDialog(
@@ -134,7 +137,23 @@ class TopicController extends GetxController {
               child: Text('确认'),
               onPressed: () async {
                 Get.back();
-                callback();
+                dio.Response meta = await Http.request(
+                  "/bbs.deltopic.$topicId.$contentId.json",
+                  method: Http.GET,
+                );
+                dio.Response response = await Http.request(
+                  "/bbs.deltopic.$topicId.$contentId.json",
+                  method: Http.POST,
+                  data: {"token": meta.data["token"], "go": 1},
+                );
+                if (response.data["success"]) {
+                  callback();
+                  Fluttertoast.showToast(msg: "删除成功");
+                } else {
+                  Fluttertoast.showToast(
+                    msg: response.data["notice"] ?? "删除失败",
+                  );
+                }
               },
             ),
             CupertinoDialogAction(
@@ -152,12 +171,12 @@ class TopicController extends GetxController {
   // 移动帖子
   void move(
     BuildContext context,
-    int id, // 帖子ID
+    int topicId, // 帖子ID
     int plateId, // 板块ID
     Function callback,
   ) async {
     dio.Response response = await Http.request(
-      "/bbs.movetopic.$id.json",
+      "/bbs.movetopic.$topicId.json",
       method: Http.POST,
       data: {"newFid": plateId, "go": 1},
     );
@@ -165,7 +184,7 @@ class TopicController extends GetxController {
       callback();
       Fluttertoast.showToast(msg: "移动成功");
     } else {
-      Fluttertoast.showToast(msg: "移动失败");
+      Fluttertoast.showToast(msg: response.data["notice"] ?? "移动失败");
     }
   }
 }

@@ -21,7 +21,7 @@ class TopicView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     HomeController _home = Get.put(HomeController());
-    var id = 99150; //Get.arguments["id"] ?? 0;
+    var id = Get.arguments["id"] ?? 0;
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
@@ -87,9 +87,14 @@ class TopicView extends StatelessWidget {
                                 child: Text('删除'),
                                 onPressed: () {
                                   Get.back();
-                                  c.delete(context, c.topic, () {
-                                    c.refreshController.requestRefresh();
-                                  });
+                                  c.delete(
+                                    context,
+                                    id,
+                                    c.topic.tContents[0].id,
+                                    () {
+                                      Get.back();
+                                    },
+                                  );
                                 },
                               ),
                             ],
