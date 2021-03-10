@@ -38,12 +38,12 @@ class UserController extends GetxController {
     update();
   }
 
-  // 设置楼层顺序
-  setFloorReverse(Function callback) async {
-    String url = "/user.index.json?floorReverse=${user.floorReverse ? 0 : 1}";
+  // 设置楼层倒序/正序，倒序=true，正序=false
+  setFloorReverse(bool value, {Function callback}) async {
+    String url = "/user.index.json?floorReverse=${value ? 1 : 0}";
     dio.Response res = await Http.request(url);
     user.floorReverse = res.data["floorReverse"];
     update();
-    callback();
+    if (callback != null) callback();
   }
 }

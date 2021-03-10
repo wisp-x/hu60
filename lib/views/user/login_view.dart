@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
-import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/user/user_entity.dart';
 import 'package:hu60/http.dart';

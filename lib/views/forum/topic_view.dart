@@ -314,9 +314,10 @@ class TopicView extends StatelessWidget {
                         ),
                       ),
                       onTap: () {
-                        userController.setFloorReverse(() {
-                          c.refreshController.requestRefresh();
-                        });
+                        userController.setFloorReverse(
+                          !userController.user.floorReverse,
+                          callback: () => c.refreshController.requestRefresh(),
+                        );
                       },
                     ),
                   ],

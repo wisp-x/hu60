@@ -2,10 +2,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/user/login_view.dart';
+import 'package:hu60/views/user/more_setting_view.dart';
 
 class UserView extends StatefulWidget {
   @override
@@ -13,12 +13,7 @@ class UserView extends StatefulWidget {
 }
 
 class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
-  List settings = [
-    {"text": "我的帖子", "icon": Icons.format_list_bulleted, "page": ""},
-    {"text": "我的收藏", "icon": Icons.bookmark_outline, "page": ""},
-    {"text": "我的关注", "icon": Icons.star_outline, "page": ""},
-    {"text": "屏蔽用户", "icon": Icons.list, "page": ""},
-  ];
+  final dividerColor = Color(0xdccdcdcd);
 
   @override
   void initState() {
@@ -102,61 +97,31 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       color: Colors.white,
       child: Column(
         children: <Widget>[
+          Divider(height: 0.2, color: dividerColor),
           ListTile(
-            leading: Icon(
-              Icons.format_list_bulleted,
-              color: Colors.grey,
-            ),
+            leading: Icon(Icons.format_list_bulleted, color: Colors.grey),
             title: Text("我的帖子"),
-            trailing: IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              icon: Icon(Icons.chevron_right),
-              onPressed: () {},
-            ),
+            trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
+          Divider(height: 0.2, color: dividerColor),
           ListTile(
-            leading: Icon(
-              Icons.bookmark_outline,
-              color: Colors.grey,
-            ),
+            leading: Icon(Icons.bookmark_outline, color: Colors.grey),
             title: Text("我的收藏"),
-            trailing: IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              icon: Icon(Icons.chevron_right),
-              onPressed: () {},
-            ),
+            trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
+          Divider(height: 0.2, color: dividerColor),
           ListTile(
-            leading: Icon(
-              Icons.star_outline,
-              color: Colors.grey,
-            ),
+            leading: Icon(Icons.star_outline, color: Colors.grey),
             title: Text("特别关注"),
-            trailing: IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              icon: Icon(Icons.chevron_right),
-              onPressed: () {},
-            ),
+            trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
+          Divider(height: 0.2, color: dividerColor),
           ListTile(
-            leading: Icon(
-              Icons.list,
-              color: Colors.grey,
-            ),
+            leading: Icon(Icons.list, color: Colors.grey),
             title: Text("屏蔽用户"),
-            trailing: IconButton(
-              splashColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              icon: Icon(Icons.chevron_right),
-              onPressed: () {},
-            ),
+            trailing: Icon(Icons.chevron_right),
           ),
+          Divider(height: 0.2, color: dividerColor),
         ],
       ),
     );
@@ -166,18 +131,17 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.only(top: 10),
-      child: ListTile(
-        leading: Icon(
-          Icons.settings,
-          color: Colors.grey,
-        ),
-        title: Text("更多设置"),
-        trailing: IconButton(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          icon: Icon(Icons.chevron_right),
-          onPressed: () {},
-        ),
+      child: Column(
+        children: <Widget>[
+          Divider(height: 0.2, color: dividerColor),
+          ListTile(
+            leading: Icon(Icons.settings, color: Colors.grey),
+            title: Text("更多设置"),
+            trailing: Icon(Icons.chevron_right),
+            onTap: () => Get.to(() => MoreSettingView()),
+          ),
+          Divider(height: 0.2, color: dividerColor),
+        ],
       ),
     );
   }
