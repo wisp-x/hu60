@@ -15,7 +15,7 @@ class Html {
   static decode(String content) {
     // 去除小尾巴
     RegExp regExp1 = RegExp(
-      r"""<span class=("|')usercss uid-\d+("|').*?style=\".*?\">.*?</span>""",
+      r"""<span(.*?)class=("|')usercss uid-\d+("|').*?style=\".*?\">.*?</span>""",
     );
     content = content.replaceAll(regExp1, "");
     // 内联样式标签不规范会引起的崩溃问题, 直接正则替换掉内联样式
