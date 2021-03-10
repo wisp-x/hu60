@@ -164,9 +164,7 @@ class TopicView extends StatelessWidget {
           child: GestureDetector(
             onTap: () {
               c.textController.text = "";
-              _toggleCommentModal(context, c, () {
-                c.refreshController.requestRefresh();
-              });
+              _toggleCommentModal(context, c);
             },
             child: Container(
               width: double.infinity,
@@ -385,9 +383,7 @@ class TopicView extends StatelessWidget {
             onTap: () {
               if (c.content.locked == 1) return;
               c.textController.text = "@${item.uName}，";
-              _toggleCommentModal(context, c, () {
-                c.refreshController.requestRefresh();
-              });
+              _toggleCommentModal(context, c);
             },
           ),
         ),
@@ -425,9 +421,7 @@ class TopicView extends StatelessWidget {
                     ),
                     onTap: () {
                       c.textController.text = "@${item.uName}，";
-                      _toggleCommentModal(context, c, () {
-                        c.refreshController.requestRefresh();
-                      });
+                      _toggleCommentModal(context, c);
                     },
                   ),
                 ),
@@ -460,9 +454,15 @@ class TopicView extends StatelessWidget {
                       String content = floor.data["content"];
                       c.textController.text =
                           content.replaceAll("<!-- markdown -->\r\n", "");
-                      _toggleCommentModal(context, c, () {
-                        c.updateFloor(id);
-                      }, isEdit: true, contentId: item.id);
+                      _toggleCommentModal(
+                        context,
+                        c,
+                        isEdit: true,
+                        contentId: item.id,
+                        callback: () {
+                          c.updateFloor(id);
+                        },
+                      );
                     },
                   ),
                 ),
@@ -517,8 +517,8 @@ class TopicView extends StatelessWidget {
   // 打开评论框
   _toggleCommentModal(
     BuildContext context,
-    TopicController c,
-    Function callback, {
+    TopicController c, {
+    Function callback,
     int contentId: 0,
     bool isEdit: false,
   }) {
@@ -533,7 +533,7 @@ class TopicView extends StatelessWidget {
             contentId: contentId,
             isEdit: isEdit,
             controller: c.textController,
-            callback: () => callback(),
+            callback: () => (callback != null ? callback() : () {}),
           );
         },
       ).then((val) {});
