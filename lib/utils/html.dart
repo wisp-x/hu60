@@ -13,12 +13,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 
 class Html {
   static decode(String content) {
-    // 内联样式标签不规范会引起的崩溃问题, 直接正则替换掉内联样式
+    // 去除小尾巴
     RegExp regExp1 = RegExp(
-      r"""<.*? class=("|')usercss uid-\d+("|').*?style=\".*?\">.*?</.*?>""",
+      r"""<span class=("|')usercss uid-\d+("|').*?style=\".*?\">.*?</span>""",
     );
     content = content.replaceAll(regExp1, "");
-    // 匹配内联样式
+    // 内联样式标签不规范会引起的崩溃问题, 直接正则替换掉内联样式
     RegExp regExp2 = RegExp(r"""style\s*=\s*('[^']*'|"[^"]*")""");
     content = content.replaceAll(regExp2, "");
     return Padding(
