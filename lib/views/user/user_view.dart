@@ -66,12 +66,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
           margin: EdgeInsets.only(top: 8),
           child: Text(c.user.signature, overflow: TextOverflow.ellipsis),
         ),
-        trailing: IconButton(
-          splashColor: Colors.transparent,
-          highlightColor: Colors.transparent,
-          icon: Icon(Icons.chevron_right),
-          onPressed: () {},
-        ),
+        trailing: Icon(Icons.chevron_right),
         onTap: () {},
       ),
     );
@@ -96,6 +91,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
               onPressed: () {},
             ),
           ),
+          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
           ListTile(
             leading: Icon(
               Icons.bookmark_outline,
@@ -109,6 +105,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
               onPressed: () {},
             ),
           ),
+          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
           ListTile(
             leading: Icon(
               Icons.star_outline,
@@ -122,6 +119,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
               onPressed: () {},
             ),
           ),
+          Divider(height: 0.2, indent: 0.0, color: Color(0xdccdcdcd)),
           ListTile(
             leading: Icon(
               Icons.list,
