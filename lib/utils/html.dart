@@ -37,7 +37,7 @@ class Html {
               fontSize: 17.5,
               inherit: false,
               wordSpacing: 0.0,
-              letterSpacing: 1.3,
+              letterSpacing: 2.0,
             ),
           ),
         },
@@ -136,13 +136,13 @@ class Html {
               case "userat": // @ 符号
                 return Text(
                   element.text,
-                  style: TextStyle(color: Colors.blue[400]),
+                  style: TextStyle(color: Colors.blue[400], fontSize: 19),
                 );
                 break;
               case "userinfo": // @ 符号后面的文字
                 return Text(
                   element.text,
-                  style: TextStyle(color: Colors.blue[400]),
+                  style: TextStyle(color: Colors.blue[400], fontSize: 16.5),
                 );
                 break;
               default:
