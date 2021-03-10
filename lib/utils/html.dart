@@ -16,138 +16,141 @@ class Html {
     // 内联样式标签不规范会引起的崩溃问题, 直接正则替换掉内联样式
     RegExp regExp = RegExp(r"""style\s*=\s*('[^']*'|"[^"]*")""");
     content = content.replaceAll(regExp, "");
-    return flutterHtml.Html(
-      data: content,
-      onImageError: (dynamic exception, StackTrace stackTrace) {
-        print("加载错误 $exception");
-      },
-      customImageRenders: {
-        base64DataUriMatcher(): base64ImageRender(),
-      },
-      style: {
-        "*": Style.fromTextStyle(
-          TextStyle(
-            fontSize: 17.5,
-            inherit: false,
-            wordSpacing: 0.0,
-            // letterSpacing: 1.4,
-          ),
-        ),
-      },
-      customRender: {
-        "div": (
-          RenderContext context,
-          Widget child,
-          Map<String, String> attrs,
-          dom.Element element,
-        ) {
-          switch (attrs["class"]) {
-            case "tp info-box":
-              return Container(
-                width: double.infinity,
-                alignment: Alignment.center,
-                padding: EdgeInsets.only(left: 10, right: 10),
-                decoration: BoxDecoration(
-                  color: Color(0xFFFF7474),
-                  borderRadius: BorderRadius.circular(6.0),
-                ),
-                child: Text(
-                  element.text,
-                  style: TextStyle(
-                    color: Colors.white,
-                  ),
-                ),
-              );
-              break;
-            default:
-              return null;
-          }
+    return Padding(
+      padding: EdgeInsets.only(right: 6.3),
+      child: flutterHtml.Html(
+        data: content,
+        onImageError: (dynamic exception, StackTrace stackTrace) {
+          print("加载错误 $exception");
         },
-        "img": (
-          RenderContext context,
-          Widget child,
-          Map<String, String> attrs,
-          dom.Element element,
-        ) {
-          if (element == null) return null;
-          if (attrs["src"] == null || attrs["src"] == "") {
-            return Text(element.text);
-          }
-          switch (attrs["class"]) {
-            case "userimg":
-              return GestureDetector(
-                child: Container(
-                  margin: EdgeInsets.only(top: 5, bottom: 5),
-                  child: ClipRRect(
+        customImageRenders: {
+          base64DataUriMatcher(): base64ImageRender(),
+        },
+        style: {
+          "*": Style.fromTextStyle(
+            TextStyle(
+              fontSize: 17.5,
+              inherit: false,
+              wordSpacing: 0.0,
+              letterSpacing: 1.3,
+            ),
+          ),
+        },
+        customRender: {
+          "div": (
+            RenderContext context,
+            Widget child,
+            Map<String, String> attrs,
+            dom.Element element,
+          ) {
+            switch (attrs["class"]) {
+              case "tp info-box":
+                return Container(
+                  width: double.infinity,
+                  alignment: Alignment.center,
+                  padding: EdgeInsets.only(left: 10, right: 10),
+                  decoration: BoxDecoration(
+                    color: Color(0xFFFF7474),
                     borderRadius: BorderRadius.circular(6.0),
+                  ),
+                  child: Text(
+                    element.text,
+                    style: TextStyle(
+                      color: Colors.white,
+                    ),
+                  ),
+                );
+                break;
+              default:
+                return null;
+            }
+          },
+          "img": (
+            RenderContext context,
+            Widget child,
+            Map<String, String> attrs,
+            dom.Element element,
+          ) {
+            if (element == null) return null;
+            if (attrs["src"] == null || attrs["src"] == "") {
+              return Text(element.text);
+            }
+            switch (attrs["class"]) {
+              case "userimg":
+                return GestureDetector(
+                  child: Container(
+                    margin: EdgeInsets.only(top: 5, bottom: 5),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(6.0),
+                      child: Image.network(attrs["src"]),
+                    ),
+                  ),
+                  onTap: () {
+                    Get.to(
+                      () => PhotoGallery(
+                        index: 0,
+                        images: [attrs["src"]],
+                        heroTag: attrs["src"],
+                      ),
+                    );
+                  },
+                );
+                break;
+              case "hu60_face":
+                return WidgetSpan(
+                  alignment: ui.PlaceholderAlignment.middle,
+                  child: Container(
+                    margin: EdgeInsets.only(left: 2, right: 2),
+                    width: 30,
+                    height: 30,
                     child: Image.network(attrs["src"]),
                   ),
-                ),
-                onTap: () {
-                  Get.to(
-                    () => PhotoGallery(
-                      index: 0,
-                      images: [attrs["src"]],
-                      heroTag: attrs["src"],
-                    ),
-                  );
-                },
-              );
-              break;
-            case "hu60_face":
-              return WidgetSpan(
-                alignment: ui.PlaceholderAlignment.middle,
-                child: Container(
-                  margin: EdgeInsets.only(left: 2, right: 2),
-                  width: 30,
-                  height: 30,
-                  child: Image.network(attrs["src"]),
-                ),
-              );
-              break;
-            default:
-              return CachedNetworkImage(
-                imageUrl: attrs["src"],
-                placeholder: (context, url) => CircularProgressIndicator(),
-                errorWidget: (context, url, error) => Text(
-                  "图片加载失败",
-                  style: TextStyle(color: Colors.redAccent),
-                ),
-              );
+                );
+                break;
+              default:
+                return CachedNetworkImage(
+                  imageUrl: attrs["src"],
+                  placeholder: (context, url) => CircularProgressIndicator(),
+                  errorWidget: (context, url, error) => Text(
+                    "图片加载失败",
+                    style: TextStyle(color: Colors.redAccent),
+                  ),
+                );
+            }
+          },
+          "a": (
+            RenderContext context,
+            Widget child,
+            Map<String, String> attrs,
+            dom.Element element,
+          ) {
+            switch (attrs["class"]) {
+              case "userlink": // 链接
+                return _buildOpenUrlWidget(attrs, element);
+                break;
+              case "userat": // @ 符号
+                return Text(
+                  element.text,
+                  style: TextStyle(color: Colors.blue[400]),
+                );
+                break;
+              case "userinfo": // @ 符号后面的文字
+                return Text(
+                  element.text,
+                  style: TextStyle(color: Colors.blue[400]),
+                );
+                break;
+              default:
+                if (attrs["class"] == null && attrs["href"] != null) {
+                  if (canLaunch(attrs["href"]) != null) {
+                    return _buildOpenUrlWidget(attrs, element);
+                  }
+                }
+                return null;
+            }
           }
         },
-        "a": (
-          RenderContext context,
-          Widget child,
-          Map<String, String> attrs,
-          dom.Element element,
-        ) {
-          switch (attrs["class"]) {
-            case "userlink": // 链接
-              return _buildOpenUrlWidget(attrs, element);
-              break;
-            case "userat": // @ 符号
-              return Text(
-                element.text,
-                style: TextStyle(color: Colors.blue[400]),
-              );
-              break;
-            case "userinfo": // @ 符号后面的文字
-              return Text(
-                element.text,
-                style: TextStyle(color: Colors.blue[400]),
-              );
-              break;
-            default:
-              if (attrs["class"] == null && attrs["href"] != null) {
-                if (canLaunch(attrs["href"]) != null) {
-                  return _buildOpenUrlWidget(attrs, element);
-                }
-              }
-              return null;
-          }
-        }
-      },
+      ),
     );
   }
 
