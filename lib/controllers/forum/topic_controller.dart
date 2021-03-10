@@ -14,10 +14,10 @@ class TopicController extends GetxController {
   ScrollController scrollController;
   TextEditingController textController;
   int page = 1; // 页码
-  TopicEntity topic; // 帖子数据
+  TopicEntity data; // 帖子数据
   TContents content; // 帖子楼层数据
-  List<TContents> contents = []; // 内容列表
-  bool loading = false; // 是否正在获取
+  List<TContents> contents = []; // 所有楼层列表
+  bool loading = false; // 是否正在获取数据
 
   @override
   void onInit() async {
@@ -32,8 +32,8 @@ class TopicController extends GetxController {
   void init() async {
     page = 1;
     TopicEntity response = await getData(id, page);
-    topic = response;
-    contents = topic.tContents;
+    data = response;
+    contents = data.tContents;
     setContent();
     update();
   }
@@ -43,8 +43,8 @@ class TopicController extends GetxController {
     page = 1;
     contents.clear();
     TopicEntity response = await getData(id, page);
-    topic = response;
-    contents = topic.tContents;
+    data = response;
+    contents = data.tContents;
     setContent();
     refreshController.refreshCompleted();
     update();
@@ -92,8 +92,16 @@ class TopicController extends GetxController {
     }
   }
 
+  // 更新楼层数据
+  void updateFloor(
+    int topicId, // 帖子ID
+    int contentId, // 楼层ID
+  ) async {
+    update();
+  }
+
   // 下沉帖子
-  void sink(BuildContext context, TopicEntity topic, Function callback) async {
+  void sink(BuildContext context, Function callback) async {
     showCupertinoDialog(
       context: context,
       builder: (context) {

@@ -45,7 +45,7 @@ class TopicView extends StatelessWidget {
                 showCupertinoModalPopup(
                   context: context,
                   builder: (context) {
-                    var meta = c.topic.tMeta;
+                    var meta = c.data.tMeta;
                     return CupertinoActionSheet(
                       actions: !c.loading && meta.uid != _home.user.uid
                           ? <Widget>[
@@ -81,7 +81,7 @@ class TopicView extends StatelessWidget {
                                 child: Text("下沉"),
                                 onPressed: () {
                                   Get.back();
-                                  c.sink(context, c.topic, () {
+                                  c.sink(context, () {
                                     c.refreshController.requestRefresh();
                                   });
                                 },
@@ -199,7 +199,7 @@ class TopicView extends StatelessWidget {
 
   Widget _buildMeta(BuildContext context, TopicController c, TContents item) {
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
-    TMeta meta = c.topic.tMeta;
+    TMeta meta = c.data.tMeta;
     return Container(
       margin: EdgeInsets.only(top: 10),
       child: Column(
@@ -234,7 +234,7 @@ class TopicView extends StatelessWidget {
                       color: Colors.green[400],
                     ),
                     child: Text(
-                      c.topic.fName,
+                      c.data.fName,
                       style: TextStyle(
                         fontSize: 16,
                         color: Colors.white,
@@ -247,7 +247,7 @@ class TopicView extends StatelessWidget {
             subtitle: Padding(
               padding: EdgeInsets.only(top: 9),
               child: Text(
-                "发布于 $date  ${meta.readCount}次点击  ${c.topic.floorCount - 1}人回复",
+                "发布于 $date  ${meta.readCount}次点击  ${c.data.floorCount - 1}人回复",
               ),
             ),
           ),
@@ -287,7 +287,7 @@ class TopicView extends StatelessWidget {
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
                 child: Text(
-                  "回复列表(${c.topic.floorCount - 1})",
+                  "回复列表(${c.data.floorCount - 1})",
                   style: TextStyle(
                     fontWeight: FontWeight.w500,
                   ),
@@ -352,7 +352,7 @@ class TopicView extends StatelessWidget {
                   ),
                   WidgetSpan(
                     child: Offstage(
-                      offstage: item.uid != c.topic.tMeta.uid,
+                      offstage: item.uid != c.data.tMeta.uid,
                       child: Container(
                         padding: EdgeInsets.only(left: 3, right: 3),
                         decoration: BoxDecoration(
@@ -506,7 +506,7 @@ class TopicView extends StatelessWidget {
           ),
         ),
         Offstage(
-          offstage: index == c.topic.floorCount,
+          offstage: index == c.data.floorCount,
           child: Divider(
             height: 1,
             color: Colors.grey,
