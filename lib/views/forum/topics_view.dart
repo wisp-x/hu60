@@ -8,6 +8,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:hu60/utils/user.dart';
+import 'package:hu60/views/user/user_info_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:ui' as ui;
 
@@ -87,60 +88,65 @@ class _TopicsView extends State<TopicsView>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Row(
-                  children: <Widget>[
-                    Container(
-                      width: 25,
-                      height: 25,
-                      margin: EdgeInsets.only(right: 5),
-                      child: ClipOval(
-                        child: CachedNetworkImage(
-                          imageUrl: avatarUrl,
-                          placeholder: (_, url) => CupertinoActivityIndicator(),
-                          errorWidget: (context, url, error) => Center(
-                            child: Icon(Icons.error),
+                GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 25,
+                        height: 25,
+                        margin: EdgeInsets.only(right: 5),
+                        child: ClipOval(
+                          child: CachedNetworkImage(
+                            imageUrl: avatarUrl,
+                            placeholder: (_, url) =>
+                                CupertinoActivityIndicator(),
+                            errorWidget: (context, url, error) => Center(
+                              child: Icon(Icons.error),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Expanded(
-                      child: Text.rich(
-                        TextSpan(
-                          children: <InlineSpan>[
-                            WidgetSpan(
-                              alignment: ui.PlaceholderAlignment.middle,
-                              child: Container(
-                                margin: EdgeInsets.only(right: 5),
-                                child: Text(
-                                  item.uName,
-                                  style: TextStyle(fontSize: 17),
-                                ),
-                              ),
-                            ),
-                            WidgetSpan(
-                              alignment: ui.PlaceholderAlignment.middle,
-                              child: Container(
-                                padding: EdgeInsets.only(left: 3, right: 3),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.all(
-                                    Radius.circular(4.0),
-                                  ),
-                                  color: Colors.green[400],
-                                ),
-                                child: Text(
-                                  item.forumName,
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    color: Colors.white,
+                      Expanded(
+                        child: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              WidgetSpan(
+                                alignment: ui.PlaceholderAlignment.middle,
+                                child: Container(
+                                  margin: EdgeInsets.only(right: 5),
+                                  child: Text(
+                                    item.uName,
+                                    style: TextStyle(fontSize: 17),
                                   ),
                                 ),
                               ),
-                            )
-                          ],
+                              WidgetSpan(
+                                alignment: ui.PlaceholderAlignment.middle,
+                                child: Container(
+                                  padding: EdgeInsets.only(left: 3, right: 3),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4.0),
+                                    ),
+                                    color: Colors.green[400],
+                                  ),
+                                  child: Text(
+                                    item.forumName,
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                              )
+                            ],
+                          ),
                         ),
-                      ),
-                    )
-                  ],
+                      )
+                    ],
+                  ),
+                  onTap: () => Get.to(() => UserInfoView(id: item.uid)),
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8, bottom: 8),

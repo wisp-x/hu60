@@ -15,6 +15,7 @@ import 'package:hu60/views/component/comment.dart';
 import 'package:hu60/views/forum/edit_topic_view.dart';
 import 'package:hu60/views/forum/plate_view.dart';
 import 'package:hu60/views/user/login_view.dart';
+import 'package:hu60/views/user/user_info_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
 
@@ -204,15 +205,18 @@ class TopicView extends StatelessWidget {
       child: Column(
         children: <Widget>[
           ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: CachedNetworkImage(
-                height: 50,
-                width: 50,
-                imageUrl: User.getAvatar(context, meta.uAvatar),
-                placeholder: (context, url) => CupertinoActivityIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+            leading: GestureDetector(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: CachedNetworkImage(
+                  height: 50,
+                  width: 50,
+                  imageUrl: User.getAvatar(context, meta.uAvatar),
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
+              onTap: () => Get.to(() => UserInfoView(id: meta.uid)),
             ),
             title: Text.rich(
               TextSpan(children: [
@@ -349,15 +353,18 @@ class TopicView extends StatelessWidget {
       children: <Widget>[
         Container(
           child: ListTile(
-            leading: ClipRRect(
-              borderRadius: BorderRadius.circular(6.0),
-              child: CachedNetworkImage(
-                height: 40,
-                width: 40,
-                imageUrl: User.getAvatar(context, item.uAvatar),
-                placeholder: (context, url) => CupertinoActivityIndicator(),
-                errorWidget: (context, url, error) => Icon(Icons.error),
+            leading: GestureDetector(
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(6.0),
+                child: CachedNetworkImage(
+                  height: 40,
+                  width: 40,
+                  imageUrl: User.getAvatar(context, item.uAvatar),
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
+                  errorWidget: (context, url, error) => Icon(Icons.error),
+                ),
               ),
+              onTap: () => Get.to(() => UserInfoView(id: item.uid)),
             ),
             title: Text.rich(
               TextSpan(
