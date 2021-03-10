@@ -94,9 +94,16 @@ class TopicController extends GetxController {
 
   // 更新楼层数据
   void updateFloor(
-    int topicId, // 帖子ID
-    int contentId, // 楼层ID
+    int id, // 帖子ID
   ) async {
+    TopicEntity response = await getData(id, this.page);
+    this.contents.asMap().keys.map((index) {
+      response.tContents.forEach((floor) {
+        if (this.contents[index].id == floor.id) {
+          this.contents[index] = floor;
+        }
+      });
+    }).toList();
     update();
   }
 

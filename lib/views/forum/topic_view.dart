@@ -461,8 +461,7 @@ class TopicView extends StatelessWidget {
                       c.textController.text =
                           content.replaceAll("<!-- markdown -->\r\n", "");
                       _toggleCommentModal(context, c, () {
-                        // TODO 动态修改楼层内容
-                        c.refreshController.requestRefresh();
+                        c.updateFloor(id);
                       }, isEdit: true, contentId: item.id);
                     },
                   ),
@@ -495,8 +494,7 @@ class TopicView extends StatelessWidget {
                     ),
                     onTap: () {
                       c.delete(context, id, item.id, () {
-                        // TODO 动态修改楼层内容
-                        c.refreshController.requestRefresh();
+                        c.updateFloor(id);
                       });
                     },
                   ),
