@@ -306,6 +306,12 @@ class TopicView extends StatelessWidget {
   ) {
     HomeController _home = Get.put(HomeController());
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
+    // 楼层
+    int i = index;
+    if (_home.user.floorReverse) {
+      // 楼层倒序
+      i = c.data.floorCount - index;
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -375,7 +381,7 @@ class TopicView extends StatelessWidget {
               child: Text(date),
             ),
             trailing: Text(
-              "# $index",
+              "# $i",
               style: TextStyle(
                 color: Colors.grey,
               ),
