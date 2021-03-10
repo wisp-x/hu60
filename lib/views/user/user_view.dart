@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/home_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 
 class UserView extends StatefulWidget {
@@ -28,8 +29,8 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<HomeController>(
-      init: HomeController(),
+    return GetBuilder<UserController>(
+      init: UserController(),
       builder: (c) => Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
@@ -45,7 +46,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildProfile(BuildContext context, HomeController c) {
+  Widget _buildProfile(BuildContext context, UserController c) {
     return Container(
       color: Colors.white,
       padding: EdgeInsets.only(top: 15, bottom: 15),
@@ -72,7 +73,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildSettings(BuildContext context, HomeController c) {
+  Widget _buildSettings(BuildContext context, UserController c) {
     return Container(
       margin: EdgeInsets.only(top: 10),
       color: Colors.white,
@@ -138,7 +139,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
     );
   }
 
-  Widget _buildMore(BuildContext context, HomeController c) {
+  Widget _buildMore(BuildContext context, UserController c) {
     return Container(
       color: Colors.white,
       margin: EdgeInsets.only(top: 10),

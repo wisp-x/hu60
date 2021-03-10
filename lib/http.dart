@@ -1,6 +1,5 @@
 import 'package:dio/dio.dart';
-import 'package:hu60/controllers/home_controller.dart';
-import 'package:hu60/views/user/login_view.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:get/get.dart' as GetX;
 
@@ -30,7 +29,7 @@ class Http {
     if (sid != null) {
       url += "/$sid";
     } else {
-      GetX.Get.put(HomeController()).logout();
+      GetX.Get.put(UserController()).logout();
     }
     return url;
   }

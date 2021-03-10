@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/views/forum/new_topic_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 
@@ -28,7 +29,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               highlightColor: Colors.transparent,
               icon: Icon(Icons.edit),
               onPressed: () async {
-                if (c.isLogin) {
+                if (Get.find<UserController>().isLogin) {
                   var res = await Get.to(() => NewTopicView());
                   if (res != null && res) {
                     // 发布成功，刷新

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
 import 'package:hu60/utils/html.dart';
@@ -24,7 +25,7 @@ class TopicView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    HomeController _home = Get.put(HomeController());
+    UserController userController = Get.put(UserController());
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
       builder: (c) => Scaffold(
@@ -47,7 +48,7 @@ class TopicView extends StatelessWidget {
                   builder: (context) {
                     var meta = c.data.tMeta;
                     return CupertinoActionSheet(
-                      actions: !c.loading && meta.uid != _home.user.uid
+                      actions: !c.loading && meta.uid != userController.user.uid
                           ? <Widget>[
                               _openUrlAction(id),
                             ]
@@ -304,11 +305,11 @@ class TopicView extends StatelessWidget {
     TContents item,
     int index,
   ) {
-    HomeController _home = Get.put(HomeController());
+    UserController userController = Get.put(UserController());
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
     // 楼层
     int i = index;
-    if (_home.user.floorReverse) {
+    if (userController.user.floorReverse) {
       // 楼层倒序
       i = c.data.floorCount - index;
     }
@@ -432,7 +433,8 @@ class TopicView extends StatelessWidget {
                   ),
                 ),
                 Offstage(
-                  offstage: item.uid != _home.user.uid || item.locked == 1,
+                  offstage:
+                      item.uid != userController.user.uid || item.locked == 1,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     child: Container(
@@ -473,7 +475,8 @@ class TopicView extends StatelessWidget {
                   ),
                 ),
                 Offstage(
-                  offstage: item.uid != _home.user.uid || item.locked == 1,
+                  offstage:
+                      item.uid != userController.user.uid || item.locked == 1,
                   child: GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     child: Container(
@@ -528,7 +531,7 @@ class TopicView extends StatelessWidget {
     int contentId: 0,
     bool isEdit: false,
   }) {
-    if (Get.find<HomeController>().isLogin) {
+    if (Get.find<UserController>().isLogin) {
       showModalBottomSheet(
         isScrollControlled: true,
         backgroundColor: Colors.white,

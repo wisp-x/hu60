@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/home_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/user/user_entity.dart';
 import 'package:hu60/http.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -134,7 +135,7 @@ class _LoginView extends State<LoginView> {
                     if (!response.data["success"]) {
                       Fluttertoast.showToast(msg: response.data["notice"]);
                     } else {
-                      HomeController controller = Get.put(HomeController());
+                      UserController controller = Get.put(UserController());
                       SharedPreferences prefs =
                           await SharedPreferences.getInstance();
                       prefs.setString("sid", response.data["sid"]);
