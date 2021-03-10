@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
-import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
@@ -197,6 +196,7 @@ class TopicView extends StatelessWidget {
   }
 
   Widget _buildMeta(BuildContext context, TopicController c, TContents item) {
+    UserController userController = Get.put(UserController());
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
     TMeta meta = c.data.tMeta;
     return Container(
@@ -285,11 +285,40 @@ class TopicView extends StatelessWidget {
               color: Color(0xffe7e7e7),
               child: Padding(
                 padding: EdgeInsets.only(left: 10, right: 10),
-                child: Text(
-                  "回复列表(${c.data.floorCount - 1})",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(
+                      "回复列表(${c.data.floorCount - 1})",
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    GestureDetector(
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
+                            TextSpan(
+                              text: userController.user.floorReverse
+                                  ? "正序"
+                                  : "倒序",
+                            ),
+                            WidgetSpan(
+                              child: Icon(
+                                Icons.sort_by_alpha,
+                                size: 20,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                      onTap: () {
+                        userController.setFloorReverse(() {
+                          c.refreshController.requestRefresh();
+                        });
+                      },
+                    ),
+                  ],
                 ),
               ),
             ),

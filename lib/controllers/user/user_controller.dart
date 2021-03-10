@@ -37,4 +37,13 @@ class UserController extends GetxController {
     this.user = UserEntity(0, "", "", "", 0, false, false, false, [], "");
     update();
   }
+
+  // 设置楼层顺序
+  setFloorReverse(Function callback) async {
+    String url = "/user.index.json?floorReverse=${user.floorReverse ? 0 : 1}";
+    dio.Response res = await Http.request(url);
+    user.floorReverse = res.data["floorReverse"];
+    update();
+    callback();
+  }
 }
