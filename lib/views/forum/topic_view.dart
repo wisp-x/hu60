@@ -304,6 +304,7 @@ class TopicView extends StatelessWidget {
                                   : "倒序",
                             ),
                             WidgetSpan(
+                              alignment: ui.PlaceholderAlignment.middle,
                               child: Icon(
                                 Icons.sort_by_alpha,
                                 size: 20,

@@ -22,7 +22,7 @@ class Html {
     RegExp regExp2 = RegExp(r"""style\s*=\s*('[^']*'|"[^"]*")""");
     content = content.replaceAll(regExp2, "");
     return Padding(
-      padding: EdgeInsets.only(right: 6.3),
+      padding: EdgeInsets.only(right: 5),
       child: flutterHtml.Html(
         data: content,
         onImageError: (dynamic exception, StackTrace stackTrace) {
@@ -37,7 +37,7 @@ class Html {
               fontSize: 17.5,
               inherit: false,
               wordSpacing: 0.0,
-              letterSpacing: 2.0,
+              letterSpacing: 1.0,
             ),
           ),
         },

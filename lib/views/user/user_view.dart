@@ -135,7 +135,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
               Icons.star_outline,
               color: Colors.grey,
             ),
-            title: Text("我的关注"),
+            title: Text("特别关注"),
             trailing: IconButton(
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
