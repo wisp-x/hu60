@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
+import 'package:hu60/views/user/login_view.dart';
 
 class UserView extends StatefulWidget {
   @override
@@ -34,13 +35,35 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       builder: (c) => Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         body: Center(
-          child: ListView(
-            children: <Widget>[
-              _buildProfile(context, c),
-              _buildSettings(context, c),
-              _buildMore(context, c),
-            ],
-          ),
+          child: c.isLogin
+              ? ListView(
+                  children: <Widget>[
+                    _buildProfile(context, c),
+                    _buildSettings(context, c),
+                    _buildMore(context, c),
+                  ],
+                )
+              : TextButton(
+                  child: Text(
+                    "点我登录",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Colors.green,
+                    minimumSize: Size(100, 45),
+                  ),
+                  onPressed: () => Get.to(
+                    () => LoginView(),
+                    fullscreenDialog: true,
+                  ),
+                ),
         ),
       ),
     );
