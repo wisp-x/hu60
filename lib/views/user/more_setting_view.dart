@@ -62,7 +62,10 @@ class _MoreSettingView extends State<MoreSettingView> {
                       Utils.openUrl("https://github.com/wisp-x/hu60");
                     },
                   ),
-                  Divider(height: 0.2, color: dividerColor),
+                  Padding(
+                    padding: EdgeInsets.only(left: 70),
+                    child: Divider(height: 0.2, color: dividerColor),
+                  ),
                   ListTile(
                     leading: Icon(Icons.info, color: Colors.grey),
                     title: Text("版本信息"),

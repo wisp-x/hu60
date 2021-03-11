@@ -13,7 +13,7 @@ class UserView extends StatefulWidget {
 }
 
 class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
-  final dividerColor = Color(0xdccdcdcd);
+  final dividerColor = Color(0xdce3e3e3);
 
   @override
   void initState() {
@@ -103,19 +103,28 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
             title: Text("我的帖子"),
             trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, color: dividerColor),
+          Padding(
+            padding: EdgeInsets.only(left: 70),
+            child: Divider(height: 0.2, color: dividerColor),
+          ),
           ListTile(
             leading: Icon(Icons.bookmark_outline, color: Colors.grey),
             title: Text("我的收藏"),
             trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, color: dividerColor),
+          Padding(
+            padding: EdgeInsets.only(left: 70),
+            child: Divider(height: 0.2, color: dividerColor),
+          ),
           ListTile(
             leading: Icon(Icons.star_outline, color: Colors.grey),
             title: Text("特别关注"),
             trailing: Icon(Icons.chevron_right),
           ),
-          Divider(height: 0.2, color: dividerColor),
+          Padding(
+            padding: EdgeInsets.only(left: 70),
+            child: Divider(height: 0.2, color: dividerColor),
+          ),
           ListTile(
             leading: Icon(Icons.list, color: Colors.grey),
             title: Text("屏蔽用户"),

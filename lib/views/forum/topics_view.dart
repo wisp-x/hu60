@@ -88,11 +88,10 @@ class _TopicsView extends State<TopicsView>
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: Row(
-                    children: <Widget>[
-                      Container(
+                Row(
+                  children: <Widget>[
+                    GestureDetector(
+                      child: Container(
                         width: 25,
                         height: 25,
                         margin: EdgeInsets.only(right: 5),
@@ -107,12 +106,15 @@ class _TopicsView extends State<TopicsView>
                           ),
                         ),
                       ),
-                      Expanded(
-                        child: Text.rich(
-                          TextSpan(
-                            children: <InlineSpan>[
-                              WidgetSpan(
-                                alignment: ui.PlaceholderAlignment.middle,
+                      onTap: () => Get.to(() => UserInfoView(id: item.uid)),
+                    ),
+                    Expanded(
+                      child: Text.rich(
+                        TextSpan(
+                          children: <InlineSpan>[
+                            WidgetSpan(
+                              alignment: ui.PlaceholderAlignment.middle,
+                              child: GestureDetector(
                                 child: Container(
                                   margin: EdgeInsets.only(right: 5),
                                   child: Text(
@@ -120,33 +122,35 @@ class _TopicsView extends State<TopicsView>
                                     style: TextStyle(fontSize: 17),
                                   ),
                                 ),
+                                onTap: () => Get.to(
+                                  () => UserInfoView(id: item.uid),
+                                ),
                               ),
-                              WidgetSpan(
-                                alignment: ui.PlaceholderAlignment.middle,
-                                child: Container(
-                                  padding: EdgeInsets.only(left: 3, right: 3),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.all(
-                                      Radius.circular(4.0),
-                                    ),
-                                    color: Colors.green[400],
+                            ),
+                            WidgetSpan(
+                              alignment: ui.PlaceholderAlignment.middle,
+                              child: Container(
+                                padding: EdgeInsets.only(left: 3, right: 3),
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4.0),
                                   ),
-                                  child: Text(
-                                    item.forumName,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      color: Colors.white,
-                                    ),
+                                  color: Colors.green[400],
+                                ),
+                                child: Text(
+                                  item.forumName,
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    color: Colors.white,
                                   ),
                                 ),
-                              )
-                            ],
-                          ),
+                              ),
+                            )
+                          ],
                         ),
-                      )
-                    ],
-                  ),
-                  onTap: () => Get.to(() => UserInfoView(id: item.uid)),
+                      ),
+                    )
+                  ],
                 ),
                 Padding(
                   padding: EdgeInsets.only(top: 8, bottom: 8),
