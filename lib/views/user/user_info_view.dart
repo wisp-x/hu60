@@ -7,6 +7,7 @@ import 'package:hu60/entities/user/user_info_entity.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../http.dart';
 
@@ -25,12 +26,16 @@ class _UserInfoView extends State<UserInfoView>
   UserInfoEntity user;
   final dividerColor = Color(0xdccdcdcd);
   TabController tabController;
+  RefreshController refreshController;
+  ScrollController scrollController;
 
   @override
   void initState() {
     super.initState();
     _getUserInfo();
     this.tabController = TabController(length: 3, vsync: this);
+    refreshController = RefreshController(initialRefresh: false);
+    scrollController = ScrollController();
   }
 
   @override
@@ -101,8 +106,8 @@ class _UserInfoView extends State<UserInfoView>
       pinned: true,
       delegate: StickyTabBarDelegate(
         child: TabBar(
-          automaticIndicatorColorAdjustment: false,
-          labelColor: Colors.black,
+          labelColor: Theme.of(context).accentColor,
+          indicatorColor: Theme.of(context).accentColor,
           controller: this.tabController,
           tabs: <Widget>[
             Tab(text: '资料'),
@@ -115,11 +120,21 @@ class _UserInfoView extends State<UserInfoView>
   }
 
   Widget _tabUserInfo() {
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      header: WaterDropHeader(),
+      footer: ClassicFooter(),
+      controller: refreshController,
+      primary: false,
+      scrollController: scrollController,
+      child: Text('资料'),
+    );
     return Center(child: Text('资料'));
   }
 
   Widget _tabTopics() {
-    return Center(child: Text('主题'));
+    return Text('主题');
   }
 
   Widget _tabReplies() {
@@ -146,12 +161,19 @@ class _UserInfoView extends State<UserInfoView>
 
 class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar child;
+  final Function callback;
 
-  StickyTabBarDelegate({@required this.child});
+  StickyTabBarDelegate({@required this.child, this.callback});
 
   @override
   Widget build(
-      BuildContext context, double shrinkOffset, bool overlapsContent) {
+    BuildContext context,
+    double shrinkOffset, // child 偏移值 minExtent~maxExtent
+    bool overlapsContent, // SliverPersistentHeader覆盖其他子组件返回true，否则返回false
+  ) {
+    if (callback != null) {
+      callback(shrinkOffset, overlapsContent);
+    }
     return this.child;
   }
 
