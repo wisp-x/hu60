@@ -69,15 +69,11 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       color: Colors.white,
       padding: EdgeInsets.only(top: 15, bottom: 15),
       child: ListTile(
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(8.0),
-          child: CachedNetworkImage(
-            height: 60,
-            width: 60,
-            imageUrl: User.getAvatar(context, c.user.uAvatar),
-            placeholder: (context, url) => CupertinoActivityIndicator(),
-            errorWidget: (context, url, error) => Icon(Icons.error),
-          ),
+        leading: User.getAvatar(
+          context: context,
+          url: c.user.uAvatar,
+          size: 60,
+          borderRadius: 8.0,
         ),
         title: Text(c.user.name),
         subtitle: Container(

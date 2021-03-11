@@ -206,15 +206,11 @@ class TopicView extends StatelessWidget {
         children: <Widget>[
           ListTile(
             leading: GestureDetector(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6.0),
-                child: CachedNetworkImage(
-                  height: 50,
-                  width: 50,
-                  imageUrl: User.getAvatar(context, meta.uAvatar),
-                  placeholder: (context, url) => CupertinoActivityIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
+              child: User.getAvatar(
+                context: context,
+                url: meta.uAvatar,
+                size: 50,
+                borderRadius: 6.0,
               ),
               onTap: () => Get.to(() => UserInfoView(id: meta.uid)),
             ),
@@ -354,16 +350,7 @@ class TopicView extends StatelessWidget {
         Container(
           child: ListTile(
             leading: GestureDetector(
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(6.0),
-                child: CachedNetworkImage(
-                  height: 40,
-                  width: 40,
-                  imageUrl: User.getAvatar(context, item.uAvatar),
-                  placeholder: (context, url) => CupertinoActivityIndicator(),
-                  errorWidget: (context, url, error) => Icon(Icons.error),
-                ),
-              ),
+              child: User.getAvatar(context: context, url: item.uAvatar),
               onTap: () => Get.to(() => UserInfoView(id: item.uid)),
             ),
             title: Text.rich(

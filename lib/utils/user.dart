@@ -1,9 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class User {
   // 获取用户头像
-  static getAvatar(BuildContext context, String avatarUrl) {
+  static String _getAvatar(BuildContext context, String avatarUrl) {
     if (avatarUrl == "/upload/default.jpg" || null == avatarUrl) {
       avatarUrl = "https://hu60.cn/upload/default.jpg";
     }
@@ -17,5 +18,24 @@ class User {
       },
     );
     return avatarUrl;
+  }
+
+  // 展示用户头像
+  static Widget getAvatar({
+    @required BuildContext context,
+    @required String url,
+    double size = 40.0, // 头像大小
+    double borderRadius = 6.0, // 圆角
+  }) {
+    return ClipRRect(
+      borderRadius: BorderRadius.circular(borderRadius),
+      child: CachedNetworkImage(
+        height: size,
+        width: size,
+        imageUrl: _getAvatar(context, url),
+        placeholder: (context, url) => CupertinoActivityIndicator(),
+        errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
+      ),
+    );
   }
 }

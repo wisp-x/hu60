@@ -79,7 +79,6 @@ class _TopicsView extends State<TopicsView>
           return null;
         }
         TopicList item = c.topics[index];
-        String avatarUrl = User.getAvatar(context, item.uAvatar);
         String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
         return GestureDetector(
           behavior: HitTestBehavior.opaque,
@@ -92,18 +91,12 @@ class _TopicsView extends State<TopicsView>
                   children: <Widget>[
                     GestureDetector(
                       child: Container(
-                        width: 25,
-                        height: 25,
                         margin: EdgeInsets.only(right: 5),
-                        child: ClipOval(
-                          child: CachedNetworkImage(
-                            imageUrl: avatarUrl,
-                            placeholder: (_, url) =>
-                                CupertinoActivityIndicator(),
-                            errorWidget: (context, url, error) => Center(
-                              child: Icon(Icons.error),
-                            ),
-                          ),
+                        child: User.getAvatar(
+                          context: context,
+                          url: item.uAvatar,
+                          size: 25,
+                          borderRadius: 50,
                         ),
                       ),
                       onTap: () => Get.to(() => UserInfoView(id: item.uid)),
