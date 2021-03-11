@@ -4,8 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
-import 'package:hu60/utils/utils.dart';
 import 'package:dio/dio.dart' as dio;
+import 'package:hu60/utils/utils.dart';
 
 import '../../http.dart';
 
@@ -35,59 +35,7 @@ class _UserInfoView extends State<UserInfoView> {
       init: UserController(),
       builder: (c) => Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
-        body: CustomScrollView(
-          slivers: <Widget>[
-            SliverAppBar(
-              pinned: true,
-              centerTitle: true,
-              elevation: 0,
-              expandedHeight: 100.0,
-              flexibleSpace: FlexibleSpaceBar(
-                title: Text('Demo'),
-              ),
-            ),
-
-            SliverPadding(
-              padding: EdgeInsets.all(8.0),
-              sliver: SliverGrid(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, //Grid按两列显示
-                  mainAxisSpacing: 10.0,
-                  crossAxisSpacing: 10.0,
-                  childAspectRatio: 4.0,
-                ),
-                delegate: SliverChildBuilderDelegate(
-                  (
-                    BuildContext context,
-                    int index,
-                  ) {
-                    //创建子widget
-                    return Container(
-                      alignment: Alignment.center,
-                      color: Colors.cyan[100 * (index % 9)],
-                      child: Text('grid item $index'),
-                    );
-                  },
-                  childCount: 20,
-                ),
-              ),
-            ),
-            //List
-            SliverFixedExtentList(
-              itemExtent: 50.0,
-              delegate:
-                  SliverChildBuilderDelegate((BuildContext context, int index) {
-                //创建列表项
-                return Container(
-                  alignment: Alignment.center,
-                  color: Colors.lightBlue[100 * (index % 9)],
-                  child: Text('list item $index'),
-                );
-              }, childCount: 50 //50个列表项
-                      ),
-            ),
-          ],
-        ),
+        body: loading ? Utils.loading(context) : Text("111"),
       ),
     );
   }

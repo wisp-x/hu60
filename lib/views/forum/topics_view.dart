@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:common_utils/common_utils.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/forum/topic_view.dart';
