@@ -29,7 +29,9 @@ class TopicsController extends GetxController
   // 初始化列表
   void init() async {
     _backTop();
+    loading = true;
     page = 1;
+    update();
     TopicsEntity response = await getData(page);
     topics = response.topicList;
     update();
@@ -55,7 +57,6 @@ class TopicsController extends GetxController
 
   // 获取数据
   Future<TopicsEntity> getData(int page) async {
-    loading = true;
     var response = await Http.request(
       "/bbs.forum.0.$page.$type.json?_uinfo=name,avatar",
       method: Http.POST,

@@ -31,6 +31,8 @@ class TopicController extends GetxController {
   // 初始化列表
   void init() async {
     page = 1;
+    loading = true;
+    update();
     TopicEntity response = await getData(id, page);
     data = response;
     contents = data.tContents;
@@ -61,7 +63,6 @@ class TopicController extends GetxController {
 
   // 获取数据
   Future<TopicEntity> getData(int id, int page) async {
-    loading = true;
     var response = await Http.request(
       "/bbs.topic.$id.$page.json?_uinfo=name,avatar",
       method: Http.POST,

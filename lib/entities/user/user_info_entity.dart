@@ -10,10 +10,10 @@ class UserInfoEntity extends Object {
   @JsonKey(name: 'name')
   String name;
 
-  @JsonKey(name: 'signature')
+  @JsonKey(name: 'signature', defaultValue: "-")
   String signature;
 
-  @JsonKey(name: 'contact')
+  @JsonKey(name: 'contact', defaultValue: "-")
   String contact;
 
   @JsonKey(name: 'regtime')
