@@ -56,6 +56,8 @@ class _UserInfoView extends State<UserInfoView>
 
   Widget _buildContent() {
     return CustomScrollView(
+      // TODO 吸附 tab 后滚动时会导致内容被 tab 覆盖，暂时禁止滚动
+      physics: NeverScrollableScrollPhysics(),
       slivers: <Widget>[
         _buildMeta(),
         _buildTabs(),
@@ -83,9 +85,9 @@ class _UserInfoView extends State<UserInfoView>
             end: Alignment.centerRight, //左下
             //渐变颜色[始点颜色, 结束颜色]
             colors: [
-              Color.fromRGBO(83, 187, 109, 1.0),
-              Color.fromRGBO(84, 196, 111, 1.0),
-              Color.fromRGBO(83, 187, 109, 1.0),
+              Color.fromRGBO(99, 184, 120, 1.0),
+              Color.fromRGBO(54, 201, 90, 1.0),
+              Color.fromRGBO(99, 184, 120, 1.0),
             ],
           ),
         ),
