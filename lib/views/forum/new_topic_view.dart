@@ -122,7 +122,7 @@ class _NewTopicView extends State<NewTopicView> {
               child: TextField(
                 controller: _contentController,
                 maxLines: 99,
-                minLines: 2,
+                minLines: 10,
                 decoration: InputDecoration(
                   contentPadding: EdgeInsets.all(14),
                   hintText: "请输入内容",

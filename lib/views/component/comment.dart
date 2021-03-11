@@ -79,7 +79,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
           children: <Widget>[
             TextField(
               autofocus: true,
-              maxLines: 3,
+              maxLines: 5,
               keyboardType: TextInputType.multiline,
               controller: widget.controller,
               decoration: InputDecoration(
@@ -95,7 +95,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                   // 选中时外边框颜色
                   borderRadius: BorderRadius.circular(6),
                   borderSide: BorderSide(
-                    color: Color(0xff6d6d6d),
+                    color: Color(0xffb3b3b3),
                   ),
                 ),
                 hintText: "请勿发布不友善或者负能量的内容，与人为善，比聪明更重要！",
