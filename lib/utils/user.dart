@@ -33,7 +33,9 @@ class User {
         height: size,
         width: size,
         imageUrl: _getAvatar(context, url),
-        placeholder: (context, url) => CupertinoActivityIndicator(),
+        placeholder: (context, url) => Center(
+          child: CupertinoActivityIndicator(),
+        ),
         errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
       ),
     );

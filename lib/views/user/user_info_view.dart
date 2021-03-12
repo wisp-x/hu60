@@ -7,6 +7,7 @@ import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
+import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:ui' as ui;
@@ -245,7 +246,6 @@ class _UserInfoView extends State<UserInfoView> {
             return null;
           }
           TopicList item = c.topics[index];
-          String date = TimelineUtil.format(item.mtime * 1000, locale: "zh");
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
             child: Padding(
@@ -255,89 +255,9 @@ class _UserInfoView extends State<UserInfoView> {
                 children: <Widget>[
                   Padding(
                     padding: EdgeInsets.only(bottom: 8),
-                    child: Text.rich(
-                      TextSpan(children: [
-                        WidgetSpan(
-                          alignment: ui.PlaceholderAlignment.middle,
-                          child: Offstage(
-                            offstage: item.locked == 0,
-                            child: Text(
-                              "锁 ",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        WidgetSpan(
-                          alignment: ui.PlaceholderAlignment.middle,
-                          child: Offstage(
-                            offstage: item.essence == 0,
-                            child: Text(
-                              "精 ",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        WidgetSpan(
-                          alignment: ui.PlaceholderAlignment.middle,
-                          child: Offstage(
-                            offstage: item.level != -1,
-                            child: Text(
-                              "沉 ",
-                              style: TextStyle(
-                                fontSize: 17,
-                                color: Colors.redAccent,
-                                fontWeight: FontWeight.w600,
-                              ),
-                            ),
-                          ),
-                        ),
-                        TextSpan(
-                          text: item.title,
-                          style: TextStyle(
-                            fontSize: 17,
-                          ),
-                        )
-                      ]),
-                    ),
+                    child: Forum.buildTopicsTitle(item),
                   ),
-                  Text.rich(
-                    TextSpan(children: [
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.chat,
-                          color: Colors.grey,
-                          size: 16,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " ${item.replyCount}  ",
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                      WidgetSpan(
-                        child: Icon(
-                          Icons.remove_red_eye,
-                          color: Colors.grey,
-                          size: 17,
-                        ),
-                      ),
-                      TextSpan(
-                        text: " ${item.readCount} · 最后回复于 $date",
-                        style: TextStyle(
-                          color: Colors.grey,
-                        ),
-                      ),
-                    ]),
-                  )
+                  Forum.buildTopicsFooter(item),
                 ],
               ),
             ),

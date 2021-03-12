@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as flutterHtml;
 import 'package:flutter_html/html_parser.dart';
@@ -42,12 +43,10 @@ class Html {
           ),
         },
         customRender: {
-          "div": (
-            RenderContext context,
-            Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
-          ) {
+          "div": (RenderContext context,
+              Widget child,
+              Map<String, String> attrs,
+              dom.Element element,) {
             switch (attrs["class"]) {
               case "tp info-box":
                 return Container(
@@ -70,12 +69,10 @@ class Html {
                 return null;
             }
           },
-          "img": (
-            RenderContext context,
-            Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
-          ) {
+          "img": (RenderContext context,
+              Widget child,
+              Map<String, String> attrs,
+              dom.Element element,) {
             if (element == null) return null;
             if (attrs["src"] == null || attrs["src"] == "") {
               return Text(element.text);
@@ -87,12 +84,20 @@ class Html {
                     margin: EdgeInsets.only(top: 5, bottom: 5),
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(6.0),
-                      child: Image.network(attrs["src"]),
+                      child: CachedNetworkImage(
+                        imageUrl: attrs["src"],
+                        placeholder: (context, url) => Center(
+                          child: CupertinoActivityIndicator(),
+                        ),
+                        errorWidget: (context, url, error) => Center(
+                          child: Icon(Icons.error),
+                        ),
+                      ),
                     ),
                   ),
                   onTap: () {
                     Get.to(
-                      () => PhotoGallery(
+                          () => PhotoGallery(
                         index: 0,
                         images: [attrs["src"]],
                         heroTag: attrs["src"],
@@ -115,7 +120,7 @@ class Html {
               default:
                 return CachedNetworkImage(
                   imageUrl: attrs["src"],
-                  placeholder: (context, url) => CircularProgressIndicator(),
+                  placeholder: (context, url) => CupertinoActivityIndicator(),
                   errorWidget: (context, url, error) => Text(
                     "图片加载失败",
                     style: TextStyle(color: Colors.redAccent),
@@ -123,12 +128,10 @@ class Html {
                 );
             }
           },
-          "a": (
-            RenderContext context,
-            Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
-          ) {
+          "a": (RenderContext context,
+              Widget child,
+              Map<String, String> attrs,
+              dom.Element element,) {
             switch (attrs["class"]) {
               case "userlink": // 链接
                 return _buildOpenUrlWidget(attrs, element);
