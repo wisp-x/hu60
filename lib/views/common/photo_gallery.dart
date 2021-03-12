@@ -55,7 +55,6 @@ class _PhotoGalleryState extends State<PhotoGallery> {
                   );
                 },
                 itemCount: widget.images.length,
-                loadFailedChild: Container(),
                 backgroundDecoration: null,
                 pageController: widget.controller,
                 enableRotation: true,

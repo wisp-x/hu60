@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   get: ^3.25.4
-  dio: ^3.0.10
+  dio: ^4.0.0-beta7
   shared_preferences: ^2.0.3
   convex_bottom_bar: ^2.7.1+1
   pull_to_refresh: ^1.6.4
@@ -44,8 +44,9 @@ dependencies:
   flutter_html:
     git: https://github.com/Sub6Resources/flutter_html
   url_launcher: ^6.0.2
-  photo_view: ^0.10.3
+  photo_view: ^0.11.1
   fluttertoast: ^7.1.8
+  flutter_screenutil: ^4.0.3+3
 
 # TODO 重写 flutter_svg 插件，等待 flutter_html 升级依赖
 dependency_overrides:
