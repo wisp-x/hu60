@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/views/home_view.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -17,36 +18,41 @@ void main() {
       // Viewport不满一屏时,禁用上拉加载更多功能
       enableBallisticLoad: true,
       // 可以通过惯性滑动触发加载更多
-      child: GetMaterialApp(
-        debugShowMaterialGrid: false,
-        locale: Locale('zh', 'CH'),
-        routingCallback: (Routing routing) {
-          if (routing.current == '/second') {
-            // 如果登录。。。
-          }
-        },
-        home: HomeView(),
-        localizationsDelegates: [
-          RefreshLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate, // 指定本地化的字符串和一些其他的值
-          GlobalCupertinoLocalizations.delegate, // 对应的Cupertino风格
-          GlobalWidgetsLocalizations.delegate // 指定默认的文本排列方向, 由左到右或由右到左
-        ],
-        supportedLocales: [
-          const Locale('zh', 'CH'),
-        ],
-        localeResolutionCallback: (
-          Locale locale,
-          Iterable<Locale> supportedLocales,
-        ) {
-          return locale;
-        },
-        theme: ThemeData(
-          // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.red),
-          brightness: Brightness.light,
-          primaryColor: Colors.white,
-          accentColor: Color.fromRGBO(63, 154, 86, 1.0),
-          backgroundColor: Color.fromRGBO(242, 247, 251, 1),
+      child: ScreenUtilInit(
+        designSize: Size(750, 1334),
+        allowFontScaling: false,
+        builder: () => GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          debugShowMaterialGrid: false,
+          locale: Locale('zh', 'CH'),
+          routingCallback: (Routing routing) {
+            if (routing.current == '/second') {
+              // 如果登录。。。
+            }
+          },
+          home: HomeView(),
+          localizationsDelegates: [
+            RefreshLocalizations.delegate,
+            GlobalMaterialLocalizations.delegate, // 指定本地化的字符串和一些其他的值
+            GlobalCupertinoLocalizations.delegate, // 对应的Cupertino风格
+            GlobalWidgetsLocalizations.delegate // 指定默认的文本排列方向, 由左到右或由右到左
+          ],
+          supportedLocales: [
+            const Locale('zh', 'CH'),
+          ],
+          localeResolutionCallback: (
+            Locale locale,
+            Iterable<Locale> supportedLocales,
+          ) {
+            return locale;
+          },
+          theme: ThemeData(
+            // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.red),
+            brightness: Brightness.light,
+            primaryColor: Colors.white,
+            accentColor: Color.fromRGBO(63, 154, 86, 1.0),
+            backgroundColor: Color.fromRGBO(242, 247, 251, 1),
+          ),
         ),
       ),
     ),

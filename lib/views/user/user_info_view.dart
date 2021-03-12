@@ -24,6 +24,20 @@ class UserInfoView extends StatefulWidget {
 class _UserInfoView extends State<UserInfoView> {
   final dividerColor = Color(0xdccdcdcd);
 
+  final Map<String, String> permissions = {
+    "PERMISSION_EDIT_TOPIC": "帖子编辑权限",
+    "PERMISSION_SET_BLOCK_POST": "设置禁言权限",
+    "PERMISSION_SET_ESSENCE_TOPIC": "帖子加精权限",
+    "PERMISSION_REVIEW_POST": "审核用户发言权限"
+  };
+
+  final Map<String, String> status = {
+    "DEBUFF_UBB_DISABLE_STYLE": "用户被禁止使用 div、span 标签",
+    "DEBUFF_BLOCK_POST": "用户被禁言",
+    "DEBUFF_BLOCK_ATINFO": "用户被禁止@他人",
+    "DEBUFF_POST_NEED_REVIEW": "发言需要审核",
+  };
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserInfoController>(
@@ -105,7 +119,7 @@ class _UserInfoView extends State<UserInfoView> {
           children: [
             Container(
               alignment: Alignment.center,
-              margin: EdgeInsets.only(top: 40, bottom: 10),
+              margin: EdgeInsets.only(top: 45),
               child: User.getAvatar(
                 context: context,
                 url: c.user.uAvatar,
@@ -187,36 +201,108 @@ class _UserInfoView extends State<UserInfoView> {
     String regTime = u.regtime == 0
         ? defaultRegTime
         : DateUtil.formatDateMs(u.regtime * 1000);
-    return Container(
-      margin: EdgeInsets.only(bottom: 10),
-      child: Column(
-        children: <Widget>[
-          Divider(height: 0.2, color: dividerColor),
-          _getItem("UID", c.user.uid),
-          Padding(
-            padding: EdgeInsets.only(left: 60),
-            child: Divider(height: 0.2, color: dividerColor),
+    return ListView(
+      children: <Widget>[
+        ..._getPermissionLabels(c),
+        Container(
+          margin: EdgeInsets.only(bottom: 10),
+          child: Column(
+            children: <Widget>[
+              Divider(height: 0.2, color: dividerColor),
+              _getItem("UID", c.user.uid),
+              Padding(
+                padding: EdgeInsets.only(left: 60),
+                child: Divider(height: 0.2, color: dividerColor),
+              ),
+              _getItem("昵称", c.user.name),
+              Padding(
+                padding: EdgeInsets.only(left: 60),
+                child: Divider(height: 0.2, color: dividerColor),
+              ),
+              _getItem("签名", c.user.signature ?? "-"),
+              Padding(
+                padding: EdgeInsets.only(left: 60),
+                child: Divider(height: 0.2, color: dividerColor),
+              ),
+              _getItem("联系方式", u.contact ?? "-"),
+              Padding(
+                padding: EdgeInsets.only(left: 60),
+                child: Divider(height: 0.2, color: dividerColor),
+              ),
+              _getItem("注册时间", regTime),
+              Divider(height: 0.2, color: dividerColor),
+            ],
           ),
-          _getItem("昵称", c.user.name),
-          Padding(
-            padding: EdgeInsets.only(left: 60),
-            child: Divider(height: 0.2, color: dividerColor),
-          ),
-          _getItem("签名", c.user.signature ?? "-"),
-          Padding(
-            padding: EdgeInsets.only(left: 60),
-            child: Divider(height: 0.2, color: dividerColor),
-          ),
-          _getItem("联系方式", u.contact ?? "-"),
-          Padding(
-            padding: EdgeInsets.only(left: 60),
-            child: Divider(height: 0.2, color: dividerColor),
-          ),
-          _getItem("注册时间", regTime),
-          Divider(height: 0.2, color: dividerColor),
-        ],
-      ),
+        )
+      ],
     );
+  }
+
+  List<Widget> _getPermissionLabels(UserInfoController c) {
+    List<Widget> a = [];
+    List<Widget> b = [];
+    c.user.permissions.forEach((permission) {
+      if (permissions.containsKey(permission)) {
+        a.add(Container(
+          color: Color(0xff3bb7c9),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(3),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.admin_panel_settings,
+                        color: Colors.orangeAccent),
+                    Padding(
+                      padding: EdgeInsets.only(left: 4),
+                      child: Text(
+                        "拥有${permissions[permission]}",
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                height: 0.2,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ));
+      }
+      if (status.containsKey(permission)) {
+        b.add(Container(
+          color: Color(0xffc45f5f),
+          child: Column(
+            children: <Widget>[
+              Container(
+                padding: EdgeInsets.all(3),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Icon(Icons.warning, color: Color(0xffadadad)),
+                    Padding(
+                      padding: EdgeInsets.only(left: 4),
+                      child: Text(
+                        status[permission],
+                        style: TextStyle(color: Colors.white),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              Divider(
+                height: 0.2,
+                color: Colors.white,
+              )
+            ],
+          ),
+        ));
+      }
+    });
+    return [...a, ...b];
   }
 
   Widget _tabTopics(UserInfoController c) {
@@ -269,7 +355,7 @@ class _UserInfoView extends State<UserInfoView> {
   }
 
   Widget _tabReplies(UserInfoController c) {
-    return Center(child: Text('回复'));
+    return ListView.builder(itemBuilder: (c, _) => Text('hhh'));
   }
 
   Widget _getItem(String name, dynamic value) {
