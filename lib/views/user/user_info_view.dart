@@ -242,7 +242,8 @@ class _UserInfoView extends State<UserInfoView> {
   List<Widget> _getPermissionLabels(UserInfoController c) {
     List<Widget> a = [];
     List<Widget> b = [];
-    c.user.permissions.forEach((permission) {
+    c.user.permissions.asMap().keys.map((i) {
+      String permission = c.user.permissions[i];
       if (permissions.containsKey(permission)) {
         a.add(Container(
           color: Color(0xff3bb7c9),
@@ -271,10 +272,7 @@ class _UserInfoView extends State<UserInfoView> {
                   ],
                 ),
               ),
-              Divider(
-                height: 1,
-                color: Colors.white,
-              )
+              Divider(height: 1, color: Colors.white)
             ],
           ),
         ));
@@ -307,15 +305,15 @@ class _UserInfoView extends State<UserInfoView> {
                   ],
                 ),
               ),
-              Divider(
-                height: 1,
-                color: Colors.white,
-              )
+              Offstage(
+                offstage: i != c.user.permissions.length,
+                child: Divider(height: 1, color: Colors.black),
+              ),
             ],
           ),
         ));
       }
-    });
+    }).toList();
     return [...a, ...b];
   }
 
