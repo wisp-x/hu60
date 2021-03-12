@@ -27,6 +27,7 @@ class TopicView extends StatelessWidget {
     UserController userController = Get.put(UserController());
     return GetBuilder<TopicController>(
       init: TopicController(id: id),
+      tag: "topic-$id",
       builder: (c) => Scaffold(
         backgroundColor: Theme.of(context).backgroundColor,
         appBar: AppBar(

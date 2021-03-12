@@ -27,6 +27,7 @@ class _UserInfoView extends State<UserInfoView> {
   Widget build(BuildContext context) {
     return GetBuilder<UserInfoController>(
       init: UserInfoController(widget.id),
+      tag: "user-info-${widget.id}",
       builder: (c) => Scaffold(
         appBar: AppBar(
           title: Text(c.infoLoading ? "用户信息" : c.user.name),

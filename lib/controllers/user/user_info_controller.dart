@@ -16,7 +16,6 @@ class UserInfoController extends GetxController
   UserInfoEntity user;
   TabController tabController;
 
-  // TODO 修复ID未重载的问题
   UserInfoController(this.id);
 
   // 用户主题
