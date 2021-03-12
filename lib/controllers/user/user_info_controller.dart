@@ -127,7 +127,7 @@ class UserInfoController extends GetxController
       method: Http.POST,
       data: {"action": "follow", "targetUid": this.id},
     );
-    Fluttertoast.showToast(msg: "关注成功");
+    Fluttertoast.showToast(msg: response.data["message"]);
     if (response.data["success"]) {
       _refreshInfo();
       callback != null && callback();
@@ -141,7 +141,7 @@ class UserInfoController extends GetxController
       method: Http.POST,
       data: {"action": "unfollow", "targetUid": this.id},
     );
-    Fluttertoast.showToast(msg: "取消关注成功");
+    Fluttertoast.showToast(msg: response.data["message"]);
     if (response.data["success"]) {
       _refreshInfo();
       callback != null && callback();
