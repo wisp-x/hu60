@@ -103,24 +103,24 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       color: Colors.white,
       child: Column(
         children: <Widget>[
-          Divider(height: 0.2, color: dividerColor),
+          Divider(height: 1, color: dividerColor),
           Forum.buildListTile(Icons.format_list_bulleted, "我的帖子"),
           Padding(
             padding: EdgeInsets.only(left: 70),
-            child: Divider(height: 0.2, color: dividerColor),
+            child: Divider(height: 1, color: dividerColor),
           ),
           Forum.buildListTile(Icons.bookmark_outline, "我的收藏"),
           Padding(
             padding: EdgeInsets.only(left: 70),
-            child: Divider(height: 0.2, color: dividerColor),
+            child: Divider(height: 1, color: dividerColor),
           ),
           Forum.buildListTile(Icons.star_outline, "特别关注"),
           Padding(
             padding: EdgeInsets.only(left: 70),
-            child: Divider(height: 0.2, color: dividerColor),
+            child: Divider(height: 1, color: dividerColor),
           ),
           Forum.buildListTile(Icons.list, "屏蔽用户"),
-          Divider(height: 0.2, color: dividerColor),
+          Divider(height: 1, color: dividerColor),
         ],
       ),
     );
@@ -132,7 +132,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       margin: EdgeInsets.only(top: 10),
       child: Column(
         children: <Widget>[
-          Divider(height: 0.2, color: dividerColor),
+          Divider(height: 1, color: dividerColor),
           ListTile(
             leading: Icon(Icons.settings, color: Colors.grey),
             title: Text(
@@ -145,7 +145,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
             ),
             onTap: () => Get.to(() => MoreSettingView()),
           ),
-          Divider(height: 0.2, color: dividerColor),
+          Divider(height: 1, color: dividerColor),
         ],
       ),
     );

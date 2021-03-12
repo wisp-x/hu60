@@ -73,7 +73,7 @@ class SearchView extends StatelessWidget {
                   },
                 ),
               ),
-              Divider(height: 0.2, color: Colors.grey[300]),
+              Divider(height: 1, color: Colors.grey[300]),
               Expanded(child: child),
             ],
           ),

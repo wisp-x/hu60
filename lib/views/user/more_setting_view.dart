@@ -32,7 +32,7 @@ class _MoreSettingView extends State<MoreSettingView> {
               margin: EdgeInsets.only(top: 10),
               child: Column(
                 children: <Widget>[
-                  Divider(height: 0.2, color: dividerColor),
+                  Divider(height: 1, color: dividerColor),
                   Forum.buildListTile(
                     Icons.sort_by_alpha,
                     "楼层倒序",
@@ -43,7 +43,7 @@ class _MoreSettingView extends State<MoreSettingView> {
                       },
                     ),
                   ),
-                  Divider(height: 0.2, color: dividerColor)
+                  Divider(height: 1, color: dividerColor)
                 ],
               ),
             ),
@@ -52,13 +52,13 @@ class _MoreSettingView extends State<MoreSettingView> {
               margin: EdgeInsets.only(top: 10),
               child: Column(
                 children: <Widget>[
-                  Divider(height: 0.2, color: dividerColor),
+                  Divider(height: 1, color: dividerColor),
                   Forum.buildListTile(Icons.edit, "反馈建议", onTap: () {
                     Utils.openUrl("https://github.com/wisp-x/hu60");
                   }),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
-                    child: Divider(height: 0.2, color: dividerColor),
+                    child: Divider(height: 1, color: dividerColor),
                   ),
                   Forum.buildListTile(
                     Icons.info,
@@ -71,7 +71,7 @@ class _MoreSettingView extends State<MoreSettingView> {
                       ),
                     ),
                   ),
-                  Divider(height: 0.2, color: dividerColor)
+                  Divider(height: 1, color: dividerColor)
                 ],
               ),
             ),

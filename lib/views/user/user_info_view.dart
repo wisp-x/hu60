@@ -209,29 +209,29 @@ class _UserInfoView extends State<UserInfoView> {
           margin: EdgeInsets.only(bottom: 10),
           child: Column(
             children: <Widget>[
-              Divider(height: 0.2, color: dividerColor),
+              Divider(height: 1, color: dividerColor),
               _getItem("UID", c.user.uid),
               Padding(
                 padding: EdgeInsets.only(left: 60),
-                child: Divider(height: 0.2, color: dividerColor),
+                child: Divider(height: 1, color: dividerColor),
               ),
               _getItem("昵称", c.user.name),
               Padding(
                 padding: EdgeInsets.only(left: 60),
-                child: Divider(height: 0.2, color: dividerColor),
+                child: Divider(height: 1, color: dividerColor),
               ),
               _getItem("签名", c.user.signature ?? "-"),
               Padding(
                 padding: EdgeInsets.only(left: 60),
-                child: Divider(height: 0.2, color: dividerColor),
+                child: Divider(height: 1, color: dividerColor),
               ),
               _getItem("联系方式", u.contact ?? "-"),
               Padding(
                 padding: EdgeInsets.only(left: 60),
-                child: Divider(height: 0.2, color: dividerColor),
+                child: Divider(height: 1, color: dividerColor),
               ),
               _getItem("注册时间", regTime),
-              Divider(height: 0.2, color: dividerColor),
+              Divider(height: 1, color: dividerColor),
             ],
           ),
         )
@@ -272,7 +272,7 @@ class _UserInfoView extends State<UserInfoView> {
                 ),
               ),
               Divider(
-                height: 0.2,
+                height: 1,
                 color: Colors.white,
               )
             ],
@@ -308,7 +308,7 @@ class _UserInfoView extends State<UserInfoView> {
                 ),
               ),
               Divider(
-                height: 0.2,
+                height: 1,
                 color: Colors.white,
               )
             ],
