@@ -1,6 +1,7 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_info_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
@@ -58,7 +59,7 @@ class _UserInfoView extends State<UserInfoView> {
                         child: Text(
                           c.user.isFollow ? "取消关注" : "关注TA",
                           style: TextStyle(
-                            fontSize: 16.5,
+                            fontSize: ScreenUtil().setSp(33),
                             fontWeight: FontWeight.bold,
                             color: c.user.isFollow
                                 ? Colors.redAccent
@@ -123,7 +124,7 @@ class _UserInfoView extends State<UserInfoView> {
               child: User.getAvatar(
                 context: context,
                 url: c.user.uAvatar,
-                size: 80,
+                size: ScreenUtil().setWidth(160),
                 borderRadius: 50,
               ),
             ),
@@ -133,7 +134,7 @@ class _UserInfoView extends State<UserInfoView> {
               child: GestureDetector(
                 child: Icon(
                   c.user.isBlock ? Icons.block_flipped : Icons.block,
-                  size: 30,
+                  size: ScreenUtil().setWidth(60),
                   color: c.user.isBlock ? Colors.black54 : Colors.redAccent,
                 ),
                 onTap: () {
@@ -252,13 +253,19 @@ class _UserInfoView extends State<UserInfoView> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.admin_panel_settings,
-                        color: Colors.orangeAccent),
+                    Icon(
+                      Icons.admin_panel_settings,
+                      color: Color(0xffe54f4f),
+                      size: ScreenUtil().setWidth(35),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 4),
                       child: Text(
                         "拥有${permissions[permission]}",
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ScreenUtil().setSp(30),
+                        ),
                       ),
                     )
                   ],
@@ -282,12 +289,19 @@ class _UserInfoView extends State<UserInfoView> {
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
-                    Icon(Icons.warning, color: Color(0xffadadad)),
+                    Icon(
+                      Icons.error,
+                      color: Color(0xffadadad),
+                      size: ScreenUtil().setWidth(35),
+                    ),
                     Padding(
                       padding: EdgeInsets.only(left: 4),
                       child: Text(
                         status[permission],
-                        style: TextStyle(color: Colors.white),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: ScreenUtil().setSp(30),
+                        ),
                       ),
                     )
                   ],
@@ -362,15 +376,24 @@ class _UserInfoView extends State<UserInfoView> {
     return Container(
       color: Colors.white,
       child: Padding(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(18),
         child: Row(
           mainAxisSize: MainAxisSize.max,
           children: <Widget>[
-            Text(name),
+            Text(
+              name,
+              style: TextStyle(
+                color: Colors.grey[600],
+                fontSize: ScreenUtil().setSp(30),
+              ),
+            ),
             Expanded(
               child: Padding(
                 padding: EdgeInsets.only(left: 20),
-                child: Text(value.toString()),
+                child: Text(
+                  value.toString(),
+                  style: TextStyle(fontSize: ScreenUtil().setSp(30)),
+                ),
               ),
             ),
           ],

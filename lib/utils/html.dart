@@ -101,7 +101,7 @@ class Html {
                   ),
                   onTap: () {
                     Get.to(
-                          () => PhotoGallery(
+                      () => PhotoGallery(
                         index: 0,
                         images: [attrs["src"]],
                         heroTag: attrs["src"],

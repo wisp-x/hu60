@@ -1,6 +1,7 @@
 import 'dart:ui' as ui;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
@@ -187,7 +188,12 @@ class TopicView extends StatelessWidget {
                   color: Color(0xc8ececec),
                   borderRadius: BorderRadius.circular(50),
                 ),
-                child: Text("说点什么吧..."),
+                child: Text(
+                  "说点什么吧...",
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(30),
+                  ),
+                ),
               ),
             ),
           ),
@@ -209,7 +215,7 @@ class TopicView extends StatelessWidget {
               child: User.getAvatar(
                 context: context,
                 url: meta.uAvatar,
-                size: 50,
+                size: ScreenUtil().setWidth(100),
                 borderRadius: 6.0,
               ),
               onTap: () => Get.to(() => UserInfoView(id: meta.uid)),
@@ -217,11 +223,10 @@ class TopicView extends StatelessWidget {
             title: Text.rich(
               TextSpan(children: [
                 WidgetSpan(
-                  alignment: ui.PlaceholderAlignment.middle,
                   child: Text(
                     "${meta.uName} ",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: ScreenUtil().setSp(35),
                     ),
                   ),
                 ),
@@ -235,7 +240,7 @@ class TopicView extends StatelessWidget {
                     child: Text(
                       c.data.fName,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: ScreenUtil().setSp(34),
                         color: Colors.white,
                       ),
                     ),
@@ -247,6 +252,7 @@ class TopicView extends StatelessWidget {
               padding: EdgeInsets.only(top: 9),
               child: Text(
                 "发布于 $date  ${meta.readCount}次点击  ${c.data.floorCount - 1}人回复",
+                style: TextStyle(fontSize: ScreenUtil().setSp(32)),
               ),
             ),
           ),
@@ -260,7 +266,7 @@ class TopicView extends StatelessWidget {
                   child: Text(
                     meta.title,
                     style: TextStyle(
-                      fontSize: 17,
+                      fontSize: ScreenUtil().setSp(36),
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -291,6 +297,7 @@ class TopicView extends StatelessWidget {
                     Text(
                       "回复列表(${c.data.floorCount - 1})",
                       style: TextStyle(
+                        fontSize: ScreenUtil().setSp(32),
                         fontWeight: FontWeight.w500,
                       ),
                     ),
@@ -299,15 +306,16 @@ class TopicView extends StatelessWidget {
                         TextSpan(
                           children: <InlineSpan>[
                             TextSpan(
-                              text: userController.user.floorReverse
-                                  ? "正序"
-                                  : "倒序",
-                            ),
+                                text: userController.user.floorReverse
+                                    ? "正序"
+                                    : "倒序",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(32))),
                             WidgetSpan(
                               alignment: ui.PlaceholderAlignment.middle,
                               child: Icon(
                                 Icons.sort_by_alpha,
-                                size: 20,
+                                size: ScreenUtil().setWidth(40),
                               ),
                             ),
                           ],
@@ -358,7 +366,10 @@ class TopicView extends StatelessWidget {
                 children: <InlineSpan>[
                   WidgetSpan(
                     alignment: ui.PlaceholderAlignment.middle,
-                    child: Text("${item.uName} "),
+                    child: Text(
+                      "${item.uName} ",
+                      style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+                    ),
                   ),
                   WidgetSpan(
                     child: Offstage(
@@ -373,7 +384,7 @@ class TopicView extends StatelessWidget {
                         child: Text(
                           "站长",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: ScreenUtil().setSp(28),
                             color: Colors.white,
                           ),
                         ),
@@ -392,7 +403,7 @@ class TopicView extends StatelessWidget {
                         child: Text(
                           "楼主",
                           style: TextStyle(
-                            fontSize: 15,
+                            fontSize: ScreenUtil().setSp(28),
                             color: Colors.white,
                           ),
                         ),
@@ -404,11 +415,15 @@ class TopicView extends StatelessWidget {
             ),
             subtitle: Padding(
               padding: EdgeInsets.only(top: 5),
-              child: Text(date),
+              child: Text(
+                date,
+                style: TextStyle(fontSize: ScreenUtil().setSp(30)),
+              ),
             ),
             trailing: Text(
               "# $i",
               style: TextStyle(
+                fontSize: ScreenUtil().setSp(35),
                 color: Colors.grey,
               ),
             ),
@@ -444,10 +459,13 @@ class TopicView extends StatelessWidget {
                             child: Icon(
                               Icons.reply,
                               color: Colors.grey,
-                              size: 20,
+                              size: ScreenUtil().setWidth(36),
                             ),
                           ),
-                          TextSpan(text: "回复"),
+                          TextSpan(
+                              text: "回复",
+                              style:
+                                  TextStyle(fontSize: ScreenUtil().setSp(35))),
                         ],
                       ),
                     ),
@@ -471,10 +489,13 @@ class TopicView extends StatelessWidget {
                               child: Icon(
                                 Icons.edit,
                                 color: Colors.grey,
-                                size: 20,
+                                size: ScreenUtil().setWidth(36),
                               ),
                             ),
-                            TextSpan(text: "编辑"),
+                            TextSpan(
+                                text: "编辑",
+                                style: TextStyle(
+                                    fontSize: ScreenUtil().setSp(35))),
                           ],
                         ),
                       ),
@@ -513,12 +534,13 @@ class TopicView extends StatelessWidget {
                               child: Icon(
                                 Icons.delete,
                                 color: Colors.red[300],
-                                size: 20,
+                                size: ScreenUtil().setWidth(36),
                               ),
                             ),
                             TextSpan(
                               text: "删除",
                               style: TextStyle(
+                                fontSize: ScreenUtil().setSp(35),
                                 color: Colors.red[300],
                               ),
                             ),

@@ -1,6 +1,7 @@
 import 'dart:collection';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/plate_entity.dart';
 import 'package:hu60/http.dart';
@@ -100,7 +101,7 @@ class _PlateView extends State<PlateView> {
                   child: Text(
                     element.name,
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: ScreenUtil().setSp(38),
                       color: Colors.white,
                     ),
                   ),

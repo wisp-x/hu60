@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
@@ -108,7 +109,7 @@ class _LoginView extends State<LoginView> {
                   child: Text(
                     "登录",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: ScreenUtil().setSp(36),
                       color: Colors.white,
                     ),
                   ),

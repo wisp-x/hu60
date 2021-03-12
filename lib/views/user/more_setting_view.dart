@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/utils.dart';
+import 'package:hu60/views/common/forum.dart';
 
 class MoreSettingView extends StatefulWidget {
   @override
@@ -31,12 +33,9 @@ class _MoreSettingView extends State<MoreSettingView> {
               child: Column(
                 children: <Widget>[
                   Divider(height: 0.2, color: dividerColor),
-                  ListTile(
-                    leading: Icon(
-                      Icons.sort_by_alpha,
-                      color: Colors.grey,
-                    ),
-                    title: Text("楼层倒序"),
+                  Forum.buildListTile(
+                    Icons.sort_by_alpha,
+                    "楼层倒序",
                     trailing: CupertinoSwitch(
                       value: c.user.floorReverse,
                       onChanged: (bool value) {
@@ -54,25 +53,21 @@ class _MoreSettingView extends State<MoreSettingView> {
               child: Column(
                 children: <Widget>[
                   Divider(height: 0.2, color: dividerColor),
-                  ListTile(
-                    leading: Icon(Icons.edit, color: Colors.grey),
-                    title: Text("反馈建议"),
-                    trailing: Icon(Icons.chevron_right),
-                    onTap: () {
-                      Utils.openUrl("https://github.com/wisp-x/hu60");
-                    },
-                  ),
+                  Forum.buildListTile(Icons.edit, "反馈建议", onTap: () {
+                    Utils.openUrl("https://github.com/wisp-x/hu60");
+                  }),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
                     child: Divider(height: 0.2, color: dividerColor),
                   ),
-                  ListTile(
-                    leading: Icon(Icons.info, color: Colors.grey),
-                    title: Text("版本信息"),
+                  Forum.buildListTile(
+                    Icons.info,
+                    "版本信息",
                     trailing: Text(
                       "v2.0 build 20210310",
                       style: TextStyle(
                         color: Colors.grey[500],
+                        fontSize: ScreenUtil().setSp(30),
                       ),
                     ),
                   ),

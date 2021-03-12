@@ -1,5 +1,6 @@
 import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/forum/topic_view.dart';
@@ -57,7 +58,7 @@ class Forum {
             child: User.getAvatar(
               context: context,
               url: item.uAvatar,
-              size: 25,
+              size: ScreenUtil().setWidth(50),
               borderRadius: 50,
             ),
           ),
@@ -74,7 +75,7 @@ class Forum {
                       margin: EdgeInsets.only(right: 5),
                       child: Text(
                         item.uName,
-                        style: TextStyle(fontSize: 17),
+                        style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                       ),
                     ),
                     onTap: () => Get.to(
@@ -95,7 +96,7 @@ class Forum {
                     child: Text(
                       item.forumName,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: ScreenUtil().setSp(35),
                         color: Colors.white,
                       ),
                     ),
@@ -120,7 +121,7 @@ class Forum {
             child: Text(
               "锁 ",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: ScreenUtil().setSp(34),
                 color: Colors.grey,
                 fontWeight: FontWeight.w600,
               ),
@@ -134,7 +135,7 @@ class Forum {
             child: Text(
               "精 ",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: ScreenUtil().setSp(34),
                 color: Colors.redAccent,
                 fontWeight: FontWeight.w600,
               ),
@@ -148,7 +149,7 @@ class Forum {
             child: Text(
               "沉 ",
               style: TextStyle(
-                fontSize: 17,
+                fontSize: ScreenUtil().setSp(34),
                 color: Colors.redAccent,
                 fontWeight: FontWeight.w600,
               ),
@@ -158,7 +159,7 @@ class Forum {
         TextSpan(
           text: item.title,
           style: TextStyle(
-            fontSize: 17,
+            fontSize: ScreenUtil().setSp(35),
           ),
         )
       ]),
@@ -174,12 +175,13 @@ class Forum {
           child: Icon(
             Icons.chat,
             color: Colors.grey,
-            size: 16,
+            size: ScreenUtil().setWidth(32),
           ),
         ),
         TextSpan(
           text: " ${item.replyCount}  ",
           style: TextStyle(
+            fontSize: ScreenUtil().setSp(32),
             color: Colors.grey,
           ),
         ),
@@ -187,16 +189,36 @@ class Forum {
           child: Icon(
             Icons.remove_red_eye,
             color: Colors.grey,
-            size: 17,
+            size: ScreenUtil().setWidth(32),
           ),
         ),
         TextSpan(
           text: " ${item.readCount} · 最后回复于 $date",
           style: TextStyle(
+            fontSize: ScreenUtil().setSp(32),
             color: Colors.grey,
           ),
         ),
       ]),
+    );
+  }
+
+  // 构建设置列表项
+  static Widget buildListTile(
+    IconData icon,
+    String title, {
+    Widget trailing,
+    Function onTap,
+  }) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.grey),
+      title: Text(
+        title,
+        style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+      ),
+      trailing: trailing ??
+          Icon(Icons.chevron_right, size: ScreenUtil().setWidth(45)),
+      onTap: () => onTap(),
     );
   }
 }

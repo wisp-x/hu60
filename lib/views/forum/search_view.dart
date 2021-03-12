@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/search_controller.dart';
@@ -21,7 +22,11 @@ class SearchView extends StatelessWidget {
         } else if (c.nodata) {
           child = Container(
             padding: EdgeInsets.only(bottom: 100),
-            child: Center(child: Text("未找到相关帖子")),
+            child: Center(
+                child: Text(
+              "未找到相关帖子",
+              style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+            )),
           );
         } else {
           child = SmartRefresher(

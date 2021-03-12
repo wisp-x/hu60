@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
+import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
 
@@ -71,14 +73,23 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
         leading: User.getAvatar(
           context: context,
           url: c.user.uAvatar,
-          size: 60,
+          size: ScreenUtil().setWidth(100),
           borderRadius: 8.0,
         ),
-        title: Text(c.user.name),
+        title: Text(
+          c.user.name,
+          style: TextStyle(fontSize: ScreenUtil().setSp(40)),
+        ),
         subtitle: Container(
           width: double.infinity,
           margin: EdgeInsets.only(top: 8),
-          child: Text(c.user.signature, overflow: TextOverflow.ellipsis),
+          child: Text(
+            c.user.signature,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+              fontSize: ScreenUtil().setSp(30),
+            ),
+          ),
         ),
         trailing: Icon(Icons.chevron_right),
         onTap: () {},
@@ -93,33 +104,25 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: <Widget>[
           Divider(height: 0.2, color: dividerColor),
-          _getItem(Icons.format_list_bulleted, "我的帖子"),
+          Forum.buildListTile(Icons.format_list_bulleted, "我的帖子"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          _getItem(Icons.bookmark_outline, "我的收藏"),
+          Forum.buildListTile(Icons.bookmark_outline, "我的收藏"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          _getItem(Icons.star_outline, "特别关注"),
+          Forum.buildListTile(Icons.star_outline, "特别关注"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          _getItem(Icons.list, "屏蔽用户"),
+          Forum.buildListTile(Icons.list, "屏蔽用户"),
           Divider(height: 0.2, color: dividerColor),
         ],
       ),
-    );
-  }
-
-  Widget _getItem(IconData icon, String title) {
-    return ListTile(
-      leading: Icon(icon, color: Colors.grey),
-      title: Text(title),
-      trailing: Icon(Icons.chevron_right),
     );
   }
 
@@ -132,8 +135,14 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
           Divider(height: 0.2, color: dividerColor),
           ListTile(
             leading: Icon(Icons.settings, color: Colors.grey),
-            title: Text("更多设置"),
-            trailing: Icon(Icons.chevron_right),
+            title: Text(
+              "更多设置",
+              style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+            ),
+            trailing: Icon(
+              Icons.chevron_right,
+              size: ScreenUtil().setWidth(45),
+            ),
             onTap: () => Get.to(() => MoreSettingView()),
           ),
           Divider(height: 0.2, color: dividerColor),

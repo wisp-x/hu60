@@ -1,6 +1,7 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/http.dart';
@@ -109,7 +110,7 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                   highlightColor: Colors.transparent,
                   icon: Icon(
                     Icons.tag_faces,
-                    size: 30,
+                    size: ScreenUtil().setWidth(60),
                     color: Color(0xff5a5a5a),
                   ),
                   onPressed: () {
@@ -133,7 +134,10 @@ class _Comment extends State<Comment> with SingleTickerProviderStateMixin {
                     ),
                     child: Text(
                       widget.isEdit ? "保存修改" : "发送",
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenUtil().setSp(30),
+                      ),
                     ),
                   ),
                   onTap: () async {
