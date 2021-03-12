@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -73,6 +75,11 @@ class Http {
       data: data,
       options: new Options(method: method),
     );
+
+    // 格式化不规范的json
+    if (response.data.runtimeType.toString() == "String") {
+      response.data = json.decode(response.data);
+    }
 
     return response;
   }

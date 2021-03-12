@@ -33,6 +33,34 @@ class _UserInfoView extends State<UserInfoView> {
           title: Text(c.infoLoading ? "用户信息" : c.user.name),
           centerTitle: true,
           elevation: 0,
+          actions: c.infoLoading
+              ? []
+              : <Widget>[
+                  GestureDetector(
+                    child: Center(
+                      child: Container(
+                        padding: EdgeInsets.only(right: 13),
+                        child: Text(
+                          c.user.isFollow ? "取消关注" : "关注TA",
+                          style: TextStyle(
+                            fontSize: 16.5,
+                            fontWeight: FontWeight.bold,
+                            color: c.user.isFollow
+                                ? Colors.redAccent
+                                : Colors.green,
+                          ),
+                        ),
+                      ),
+                    ),
+                    onTap: () {
+                      if (c.user.isFollow) {
+                        c.unfollow();
+                      } else {
+                        c.follow();
+                      }
+                    },
+                  ),
+                ],
         ),
         backgroundColor: Theme.of(context).backgroundColor,
         body: c.infoLoading ? Utils.loading(context) : _buildContent(c),
@@ -309,10 +337,11 @@ class StickyTabBarDelegate extends SliverPersistentHeaderDelegate {
   StickyTabBarDelegate({@required this.child, this.callback});
 
   @override
-  Widget build(BuildContext context,
-      double shrinkOffset, // child 偏移值 minExtent~maxExtent
-      bool overlapsContent, // SliverPersistentHeader覆盖其他子组件返回true，否则返回false
-      ) {
+  Widget build(
+    BuildContext context,
+    double shrinkOffset, // child 偏移值 minExtent~maxExtent
+    bool overlapsContent, // SliverPersistentHeader覆盖其他子组件返回true，否则返回false
+  ) {
     if (callback != null) {
       callback(shrinkOffset, overlapsContent);
     }

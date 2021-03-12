@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -64,6 +66,17 @@ class UserInfoController extends GetxController
     }
   }
 
+  void _refreshInfo() async {
+    dio.Response res = await Http.request("/user.info.$id.json?_uinfo=avatar");
+    UserInfoEntity entity = UserInfoEntity.fromJson(res.data);
+    if (entity.uid == null) {
+      Fluttertoast.showToast(msg: "用户异常");
+    } else {
+      this.user = entity;
+      update();
+    }
+  }
+
   // 初始化用户主题
   _initTopics() async {
     topicLoading = true;
@@ -106,4 +119,38 @@ class UserInfoController extends GetxController
     topics.addAll(response.topicList);
     update();
   }
+
+  // 关注ta
+  void follow({Function callback}) async {
+    dio.Response response = await Http.request(
+      "/user.relationship.json",
+      method: Http.POST,
+      data: {"action": "follow", "targetUid": this.id},
+    );
+    Fluttertoast.showToast(msg: "关注成功");
+    if (response.data["success"]) {
+      _refreshInfo();
+      callback != null && callback();
+    }
+  }
+
+  // 取消关注
+  void unfollow({Function callback}) async {
+    dio.Response response = await Http.request(
+      "/user.relationship.json",
+      method: Http.POST,
+      data: {"action": "unfollow", "targetUid": this.id},
+    );
+    Fluttertoast.showToast(msg: "取消关注成功");
+    if (response.data["success"]) {
+      _refreshInfo();
+      callback != null && callback();
+    }
+  }
+
+  // 屏蔽ta
+  void block({Function callback}) async {}
+
+  // 取消屏蔽
+  void unblock({Function callback}) async {}
 }
