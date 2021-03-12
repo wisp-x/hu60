@@ -47,7 +47,6 @@ class _UserInfoView extends State<UserInfoView> {
       slivers: <Widget>[
         _buildMeta(c),
         _buildTabs(c),
-        // TODO
         SliverFillRemaining(
           child: TabBarView(
             physics: BouncingScrollPhysics(),

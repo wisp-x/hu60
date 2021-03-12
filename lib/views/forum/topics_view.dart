@@ -18,7 +18,6 @@ class TopicsView extends StatefulWidget {
 
 class _TopicsView extends State<TopicsView>
     with AutomaticKeepAliveClientMixin, SingleTickerProviderStateMixin {
-  final TopicsController c = Get.put(TopicsController());
 
   @override
   bool get wantKeepAlive => true;

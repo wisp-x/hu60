@@ -93,41 +93,33 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: <Widget>[
           Divider(height: 0.2, color: dividerColor),
-          ListTile(
-            leading: Icon(Icons.format_list_bulleted, color: Colors.grey),
-            title: Text("我的帖子"),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _getItem(Icons.format_list_bulleted, "我的帖子"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          ListTile(
-            leading: Icon(Icons.bookmark_outline, color: Colors.grey),
-            title: Text("我的收藏"),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _getItem(Icons.bookmark_outline, "我的收藏"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          ListTile(
-            leading: Icon(Icons.star_outline, color: Colors.grey),
-            title: Text("特别关注"),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _getItem(Icons.star_outline, "特别关注"),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Divider(height: 0.2, color: dividerColor),
           ),
-          ListTile(
-            leading: Icon(Icons.list, color: Colors.grey),
-            title: Text("屏蔽用户"),
-            trailing: Icon(Icons.chevron_right),
-          ),
+          _getItem(Icons.list, "屏蔽用户"),
           Divider(height: 0.2, color: dividerColor),
         ],
       ),
+    );
+  }
+
+  Widget _getItem(IconData icon, String title) {
+    return ListTile(
+      leading: Icon(icon, color: Colors.grey),
+      title: Text(title),
+      trailing: Icon(Icons.chevron_right),
     );
   }
 
