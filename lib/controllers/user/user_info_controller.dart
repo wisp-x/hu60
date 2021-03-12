@@ -122,35 +122,35 @@ class UserInfoController extends GetxController
 
   // 关注ta
   void follow({Function callback}) async {
-    dio.Response response = await Http.request(
-      "/user.relationship.json",
-      method: Http.POST,
-      data: {"action": "follow", "targetUid": this.id},
-    );
-    Fluttertoast.showToast(msg: response.data["message"]);
-    if (response.data["success"]) {
-      _refreshInfo();
-      callback != null && callback();
-    }
+    _friendOption("follow", callback: callback);
   }
 
   // 取消关注
   void unfollow({Function callback}) async {
+    _friendOption("unfollow", callback: callback);
+  }
+
+  // 屏蔽ta
+  void block({Function callback}) async {
+    _friendOption("block", callback: callback);
+  }
+
+  // 取消屏蔽
+  void unblock({Function callback}) async {
+    _friendOption("unblock", callback: callback);
+  }
+
+  // 交友操作
+  void _friendOption(String action, {Function callback}) async {
     dio.Response response = await Http.request(
       "/user.relationship.json",
       method: Http.POST,
-      data: {"action": "unfollow", "targetUid": this.id},
+      data: {"action": action, "targetUid": this.id},
     );
     Fluttertoast.showToast(msg: response.data["message"]);
     if (response.data["success"]) {
       _refreshInfo();
-      callback != null && callback();
+      if (callback != null) callback();
     }
   }
-
-  // 屏蔽ta
-  void block({Function callback}) async {}
-
-  // 取消屏蔽
-  void unblock({Function callback}) async {}
 }

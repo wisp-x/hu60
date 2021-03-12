@@ -52,13 +52,7 @@ class _UserInfoView extends State<UserInfoView> {
                         ),
                       ),
                     ),
-                    onTap: () {
-                      if (c.user.isFollow) {
-                        c.unfollow();
-                      } else {
-                        c.follow();
-                      }
-                    },
+                    onTap: () => c.user.isFollow ? c.unfollow() : c.follow(),
                   ),
                 ],
         ),
@@ -106,13 +100,63 @@ class _UserInfoView extends State<UserInfoView> {
             ],
           ),
         ),
-        padding: EdgeInsets.all(40),
-        alignment: Alignment.center,
-        child: User.getAvatar(
-          context: context,
-          url: c.user.uAvatar,
-          size: 80,
-          borderRadius: 50,
+        child: Column(
+          children: [
+            Container(
+              alignment: Alignment.center,
+              margin: EdgeInsets.only(top: 40, bottom: 10),
+              child: User.getAvatar(
+                context: context,
+                url: c.user.uAvatar,
+                size: 80,
+                borderRadius: 50,
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10, right: 10),
+              alignment: Alignment.bottomRight,
+              child: GestureDetector(
+                child: Icon(
+                  c.user.isBlock ? Icons.block_flipped : Icons.block,
+                  size: 30,
+                  color: c.user.isBlock ? Colors.black54 : Colors.redAccent,
+                ),
+                onTap: () {
+                  if (c.user.isBlock) {
+                    c.unblock();
+                  } else {
+                    showCupertinoDialog(
+                      context: context,
+                      builder: (context) {
+                        return CupertinoAlertDialog(
+                          title: Text("屏蔽该用户"),
+                          content: Text(
+                            "屏蔽后你将看不见该用户的帖子、回复和聊天室中的发言，并且该用户无法向您发送内信和@消息，你确定要屏蔽该用户吗？",
+                          ),
+                          actions: [
+                            CupertinoDialogAction(
+                              isDestructiveAction: true,
+                              child: Text('确认'),
+                              onPressed: () async {
+                                Get.back();
+                                c.block();
+                              },
+                            ),
+                            CupertinoDialogAction(
+                              child: Text('取消'),
+                              onPressed: () {
+                                Get.back();
+                              },
+                            ),
+                          ],
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
+            )
+          ],
         ),
       ),
     );
