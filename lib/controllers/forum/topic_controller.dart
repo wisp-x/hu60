@@ -63,7 +63,7 @@ class TopicController extends GetxController {
 
   // 获取数据
   Future<TopicEntity> getData(int id, int page) async {
-    var response = await Http.request(
+    dio.Response response = await Http.request(
       "/bbs.topic.$id.$page.json?_uinfo=name,avatar",
       method: Http.POST,
     );
