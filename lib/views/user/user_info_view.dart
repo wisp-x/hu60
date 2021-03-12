@@ -249,7 +249,7 @@ class _UserInfoView extends State<UserInfoView> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(3),
+                padding: EdgeInsets.all(5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -264,7 +264,7 @@ class _UserInfoView extends State<UserInfoView> {
                         "拥有${permissions[permission]}",
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: ScreenUtil().setSp(30),
+                          fontSize: ScreenUtil().setSp(32),
                         ),
                       ),
                     )
@@ -285,7 +285,7 @@ class _UserInfoView extends State<UserInfoView> {
           child: Column(
             children: <Widget>[
               Container(
-                padding: EdgeInsets.all(3),
+                padding: EdgeInsets.all(5),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -300,7 +300,7 @@ class _UserInfoView extends State<UserInfoView> {
                         status[permission],
                         style: TextStyle(
                           color: Colors.white,
-                          fontSize: ScreenUtil().setSp(30),
+                          fontSize: ScreenUtil().setSp(32),
                         ),
                       ),
                     )
