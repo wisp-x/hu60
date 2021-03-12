@@ -4,10 +4,12 @@ import 'package:flutter_html/flutter_html.dart' as flutterHtml;
 import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/image_render.dart';
 import 'package:flutter_html/style.dart';
+import 'package:flutter_screenutil/screen_util.dart';
 import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
 import 'package:hu60/views/common/photo_gallery.dart';
+import 'package:hu60/views/user/user_info_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -156,13 +158,33 @@ class Html {
               case "userat": // @ 符号
                 return Text(
                   element.text,
-                  style: TextStyle(color: Colors.blue[400], fontSize: 19),
+                  style: TextStyle(
+                    color: Colors.blue[400],
+                    fontSize: ScreenUtil().setSp(42),
+                  ),
                 );
                 break;
               case "userinfo": // @ 符号后面的文字
-                return Text(
-                  element.text,
-                  style: TextStyle(color: Colors.blue[400], fontSize: 16.5),
+                // TODO
+                var id = 0;
+                if (attrs["href"] != null &&
+                    RegExp(r"user\.info\.\d+\.json").hasMatch(attrs["href"])) {
+                  id = int.parse(RegExp(r"\d+", multiLine: true)
+                      .allMatches(attrs["href"])
+                      .map((e) => e.group(0))
+                      .first);
+                }
+                return GestureDetector(
+                  child: Text(
+                    element.text,
+                    style: TextStyle(
+                      color: Colors.blue[400],
+                      fontSize: ScreenUtil().setSp(34),
+                    ),
+                  ),
+                  onTap: () {
+                    if (id != 0) Get.to(() => UserInfoView(id: id));
+                  },
                 );
                 break;
               default:
@@ -189,14 +211,17 @@ class Html {
               alignment: ui.PlaceholderAlignment.middle,
               child: Text(
                 element.text,
-                style: TextStyle(fontSize: 18, color: Colors.blue[400]),
+                style: TextStyle(
+                  fontSize: ScreenUtil().setSp(36),
+                  color: Colors.blue[400],
+                ),
               ),
             ),
             WidgetSpan(
               alignment: ui.PlaceholderAlignment.middle,
               child: Icon(
                 Icons.open_in_new_rounded,
-                size: 19,
+                size: ScreenUtil().setWidth(38),
                 color: Colors.blue[400],
               ),
             )
