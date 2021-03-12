@@ -5,6 +5,7 @@ import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/views/forum/new_topic_view.dart';
+import 'package:hu60/views/forum/search_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 
 class HomeView extends StatefulWidget {
@@ -46,7 +47,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               splashColor: Colors.transparent,
               highlightColor: Colors.transparent,
               icon: Icon(Icons.search),
-              onPressed: () {},
+              onPressed: () => Get.to(() => SearchView()),
             )
           ],
         ),

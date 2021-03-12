@@ -5,36 +5,23 @@ import 'package:hu60/http.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class TopicsController extends GetxController
-    with SingleGetTickerProviderMixin {
-  TabController tabController; // 选项卡控制器
-  RefreshController refreshController;
-  ScrollController scrollController;
+class SearchController extends GetxController {
+  TextEditingController textController = TextEditingController();
+  RefreshController refreshController = RefreshController();
+  ScrollController scrollController = ScrollController();
   int page = 1; // 页码
-  int type = 0; // 类型，0:新帖，1:精华贴
   List<TopicList> topics = []; // 帖子列表
   bool loading = false;
+  bool nodata = false;
 
-  @override
-  void onInit() async {
-    super.onInit();
-    refreshController = RefreshController(initialRefresh: false);
-    tabController = TabController(length: 2, vsync: this);
-    scrollController = ScrollController();
-
-    TopicsEntity response = await getData(page);
-    topics = response.topicList;
-    update();
-  }
-
-  // 初始化列表
-  void init() async {
-    _backTop();
+  // 执行搜索
+  void search() async {
     loading = true;
     page = 1;
     update();
     TopicsEntity response = await getData(page);
     topics = response.topicList;
+    this.nodata = topics.length == 0;
     update();
   }
 
@@ -59,7 +46,7 @@ class TopicsController extends GetxController
   // 获取数据
   Future<TopicsEntity> getData(int page) async {
     dio.Response response = await Http.request(
-      "/bbs.forum.0.$page.$type.json?_uinfo=name,avatar",
+      "/bbs.search.json?p=$page&keywords=${textController.text}&_uinfo=name,avatar",
       method: Http.POST,
     );
     TopicsEntity result = TopicsEntity.fromJson(response.data);
@@ -71,14 +58,5 @@ class TopicsController extends GetxController
     loading = false;
     update();
     return result;
-  }
-
-  // 回到顶部
-  void _backTop() {
-    scrollController.animateTo(
-      .0,
-      duration: Duration(milliseconds: 200),
-      curve: Curves.ease,
-    );
   }
 }
