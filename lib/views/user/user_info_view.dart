@@ -2,6 +2,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/controllers/user/user_info_controller.dart';
@@ -73,8 +74,11 @@ class _UserInfoView extends State<UserInfoView> {
                       ),
                     ),
                     onTap: () {
-                      if (!Get.find<UserController>().isLogin) {
+                      UserController user = Get.find<UserController>();
+                      if (!user.isLogin) {
                         Get.to(() => LoginView(), fullscreenDialog: true);
+                      } else if (user.user.uid == c.user.uid) {
+                        Fluttertoast.showToast(msg: "不能关注自己喔～");
                       } else {
                         c.user.isFollow ? c.unfollow() : c.follow();
                       }
@@ -148,10 +152,12 @@ class _UserInfoView extends State<UserInfoView> {
                   color: c.user.isBlock ? Colors.black54 : Colors.redAccent,
                 ),
                 onTap: () {
-                  if (!Get.find<UserController>().isLogin) {
-                    return Get.to(() => LoginView(), fullscreenDialog: true);
-                  }
-                  if (c.user.isBlock) {
+                  UserController user = Get.find<UserController>();
+                  if (!user.isLogin) {
+                    Get.to(() => LoginView(), fullscreenDialog: true);
+                  } else if (user.user.uid == c.user.uid) {
+                    Fluttertoast.showToast(msg: "不能屏蔽自己喔～");
+                  } else if (c.user.isBlock) {
                     c.unblock();
                   } else {
                     showCupertinoDialog(
