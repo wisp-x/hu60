@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/controllers/user/user_info_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
@@ -10,6 +11,7 @@ import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/forum/topic_view.dart';
+import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'dart:ui' as ui;
 
@@ -68,7 +70,13 @@ class _UserInfoView extends State<UserInfoView> {
                         ),
                       ),
                     ),
-                    onTap: () => c.user.isFollow ? c.unfollow() : c.follow(),
+                    onTap: () {
+                      if (!Get.find<UserController>().isLogin) {
+                        Get.to(() => LoginView(), fullscreenDialog: true);
+                      } else {
+                        c.user.isFollow ? c.unfollow() : c.follow();
+                      }
+                    },
                   ),
                 ],
         ),
@@ -138,6 +146,9 @@ class _UserInfoView extends State<UserInfoView> {
                   color: c.user.isBlock ? Colors.black54 : Colors.redAccent,
                 ),
                 onTap: () {
+                  if (!Get.find<UserController>().isLogin) {
+                    return Get.to(() => LoginView(), fullscreenDialog: true);
+                  }
                   if (c.user.isBlock) {
                     c.unblock();
                   } else {
