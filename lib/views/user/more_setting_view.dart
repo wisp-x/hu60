@@ -12,8 +12,6 @@ class MoreSettingView extends StatefulWidget {
 }
 
 class _MoreSettingView extends State<MoreSettingView> {
-  final dividerColor = Color(0xdccdcdcd);
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
@@ -32,10 +30,10 @@ class _MoreSettingView extends State<MoreSettingView> {
               margin: EdgeInsets.only(top: 10),
               child: Column(
                 children: <Widget>[
-                  Divider(height: 1, color: dividerColor),
+                  Forum.buildListTileDivider(),
                   Forum.buildListTile(
-                    Icons.sort_by_alpha,
                     "楼层倒序",
+                    icon: Icons.sort_by_alpha,
                     trailing: CupertinoSwitch(
                       value: c.user.floorReverse,
                       onChanged: (bool value) {
@@ -43,7 +41,7 @@ class _MoreSettingView extends State<MoreSettingView> {
                       },
                     ),
                   ),
-                  Divider(height: 1, color: dividerColor)
+                  Forum.buildListTileDivider()
                 ],
               ),
             ),
@@ -52,17 +50,17 @@ class _MoreSettingView extends State<MoreSettingView> {
               margin: EdgeInsets.only(top: 10),
               child: Column(
                 children: <Widget>[
-                  Divider(height: 1, color: dividerColor),
-                  Forum.buildListTile(Icons.edit, "反馈建议", onTap: () {
+                  Forum.buildListTileDivider(),
+                  Forum.buildListTile("反馈建议", icon: Icons.edit, onTap: () {
                     Utils.openUrl("https://github.com/wisp-x/hu60");
                   }),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
-                    child: Divider(height: 1, color: dividerColor),
+                    child: Forum.buildListTileDivider(),
                   ),
                   Forum.buildListTile(
-                    Icons.info,
                     "版本信息",
+                    icon: Icons.info,
                     trailing: Text(
                       "v2.0 build 20210310",
                       style: TextStyle(
@@ -71,7 +69,7 @@ class _MoreSettingView extends State<MoreSettingView> {
                       ),
                     ),
                   ),
-                  Divider(height: 1, color: dividerColor)
+                  Forum.buildListTileDivider()
                 ],
               ),
             ),

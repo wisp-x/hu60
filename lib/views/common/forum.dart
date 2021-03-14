@@ -205,20 +205,41 @@ class Forum {
 
   // 构建设置列表项
   static Widget buildListTile(
-    IconData icon,
     String title, {
+    IconData icon,
     Widget trailing,
+    Widget content,
     Function onTap,
   }) {
     return ListTile(
-      leading: Icon(icon, color: Colors.grey),
+      leading: icon != null ? Icon(icon, color: Colors.grey) : null,
       title: Text(
         title,
         style: TextStyle(fontSize: ScreenUtil().setSp(35)),
       ),
       trailing: trailing ??
-          Icon(Icons.chevron_right, size: ScreenUtil().setWidth(45)),
-      onTap: () => onTap(),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              Offstage(
+                offstage: content == null,
+                child: content,
+              ),
+              Icon(
+                Icons.chevron_right,
+                color: Colors.grey,
+                size: ScreenUtil().setWidth(45),
+              ),
+            ],
+          ),
+      onTap: () {
+        if (onTap != null) onTap();
+      },
     );
+  }
+
+  // 构建设置列表项的分割线
+  static Widget buildListTileDivider() {
+    return Divider(height: 1, color: Color(0xdccdcdcd));
   }
 }
