@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
+import 'package:hu60/entities/user/replies_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
@@ -29,6 +30,7 @@ class UserInfoController extends GetxController
 
   // 用户回复
   bool replyLoading = true;
+  List<ReplyList> replies = [];
   int replyPage = 1;
   RefreshController replyRefreshController = RefreshController();
   ScrollController replyScrollController = ScrollController();
@@ -41,11 +43,10 @@ class UserInfoController extends GetxController
       if (tabController.index == tabController.animation.value) {
         switch (tabController.index) {
           case 1:
-            if (this.topics.length == 0) {
-              _initTopics();
-            }
+            if (this.topics.length == 0) _initTopics();
             break;
           case 2:
+            if (this.replies.length == 0) _initReplies();
             break;
         }
       }
@@ -117,6 +118,49 @@ class UserInfoController extends GetxController
     topicPage++;
     TopicsEntity response = await _getTopics();
     topics.addAll(response.topicList);
+    update();
+  }
+
+  // 初始化用户回复
+  _initReplies() async {
+    replyLoading = true;
+    update();
+    RepliesEntity result = await _getReplies();
+    this.replies = result.replyList;
+    update();
+  }
+
+  // 获取用户回复
+  Future<RepliesEntity> _getReplies() async {
+    String url =
+        "/bbs.search.send.json?username=${user.name}&searchType=reply&p=$replyPage&_uinfo=avatar";
+    dio.Response response = await Http.request(url);
+    RepliesEntity result = RepliesEntity.fromJson(response.data);
+    if (result.currPage == result.maxPage) {
+      replyRefreshController.loadNoData();
+    } else {
+      replyRefreshController.loadComplete();
+    }
+    replyLoading = false;
+    update();
+    return result;
+  }
+
+  // 回复刷新
+  Future onRefreshByReply() async {
+    replyPage = 1;
+    replies.clear();
+    RepliesEntity response = await _getReplies();
+    replies = response.replyList;
+    replyRefreshController.refreshCompleted();
+    update();
+  }
+
+  // 回复加载下一页数据
+  Future onLoadingByReply() async {
+    replyPage++;
+    RepliesEntity response = await _getReplies();
+    replies.addAll(response.replyList);
     update();
   }
 

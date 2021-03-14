@@ -6,7 +6,9 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/controllers/user/user_info_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
+import 'package:hu60/entities/user/replies_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
+import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/common/forum.dart';
@@ -351,9 +353,6 @@ class _UserInfoView extends State<UserInfoView> {
           ),
         ),
         itemBuilder: (BuildContext context, int index) {
-          if (c.topics.length < index) {
-            return null;
-          }
           TopicList item = c.topics[index];
           return GestureDetector(
             behavior: HitTestBehavior.opaque,
@@ -378,7 +377,61 @@ class _UserInfoView extends State<UserInfoView> {
   }
 
   Widget _tabReplies(UserInfoController c) {
-    return ListView.builder(itemBuilder: (c, _) => Text('hhh'));
+    if (c.replyLoading) return Utils.loading(context);
+    return SmartRefresher(
+      enablePullDown: true,
+      enablePullUp: true,
+      header: WaterDropHeader(),
+      footer: ClassicFooter(),
+      controller: c.replyRefreshController,
+      primary: false,
+      scrollController: c.replyScrollController,
+      onLoading: c.onLoadingByReply,
+      onRefresh: c.onRefreshByReply,
+      child: ListView.separated(
+        itemCount: c.replies.length,
+        separatorBuilder: (BuildContext context, int index) => Container(
+          margin: EdgeInsets.only(top: 15),
+          padding: EdgeInsets.only(left: 20, right: 20),
+          child: Divider(
+            height: 1.0,
+            color: Color(0xffcecece),
+          ),
+        ),
+        itemBuilder: (BuildContext context, int index) {
+          ReplyList item = c.replies[index];
+          return GestureDetector(
+            behavior: HitTestBehavior.opaque,
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, top: 15, right: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Padding(
+                    padding: EdgeInsets.only(bottom: 8),
+                    child: Text(
+                      item.topic.title,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: ScreenUtil().setSp(35),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: new BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.all(Radius.circular(4.0)),
+                    ),
+                    child: Html.decode(item.content),
+                  ),
+                ],
+              ),
+            ),
+            onTap: () => Get.to(() => TopicView(id: item.topicId)),
+          );
+        },
+      ),
+    );
   }
 
   Widget _getItem(String name, dynamic value) {

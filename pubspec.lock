@@ -63,7 +63,7 @@ packages:
       name: build_daemon
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.1.9"
+    version: "2.1.10"
   build_resolvers:
     dependency: transitive
     description:
@@ -291,7 +291,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "4688f1a91421a76ea5c27e29889fadce6b6b4102"
+      resolved-ref: d3187ba7237612d26c3a2c1e0c3e6e1004150358
       url: "https://github.com/Sub6Resources/flutter_html"
     source: git
     version: "2.0.0-nullsafety.0"
@@ -713,7 +713,7 @@ packages:
       name: sqflite_common
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.0+1"
+    version: "2.0.0+2"
   stack_trace:
     dependency: transitive
     description:
@@ -909,7 +909,7 @@ packages:
       name: win32
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.3"
   xdg_directories:
     dependency: transitive
     description:

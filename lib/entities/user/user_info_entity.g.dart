@@ -10,8 +10,8 @@ UserInfoEntity _$UserInfoEntityFromJson(Map<String, dynamic> json) {
   return UserInfoEntity(
     json['uid'] as int,
     json['name'] as String,
-    json['signature'] as String,
-    json['contact'] as String,
+    json['signature'] as String ?? '-',
+    json['contact'] as String ?? '-',
     json['regtime'] as int,
     json['blockPostStat'] as bool,
     json['isFollow'] as bool,
