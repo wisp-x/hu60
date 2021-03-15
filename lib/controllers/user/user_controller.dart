@@ -49,13 +49,52 @@ class UserController extends GetxController {
 
   // 修改用户名
   changeName(String name, {Function callback}) async {
-    dio.Response response =
-        await Http.request("/user.chname.json", method: Http.POST, data: {
-      "newName": name,
-      "go": 1,
-    });
+    dio.Response response = await Http.request(
+      "/user.chname.json",
+      method: Http.POST,
+      data: {
+        "newName": name,
+        "go": 1,
+      },
+    );
     if (response.data["success"]) {
       user.name = name;
+      update();
+    }
+    if (callback != null) callback(response.data);
+  }
+
+  // 修改个性签名
+  changeSign(String sign, {Function callback}) async {
+    dio.Response response = await Http.request(
+      "/user.chinfo.json",
+      method: Http.POST,
+      data: {
+        "signature": sign,
+        "contact": user.contact,
+        "go": 1,
+      },
+    );
+    if (response.data["success"]) {
+      user.signature = sign;
+      update();
+    }
+    if (callback != null) callback(response.data);
+  }
+
+  // 修改联系方式
+  changeContact(String contact, {Function callback}) async {
+    dio.Response response = await Http.request(
+      "/user.chinfo.json",
+      method: Http.POST,
+      data: {
+        "signature": user.signature,
+        "contact": contact,
+        "go": 1,
+      },
+    );
+    if (response.data["success"]) {
+      user.contact = contact;
       update();
     }
     if (callback != null) callback(response.data);

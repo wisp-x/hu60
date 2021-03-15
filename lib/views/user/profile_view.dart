@@ -10,7 +10,10 @@ import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/common/photo_gallery.dart';
 import 'package:hu60/views/user/change_name_view.dart';
+import 'package:hu60/views/user/change_sign_view.dart';
 import 'package:image_picker/image_picker.dart';
+
+import 'change_contact_view.dart';
 
 class ProfileView extends StatefulWidget {
   @override
@@ -130,6 +133,7 @@ class _ProfileView extends State<ProfileView> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                     ),
+                    onTap: () => Get.to(() => ChangeSignView()),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
@@ -142,6 +146,7 @@ class _ProfileView extends State<ProfileView> {
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                     ),
+                    onTap: () => Get.to(() => ChangeContactView()),
                   ),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
