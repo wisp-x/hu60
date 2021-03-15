@@ -41,9 +41,23 @@ class UserController extends GetxController {
   // 设置楼层倒序/正序，倒序=true，正序=false
   setFloorReverse(bool value, {Function callback}) async {
     String url = "/user.index.json?floorReverse=${value ? 1 : 0}";
-    dio.Response res = await Http.request(url);
-    user.floorReverse = res.data["floorReverse"];
+    dio.Response response = await Http.request(url);
+    user.floorReverse = response.data["floorReverse"];
     update();
-    if (callback != null) callback();
+    if (callback != null) callback(response.data);
+  }
+
+  // 修改用户名
+  changeName(String name, {Function callback}) async {
+    dio.Response response =
+        await Http.request("/user.chname.json", method: Http.POST, data: {
+      "newName": name,
+      "go": 1,
+    });
+    if (response.data["success"]) {
+      user.name = name;
+      update();
+    }
+    if (callback != null) callback(response.data);
   }
 }

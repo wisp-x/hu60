@@ -223,7 +223,11 @@ class Forum {
             children: <Widget>[
               Offstage(
                 offstage: content == null,
-                child: content,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  width: ScreenUtil().screenWidth - 180,
+                  child: content,
+                ),
               ),
               Icon(
                 Icons.chevron_right,

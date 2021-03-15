@@ -42,7 +42,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
                   child: Text(
                     "点我登录",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: ScreenUtil().setSp(36),
                       color: Colors.white,
                     ),
                   ),

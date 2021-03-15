@@ -166,7 +166,7 @@ class _UserInfoView extends State<UserInfoView> {
                         return CupertinoAlertDialog(
                           title: Text("屏蔽该用户"),
                           content: Text(
-                            "屏蔽后你将看不见该用户的帖子、回复和聊天室中的发言，并且该用户无法向您发送内信和@消息，你确定要屏蔽该用户吗？",
+                            "屏蔽后你将看不见该用户的帖子、回复和聊天室中的发言，并且该用户无法向你发送内信和@消息，你确定要屏蔽该用户吗？",
                           ),
                           actions: [
                             CupertinoDialogAction(
