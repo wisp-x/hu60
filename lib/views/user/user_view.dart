@@ -103,6 +103,11 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: <Widget>[
           Forum.buildListTileDivider(),
+          Forum.buildListTile("收件箱", icon: Icons.mail_outline),
+          Padding(
+            padding: EdgeInsets.only(left: 70),
+            child: Forum.buildListTileDivider(),
+          ),
           Forum.buildListTile("我的帖子", icon: Icons.format_list_bulleted),
           Padding(
             padding: EdgeInsets.only(left: 70),
