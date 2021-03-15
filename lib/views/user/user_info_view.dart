@@ -259,81 +259,74 @@ class _UserInfoView extends State<UserInfoView> {
   }
 
   List<Widget> _getPermissionLabels(UserInfoController c) {
-    List<Widget> a = [];
-    List<Widget> b = [];
+    List<Widget> widgets = [];
+    c.user.permissions.sort((a, b) {
+      return permissions.containsKey(a) ? 0 : 1;
+    });
     c.user.permissions.asMap().keys.map((i) {
       String permission = c.user.permissions[i];
       if (permissions.containsKey(permission)) {
-        a.add(Container(
+        widgets.add(Container(
           color: Color(0xff3bb7c9),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.admin_panel_settings,
-                      color: Color(0xffe54f4f),
-                      size: ScreenUtil().setWidth(35),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 4),
-                      child: Text(
-                        "拥有${permissions[permission]}",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(32),
-                        ),
-                      ),
-                    )
-                  ],
+          child: Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.admin_panel_settings,
+                  color: Color(0xffe54f4f),
+                  size: ScreenUtil().setWidth(35),
                 ),
-              ),
-              Divider(height: 1, color: Colors.white)
-            ],
+                Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Text(
+                    "拥有${permissions[permission]}",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil().setSp(32),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
       }
       if (status.containsKey(permission)) {
-        b.add(Container(
+        widgets.add(Container(
           color: Color(0xffc45f5f),
-          child: Column(
-            children: <Widget>[
-              Container(
-                padding: EdgeInsets.all(5),
-                child: Row(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    Icon(
-                      Icons.error,
-                      color: Color(0xffadadad),
-                      size: ScreenUtil().setWidth(35),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(left: 4),
-                      child: Text(
-                        status[permission],
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: ScreenUtil().setSp(32),
-                        ),
-                      ),
-                    )
-                  ],
+          child: Container(
+            padding: EdgeInsets.all(5),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                Icon(
+                  Icons.error,
+                  color: Color(0xffadadad),
+                  size: ScreenUtil().setWidth(35),
                 ),
-              ),
-              Offstage(
-                offstage: i != c.user.permissions.length,
-                child: Divider(height: 1, color: Colors.black),
-              ),
-            ],
+                Padding(
+                  padding: EdgeInsets.only(left: 4),
+                  child: Text(
+                    status[permission],
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: ScreenUtil().setSp(32),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ));
       }
+      widgets.add(Offstage(
+        offstage: c.user.permissions.length == i + 1,
+        child: Divider(height: 1, color: Colors.white),
+      ));
     }).toList();
-    return [...a, ...b];
+    return widgets;
   }
 
   Widget _tabTopics(UserInfoController c) {
