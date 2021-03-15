@@ -12,10 +12,11 @@
          additional functionality it is fine to subclass or reimplement
          FlutterApplication and put your custom class here. -->
     <application
-        android:name="io.flutter.app.FlutterApplication"
-        android:label="hu60"
-        android:usesCleartextTraffic="true"
-        android:icon="@mipmap/ic_launcher">
+            android:name="io.flutter.app.FlutterApplication"
+            android:label="hu60"
+            android:usesCleartextTraffic="true"
+            android:requestLegacyExternalStorage="true"
+            android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

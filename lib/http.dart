@@ -37,7 +37,6 @@ class Http {
   }
 
   static request(String url, {data, method}) async {
-    SharedPreferences preferences = await SharedPreferences.getInstance();
     dio = Dio(
       BaseOptions(
         baseUrl: await getBaseUrl(),
@@ -73,7 +72,7 @@ class Http {
     Response response = await dio.request(
       url,
       data: data,
-      options: new Options(method: method),
+      options: Options(method: method),
     );
 
     // 格式化不规范的json
