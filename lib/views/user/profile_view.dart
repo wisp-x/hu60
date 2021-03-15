@@ -10,6 +10,7 @@ import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/common/photo_gallery.dart';
 import 'package:hu60/views/user/change_name_view.dart';
+import 'package:hu60/views/user/change_password_view.dart';
 import 'package:hu60/views/user/change_sign_view.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -152,11 +153,52 @@ class _ProfileView extends State<ProfileView> {
                     padding: EdgeInsets.only(left: 70),
                     child: Forum.buildListTileDivider(),
                   ),
-                  Forum.buildListTile("密码"),
-                  Forum.buildListTileDivider(),
+                  Forum.buildListTile(
+                    "密码",
+                    onTap: () => Get.to(() => ChangePasswordView()),
+                  ),
                 ],
               ),
             ),
+            Forum.buildListTileDivider(),
+            Container(
+              color: Colors.white,
+              margin: EdgeInsets.only(top: 10),
+              child: ListTile(
+                title: Center(
+                  child: Text(
+                    "退出登录",
+                    style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+                  ),
+                ),
+                onTap: () {
+                  showCupertinoModalPopup(
+                    context: context,
+                    builder: (context) {
+                      return CupertinoActionSheet(
+                        actions: <Widget>[
+                          CupertinoActionSheetAction(
+                            isDestructiveAction: true,
+                            child: Text("确认退出"),
+                            onPressed: () async {
+                              c.logout();
+                              Get.back();
+                            },
+                          ),
+                        ],
+                        cancelButton: CupertinoActionSheetAction(
+                          child: Text('取消'),
+                          onPressed: () {
+                            Get.back();
+                          },
+                        ),
+                      );
+                    },
+                  );
+                },
+              ),
+            ),
+            Forum.buildListTileDivider(),
           ],
         ),
       ),

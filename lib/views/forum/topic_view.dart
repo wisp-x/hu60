@@ -127,8 +127,7 @@ class TopicView extends StatelessWidget {
       child: Text('浏览器打开'),
       onPressed: () async {
         Get.back();
-        String url = await Http.getBaseUrl();
-        Utils.openUrl("$url/bbs.topic.$id.html");
+        Utils.openUrl("/bbs.topic.$id.html");
       },
     );
   }

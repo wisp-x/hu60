@@ -52,6 +52,7 @@ class _ChangeNameView extends State<ChangeNameView> {
                     child: Text("修改", style: TextStyle(color: Colors.white)),
                   ),
                   onTap: () {
+                    if (!validated) return false;
                     if (_textController.text == c.user.name) {
                       return Fluttertoast.showToast(msg: "请输入新的用户名");
                     }

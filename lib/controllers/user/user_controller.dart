@@ -99,4 +99,24 @@ class UserController extends GetxController {
     }
     if (callback != null) callback(response.data);
   }
+
+  // 修改密码
+  changePassword(
+    String oldPassword,
+    String newPassword, {
+    Function callback,
+  }) async {
+    dio.Response response = await Http.request(
+      "/user.chpwd.json",
+      method: Http.POST,
+      data: {
+        "step": 2,
+        "oldPassword": oldPassword,
+        "newPassword": newPassword,
+        "newPasswordAgain": newPassword,
+        "go": 1,
+      },
+    );
+    if (callback != null) callback(response.data);
+  }
 }
