@@ -48,6 +48,7 @@ class Http {
         },
         followRedirects: false,
         validateStatus: (status) {
+          // TODO 修复状态失效后302导致数据异常的bug
           return status < 500;
         },
       ),

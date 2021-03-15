@@ -183,6 +183,7 @@ class _ProfileView extends State<ProfileView> {
                             onPressed: () async {
                               c.logout();
                               Get.back();
+                              Get.back();
                             },
                           ),
                         ],
