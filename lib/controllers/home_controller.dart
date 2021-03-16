@@ -25,6 +25,7 @@ class HomeController extends GetxController {
     // 3分钟更新一次用户数据
     Timer.periodic(Duration(minutes: 3), (timer) {
       userController.init();
+      update();
     });
   }
 }
