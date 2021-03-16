@@ -12,7 +12,7 @@ class UserController extends GetxController {
   bool isLogin = false;
 
   // 初始化用户数据
-  init() async {
+  init({Function callback}) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String sid = prefs.getString("sid");
     if (sid != "" && sid != null) {
@@ -23,6 +23,7 @@ class UserController extends GetxController {
         this.user = entity;
         this.isLogin = true;
         update();
+        if (callback != null) callback();
       }
     }
   }

@@ -21,11 +21,10 @@ class HomeController extends GetxController {
   onInit() async {
     super.onInit();
     // 初始化用户数据
-    userController.init();
+    userController.init(callback: () => update());
     // 3分钟更新一次用户数据
     Timer.periodic(Duration(minutes: 3), (timer) {
-      userController.init();
-      update();
+      userController.init(callback: () => update());
     });
   }
 }
