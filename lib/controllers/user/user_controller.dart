@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:hu60/entities/user/user_entity.dart';
@@ -9,12 +11,21 @@ class UserController extends GetxController {
   UserEntity user; // 用户数据
   bool isLogin = false;
 
+  onInit() {
+    super.onInit();
+    // 5分钟更新一次用户数据
+    Timer.periodic(Duration(minutes: 5), (timer) {
+      init();
+    });
+  }
+
   // 初始化用户数据
   init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String sid = prefs.getString("sid");
     if (sid != "" && sid != null) {
-      dio.Response res = await Http.request("/user.index.json?_uinfo=avatar");
+      dio.Response res = await Http.request(
+          "/user.index.json?_myself=newMsg,newAtInfo&_uinfo=avatar");
       if (res.data != "") {
         UserEntity entity = UserEntity.fromJson(res.data);
         this.user = entity;
@@ -34,7 +45,7 @@ class UserController extends GetxController {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.remove("sid");
     this.isLogin = false;
-    this.user = UserEntity(0, "", "", "", 0, false, false, false, [], "");
+    this.user = UserEntity(0, "", "", "", 0, null, null, null, [], null, "");
     update();
   }
 
@@ -101,11 +112,10 @@ class UserController extends GetxController {
   }
 
   // 修改密码
-  changePassword(
-    String oldPassword,
-    String newPassword, {
-    Function callback,
-  }) async {
+  changePassword(String oldPassword,
+      String newPassword, {
+        Function callback,
+      }) async {
     dio.Response response = await Http.request(
       "/user.chpwd.json",
       method: Http.POST,

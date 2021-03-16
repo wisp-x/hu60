@@ -17,6 +17,9 @@ UserEntity _$UserEntityFromJson(Map<String, dynamic> json) {
     json['floorReverse'] as bool,
     json['siteAdmin'] as bool,
     json['permissions'] as List,
+    json['_myself'] == null
+        ? null
+        : _myself.fromJson(json['_myself'] as Map<String, dynamic>),
     json['_u_avatar'] as String,
   );
 }
@@ -32,5 +35,24 @@ Map<String, dynamic> _$UserEntityToJson(UserEntity instance) =>
       'floorReverse': instance.floorReverse,
       'siteAdmin': instance.siteAdmin,
       'permissions': instance.permissions,
+      '_myself': instance.myself,
+      '_u_avatar': instance.uAvatar,
+    };
+
+_myself _$_myselfFromJson(Map<String, dynamic> json) {
+  return _myself(
+    json['isLogin'] as bool,
+    json['uid'] as int,
+    json['newMsg'] as int,
+    json['newAtInfo'] as int,
+    json['_u_avatar'] as String,
+  );
+}
+
+Map<String, dynamic> _$_myselfToJson(_myself instance) => <String, dynamic>{
+      'isLogin': instance.isLogin,
+      'uid': instance.uid,
+      'newMsg': instance.newMsg,
+      'newAtInfo': instance.newAtInfo,
       '_u_avatar': instance.uAvatar,
     };

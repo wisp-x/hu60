@@ -31,6 +31,9 @@ class UserEntity extends Object {
   @JsonKey(name: 'permissions')
   List<dynamic> permissions;
 
+  @JsonKey(name: '_myself')
+  _myself myself;
+
   @JsonKey(name: '_u_avatar')
   String uAvatar;
 
@@ -44,6 +47,7 @@ class UserEntity extends Object {
     this.floorReverse,
     this.siteAdmin,
     this.permissions,
+    this.myself,
     this.uAvatar,
   );
 
@@ -51,4 +55,35 @@ class UserEntity extends Object {
       _$UserEntityFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$UserEntityToJson(this);
+}
+
+@JsonSerializable()
+class _myself extends Object {
+  @JsonKey(name: 'isLogin')
+  bool isLogin;
+
+  @JsonKey(name: 'uid')
+  int uid;
+
+  @JsonKey(name: 'newMsg')
+  int newMsg;
+
+  @JsonKey(name: 'newAtInfo')
+  int newAtInfo;
+
+  @JsonKey(name: '_u_avatar')
+  String uAvatar;
+
+  _myself(
+    this.isLogin,
+    this.uid,
+    this.newMsg,
+    this.newAtInfo,
+    this.uAvatar,
+  );
+
+  factory _myself.fromJson(Map<String, dynamic> srcJson) =>
+      _$_myselfFromJson(srcJson);
+
+  Map<String, dynamic> toJson() => _$_myselfToJson(this);
 }
