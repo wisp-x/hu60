@@ -1,4 +1,6 @@
+import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/message/message_controller.dart';
 import 'package:hu60/entities/message/messages_entity.dart';
@@ -62,15 +64,27 @@ class _MessageView extends State<MessageView>
   // 构建列表项
   Widget _list(BuildContext context, MessageController c) {
     if (c.loading) return Utils.loading(context);
-    return ListView.separated(
-      separatorBuilder: (BuildContext context, int index) => Divider(
-        height: 1.0,
-        color: Colors.green,
-      ),
+    return ListView.builder(
       itemCount: c.messages.length,
       itemBuilder: (BuildContext context, int index) {
         MsgList item = c.messages[index];
-        return Html.decode(item.content);
+        String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Padding(
+              padding: EdgeInsets.all(10),
+              child: Text(
+                date,
+                style: TextStyle(fontSize: ScreenUtil().setSp(35)),
+              ),
+            ),
+            Container(
+              color: Colors.white,
+              child: Html.decode(item.content),
+            ),
+          ],
+        );
       },
     );
   }
