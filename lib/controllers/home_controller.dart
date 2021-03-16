@@ -10,6 +10,7 @@ import 'package:hu60/views/user/user_view.dart';
 class HomeController extends GetxController {
   final pages = <Widget>[TopicsView(), ChatView(), MessageView(), UserView()];
   final PageController pageController = PageController();
+  final UserController userController = Get.put(UserController());
   int index = 0; // 当前导航索引
 
   // define field instance
@@ -18,6 +19,6 @@ class HomeController extends GetxController {
   onInit() async {
     super.onInit();
     // 初始化用户数据
-    Get.put(UserController()).init();
+    userController.init();
   }
 }

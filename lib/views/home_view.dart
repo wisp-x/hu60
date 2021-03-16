@@ -57,6 +57,10 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           onPageChanged: (int i) {
             c.index = i;
             c.appBarKey.currentState.animateTo(i);
+            if (i == 3) {
+              // 更新用户数据
+              c.userController.init();
+            }
           },
         ),
         bottomNavigationBar: ConvexAppBar(
