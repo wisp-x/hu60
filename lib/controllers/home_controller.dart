@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
@@ -20,5 +22,9 @@ class HomeController extends GetxController {
     super.onInit();
     // 初始化用户数据
     userController.init();
+    // 3分钟更新一次用户数据
+    Timer.periodic(Duration(minutes: 3), (timer) {
+      userController.init();
+    });
   }
 }

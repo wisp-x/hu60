@@ -11,14 +11,6 @@ class UserController extends GetxController {
   UserEntity user; // 用户数据
   bool isLogin = false;
 
-  onInit() {
-    super.onInit();
-    // 5分钟更新一次用户数据
-    Timer.periodic(Duration(minutes: 5), (timer) {
-      init();
-    });
-  }
-
   // 初始化用户数据
   init() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
