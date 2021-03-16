@@ -9,6 +9,7 @@ import 'package:hu60/utils/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
 import 'package:hu60/views/common/photo_gallery.dart';
+import 'package:hu60/views/forum/topic_view.dart';
 import 'package:hu60/views/user/user_info_view.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
@@ -164,8 +165,29 @@ class Html {
                   ),
                 );
                 break;
+              case "hu60_pos":
+                var id = 0;
+                if (attrs["href"] != null &&
+                    RegExp(r"bbs\.topic\.\d+\.json").hasMatch(attrs["href"])) {
+                  id = int.parse(RegExp(r"\d+", multiLine: true)
+                      .allMatches(attrs["href"])
+                      .map((e) => e.group(0))
+                      .first);
+                }
+                return GestureDetector(
+                  child: Text(
+                    element.text,
+                    style: TextStyle(
+                      color: Colors.blue[400],
+                      fontSize: ScreenUtil().setSp(34),
+                    ),
+                  ),
+                  onTap: () {
+                    if (id != 0) Get.to(() => TopicView(id: id));
+                  },
+                );
+                break;
               case "userinfo": // @ 符号后面的文字
-                // TODO
                 var id = 0;
                 if (attrs["href"] != null &&
                     RegExp(r"user\.info\.\d+\.json").hasMatch(attrs["href"])) {

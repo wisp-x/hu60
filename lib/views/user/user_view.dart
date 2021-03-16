@@ -25,6 +25,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GetBuilder<UserController>(
       init: UserController(),
       builder: (c) => Scaffold(
@@ -36,31 +37,31 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
                     _buildProfile(context, c),
                     _buildSettings(context, c),
                     _buildMore(context, c),
-                  ],
-                )
-              : TextButton(
-                  child: Text(
-                    "点我登录",
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(36),
-                      color: Colors.white,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
-                    ),
-                    elevation: 0,
-                    backgroundColor: Colors.green,
-                    minimumSize: Size(100, 45),
-                  ),
-                  onPressed: () => Get.to(
-                    () => LoginView(),
-                    fullscreenDialog: true,
+                ],
+              )
+                  : TextButton(
+                child: Text(
+                  "点我登录",
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(36),
+                    color: Colors.white,
                   ),
                 ),
-        ),
-      ),
+                style: TextButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(50)),
+                  ),
+                  elevation: 0,
+                  backgroundColor: Colors.green,
+                  minimumSize: Size(100, 45),
+                ),
+                onPressed: () => Get.to(
+                      () => LoginView(),
+                  fullscreenDialog: true,
+                ),
+              ),
+            ),
+          ),
     );
   }
 

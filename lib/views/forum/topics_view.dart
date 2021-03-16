@@ -18,6 +18,7 @@ class _TopicsView extends State<TopicsView>
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return GetBuilder<TopicsController>(
       init: TopicsController(),
       builder: (c) {

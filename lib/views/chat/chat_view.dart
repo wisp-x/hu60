@@ -18,6 +18,7 @@ class _ChatView extends State<ChatView> with AutomaticKeepAliveClientMixin {
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
     return Scaffold(
       backgroundColor: Theme.of(context).backgroundColor,
       body: Center(
@@ -32,9 +33,8 @@ class _ChatView extends State<ChatView> with AutomaticKeepAliveClientMixin {
             Padding(padding: EdgeInsets.only(top: 10)),
             Center(
               child: Text(
-                "开发中...",
-                style: TextStyle(fontSize: 20, color: Colors.black54),
-              ),
+                  "开发中...",
+                  style: TextStyle(fontSize: 20, color: Colors.black54)),
             )
           ],
         ),
