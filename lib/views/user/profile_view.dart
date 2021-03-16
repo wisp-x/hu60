@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
+import 'package:http_parser/http_parser.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/http.dart';
 import 'package:hu60/utils/user.dart';
@@ -41,75 +44,55 @@ class _ProfileView extends State<ProfileView> {
               color: Colors.white,
               child: Column(
                 children: <Widget>[
-                  Forum.buildListTile("头像",
-                      content: Padding(
-                        padding: EdgeInsets.only(top: 5, bottom: 5),
-                        child: User.getAvatar(
-                          context: context,
-                          url: c.user.uAvatar,
-                          size: ScreenUtil().setWidth(100),
-                          borderRadius: 8.0,
-                        ),
-                      ), onTap: () {
-                    showCupertinoModalPopup(
-                      context: context,
-                      builder: (context) {
-                        return CupertinoActionSheet(
-                          actions: <Widget>[
-                            CupertinoActionSheetAction(
-                              child: Text("查看大图"),
-                              onPressed: () async {
-                                Get.back();
-                                Get.to(
-                                  () => PhotoGallery(
-                                    index: 0,
-                                    images: [c.user.uAvatar],
-                                    heroTag: c.user.uAvatar,
-                                  ),
-                                );
-                              },
-                            ),
-                            CupertinoActionSheetAction(
-                              child: Text("更换头像"),
-                              onPressed: () async {
-                                Get.back();
-                                final pickedFile = await picker.getImage(
-                                  source: ImageSource.gallery,
-                                );
-                                if (pickedFile == null) return;
-                                String path = pickedFile.path;
-                                /*String name = path.substring(
-                                  path.lastIndexOf("/") + 1,
-                                  path.length,
-                                );*/
-                                // String suffix = name.substring(name.lastIndexOf(".") + 1, name.length);
-                                dio.Response response = await Http.request(
-                                  "/user.avatar.json",
-                                  method: Http.POST,
-                                  data: dio.FormData.fromMap({
-                                    "avatar": await dio.MultipartFile.fromFile(
-                                      path,
-                                      filename: "avatar.jpg",
+                  Forum.buildListTile(
+                    "头像",
+                    content: Padding(
+                      padding: EdgeInsets.only(top: 5, bottom: 5),
+                      child: User.getAvatar(
+                        context: context,
+                        url: c.user.uAvatar,
+                        size: ScreenUtil().setWidth(100),
+                        borderRadius: 8.0,
+                      ),
+                    ),
+                    onTap: () {
+                      showCupertinoModalPopup(
+                        context: context,
+                        builder: (context) {
+                          return CupertinoActionSheet(
+                            actions: <Widget>[
+                              CupertinoActionSheetAction(
+                                child: Text("查看大图"),
+                                onPressed: () async {
+                                  Get.back();
+                                  Get.to(
+                                    () => PhotoGallery(
+                                      index: 0,
+                                      images: [c.user.uAvatar],
+                                      heroTag: c.user.uAvatar,
                                     ),
-                                  }),
-                                );
-                                String msg = response.data["message"] ??
-                                    response.data["error"];
-                                Fluttertoast.showToast(msg: msg);
-                                Get.find<UserController>().init();
+                                  );
+                                },
+                              ),
+                              CupertinoActionSheetAction(
+                                child: Text("更换头像"),
+                                onPressed: () async {
+                                  Get.back();
+                                  _changeAvatar();
+                                },
+                              ),
+                            ],
+                            cancelButton: CupertinoActionSheetAction(
+                              child: Text('取消'),
+                              onPressed: () {
+                                Get.back();
                               },
                             ),
-                          ],
-                          cancelButton: CupertinoActionSheetAction(
-                            child: Text('取消'),
-                            onPressed: () {
-                              Get.back();
-                            },
-                          ),
-                        );
-                      },
-                    );
-                  }),
+                          );
+                        },
+                      );
+                    },
+                  ),
                   Padding(
                     padding: EdgeInsets.only(left: 70),
                     child: Forum.buildListTileDivider(),
@@ -204,5 +187,31 @@ class _ProfileView extends State<ProfileView> {
         ),
       ),
     );
+  }
+
+  void _changeAvatar() async {
+    final pickedFile = await picker.getImage(
+      source: ImageSource.gallery,
+    );
+    if (pickedFile == null) return;
+    String path = pickedFile.path;
+    /*String name = path.substring(
+      path.lastIndexOf("/") + 1,
+      path.length,
+    );
+    String suffix = name.substring(name.lastIndexOf(".") + 1, name.length);*/
+    dio.Response response = await Http.request(
+      "/user.avatar.json",
+      method: Http.POST,
+      data: dio.FormData.fromMap({
+        "avatar": await dio.MultipartFile.fromFile(
+          path,
+          contentType: MediaType.parse("image/jpeg"),
+        )
+      }),
+    );
+    String msg = response.data["message"] ?? response.data["error"];
+    Fluttertoast.showToast(msg: msg);
+    Get.find<UserController>().init();
   }
 }

@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^7.1.8
   flutter_screenutil: ^4.0.3+3
   image_picker: ^0.7.2+1
+  http_parser: ^4.0.0
 
 # TODO 重写 flutter_svg 插件，等待 flutter_html 升级依赖
 dependency_overrides:
