@@ -72,6 +72,8 @@ class MessageController extends GetxController
     }
     loading = false;
     update();
+    // 更新用户数据
+    if (tabIndex == 0) Get.find<UserController>().init();
     return result;
   }
 }

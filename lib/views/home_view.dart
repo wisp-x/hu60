@@ -3,6 +3,7 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/message/message_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/badge.dart';
 import 'package:hu60/views/forum/new_topic_view.dart';
@@ -72,6 +73,12 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
                 // 更新用户数据
                 c.userController
                     .init(callback: () => Get.find<HomeController>().update());
+              }
+              if (i == 2) {
+                // 刷新未读消息
+                Get.find<MessageController>()
+                    .refreshController
+                    .requestRefresh();
               }
             },
           ),
