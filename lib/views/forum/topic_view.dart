@@ -300,32 +300,39 @@ class TopicView extends StatelessWidget {
                         fontWeight: FontWeight.w500,
                       ),
                     ),
-                    GestureDetector(
-                      child: Text.rich(
-                        TextSpan(
-                          children: <InlineSpan>[
-                            TextSpan(
-                                text: userController.user.floorReverse
+                    Offstage(
+                      offstage: !userController.isLogin,
+                      child: GestureDetector(
+                        child: Text.rich(
+                          TextSpan(
+                            children: <InlineSpan>[
+                              TextSpan(
+                                text: userController.isLogin &&
+                                        userController.user.floorReverse
                                     ? "正序"
                                     : "倒序",
                                 style: TextStyle(
-                                    fontSize: ScreenUtil().setSp(32))),
-                            WidgetSpan(
-                              alignment: ui.PlaceholderAlignment.middle,
-                              child: Icon(
-                                Icons.sort_by_alpha,
-                                size: ScreenUtil().setWidth(40),
+                                  fontSize: ScreenUtil().setSp(32),
+                                ),
                               ),
-                            ),
-                          ],
+                              WidgetSpan(
+                                alignment: ui.PlaceholderAlignment.middle,
+                                child: Icon(
+                                  Icons.sort_by_alpha,
+                                  size: ScreenUtil().setWidth(40),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
+                        onTap: () {
+                          userController.setFloorReverse(
+                            !userController.user.floorReverse,
+                            callback: (_) =>
+                                c.refreshController.requestRefresh(),
+                          );
+                        },
                       ),
-                      onTap: () {
-                        userController.setFloorReverse(
-                          !userController.user.floorReverse,
-                          callback: (_) => c.refreshController.requestRefresh(),
-                        );
-                      },
                     ),
                   ],
                 ),
@@ -347,7 +354,7 @@ class TopicView extends StatelessWidget {
     String date = TimelineUtil.format(item.ctime * 1000, locale: "zh");
     // 楼层
     int i = index;
-    if (userController.user.floorReverse) {
+    if (userController.isLogin && userController.user.floorReverse) {
       // 楼层倒序
       i = c.data.floorCount - index;
     }
