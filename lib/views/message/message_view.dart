@@ -15,16 +15,16 @@ class MessageView extends StatefulWidget {
   _MessageView createState() => _MessageView();
 }
 
-class _MessageView extends State<MessageView>
-    with AutomaticKeepAliveClientMixin {
+class _MessageView extends State<MessageView> {
   UserController _userController = Get.put(UserController());
 
-  @override
-  bool get wantKeepAlive => true;
+  initState() {
+    super.initState();
+    Get.find<MessageController>().init();
+  }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return GetBuilder<MessageController>(
       init: MessageController(),
       builder: (c) {

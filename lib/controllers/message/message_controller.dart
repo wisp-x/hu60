@@ -22,12 +22,6 @@ class MessageController extends GetxController
     refreshController = RefreshController(initialRefresh: false);
     tabController = TabController(length: 2, vsync: this);
     scrollController = ScrollController();
-
-    if (Get.find<UserController>().isLogin) {
-      MessagesEntity response = await getData(page);
-      messages = response.msgList;
-      update();
-    }
   }
 
   // 初始化列表

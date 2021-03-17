@@ -12,12 +12,12 @@ import 'package:hu60/http.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/common/photo_gallery.dart';
-import 'package:hu60/views/user/change_name_view.dart';
-import 'package:hu60/views/user/change_password_view.dart';
-import 'package:hu60/views/user/change_sign_view.dart';
+import 'package:hu60/views/user/profile/change_name_view.dart';
+import 'package:hu60/views/user/profile/change_password_view.dart';
+import 'package:hu60/views/user/profile/change_sign_view.dart';
 import 'package:image_picker/image_picker.dart';
 
-import 'change_contact_view.dart';
+import 'profile/change_contact_view.dart';
 
 class ProfileView extends StatefulWidget {
   @override

@@ -45,8 +45,7 @@ MsgList _$MsgListFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$MsgListToJson(MsgList instance) =>
-    <String, dynamic>{
+Map<String, dynamic> _$MsgListToJson(MsgList instance) => <String, dynamic>{
       'id': instance.id,
       'touid': instance.touid,
       'byuid': instance.byuid,

@@ -82,14 +82,6 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
                   c.userController.init(
                       callback: () => Get.find<HomeController>().update());
                 }
-                if (i == 2) {
-                  // 刷新未读消息
-                  Timer(Duration(milliseconds: 300), () {
-                    Get.find<MessageController>()
-                        .refreshController
-                        .requestRefresh();
-                  });
-                }
               }
             },
           ),
