@@ -60,8 +60,12 @@ class _MsgView extends State<MsgView> {
                     children: [
                       Padding(
                         padding: EdgeInsets.all(10),
-                        child: Text(TimelineUtil.format(_message.ctime * 1000,
-                            locale: "zh")),
+                        child: Text(
+                          TimelineUtil.format(
+                            _message.ctime * 1000,
+                            locale: "zh",
+                          ),
+                        ),
                       ),
                       Text(" ${widget.type == "inbox" ? "来自" : "发给"} "),
                       GestureDetector(
