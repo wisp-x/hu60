@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/message/message_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/message/messages_entity.dart';
 import 'package:hu60/utils/html.dart';
 import 'package:hu60/utils/utils.dart';
+import 'package:hu60/views/user/login_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class MessageView extends StatefulWidget {
@@ -44,18 +46,40 @@ class _MessageView extends State<MessageView>
               Tab(text: "已读"),
             ],
           ),
-          body: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: true,
-            header: WaterDropHeader(),
-            footer: ClassicFooter(),
-            controller: c.refreshController,
-            primary: false,
-            scrollController: c.scrollController,
-            onRefresh: c.onRefresh,
-            onLoading: c.onLoading,
-            child: _list(context, c),
-          ),
+          body: Get.find<UserController>().isLogin
+              ? SmartRefresher(
+                  enablePullDown: true,
+                  enablePullUp: true,
+                  header: WaterDropHeader(),
+                  footer: ClassicFooter(),
+                  controller: c.refreshController,
+                  primary: false,
+                  scrollController: c.scrollController,
+                  onRefresh: c.onRefresh,
+                  onLoading: c.onLoading,
+                  child: _list(context, c),
+                )
+              : TextButton(
+                  child: Text(
+                    "点我登录",
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(36),
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Colors.green,
+                    minimumSize: Size(100, 45),
+                  ),
+                  onPressed: () => Get.to(
+                    () => LoginView(),
+                    fullscreenDialog: true,
+                  ),
+                ),
         );
       },
     );
