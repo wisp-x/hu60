@@ -60,7 +60,7 @@ class MsgController extends GetxController with SingleGetTickerProviderMixin {
   // 获取数据
   Future<MessagesEntity> getData(int page) async {
     dio.Response response = await Http.request(
-      "/msg.index.inbox.${tabIndex == 1 ? 'yes' : 'no'}.json?_uinfo=avatar",
+      "/msg.index.inbox.${tabIndex == 1 ? 'yes' : 'no'}.json?_uinfo=avatar&p=$page",
       method: Http.POST,
     );
     MessagesEntity result = MessagesEntity.fromJson(response.data);

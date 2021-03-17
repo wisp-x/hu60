@@ -86,7 +86,7 @@ class _MessageView extends State<MessageView> {
                       item.byUinfo.name,
                       style: TextStyle(color: Colors.blue),
                     ),
-                    onTap: () => Get.to(() => UserInfoView(id: item.touid)),
+                    onTap: () => Get.to(() => UserInfoView(id: item.byuid)),
                   ),
                 ],
               ),

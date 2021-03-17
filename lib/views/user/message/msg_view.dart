@@ -67,8 +67,9 @@ class _MsgView extends State<MsgView> {
                           _message.byUinfo.name,
                           style: TextStyle(color: Colors.blue),
                         ),
-                        onTap: () =>
-                            Get.to(() => UserInfoView(id: _message.touid)),
+                        onTap: () => Get.to(
+                          () => UserInfoView(id: _message.byuid),
+                        ),
                       ),
                     ],
                   ),
