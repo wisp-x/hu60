@@ -39,10 +39,7 @@ class _MessageView extends State<MessageView> {
                     c.tabIndex = i;
                     c.init();
                   },
-                  tabs: [
-                    Tab(text: "未读"),
-                    Tab(text: "已读"),
-                  ],
+                  tabs: [Tab(text: "未读"), Tab(text: "已读")],
                 )
               : null,
           body: _userController.isLogin

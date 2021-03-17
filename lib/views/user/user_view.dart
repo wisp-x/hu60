@@ -9,6 +9,7 @@ import 'package:hu60/views/user/message/inbox_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
 import 'package:hu60/views/user/profile_view.dart';
+import 'package:hu60/views/user/topics_view.dart';
 
 import 'message/outbox_view.dart';
 
@@ -154,7 +155,11 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),
           ),
-          Forum.buildListTile("我的帖子", icon: Icons.format_list_bulleted),
+          Forum.buildListTile(
+            "我的帖子",
+            icon: Icons.format_list_bulleted,
+            onTap: () => Get.to(() => TopicsView()),
+          ),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),

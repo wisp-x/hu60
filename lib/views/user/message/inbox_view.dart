@@ -35,10 +35,7 @@ class _InboxView extends State<InboxView> {
                 c.tabIndex = i;
                 c.init();
               },
-              tabs: [
-                Tab(text: "未读"),
-                Tab(text: "已读"),
-              ],
+              tabs: [Tab(text: "未读"), Tab(text: "已读")],
             ),
           ),
           body: SmartRefresher(

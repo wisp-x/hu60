@@ -35,10 +35,7 @@ class _OutboxView extends State<OutboxView> {
                 c.tabIndex = i;
                 c.init();
               },
-              tabs: [
-                Tab(text: "对方未读"),
-                Tab(text: "对方已读"),
-              ],
+              tabs: [Tab(text: "对方未读"), Tab(text: "对方已读")],
             ),
           ),
           body: SmartRefresher(
