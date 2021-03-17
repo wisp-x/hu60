@@ -19,7 +19,7 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(context) {
-    return GetBuilder(
+    return GetBuilder<HomeController>(
       init: HomeController(),
       builder: (HomeController c) {
         int newAtInfo =
@@ -70,7 +70,8 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
               c.appBarKey.currentState.animateTo(i);
               if (i == 2 || i == 3) {
                 // 更新用户数据
-                c.userController.init();
+                c.userController
+                    .init(callback: () => Get.find<HomeController>().update());
               }
             },
           ),

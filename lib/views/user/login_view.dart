@@ -144,6 +144,7 @@ class _LoginView extends State<LoginView> {
                       if (res.data != "") {
                         UserEntity entity = UserEntity.fromJson(res.data);
                         controller.setUser(entity);
+                        controller.init();
                         Get.back();
                       } else {
                         Fluttertoast.showToast(msg: "登录失败");

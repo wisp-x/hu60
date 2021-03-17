@@ -17,10 +17,7 @@ class MessageView extends StatefulWidget {
 
 class _MessageView extends State<MessageView>
     with AutomaticKeepAliveClientMixin {
-  @override
-  void initState() {
-    super.initState();
-  }
+  UserController _userController = Get.put(UserController());
 
   @override
   bool get wantKeepAlive => true;
@@ -33,20 +30,22 @@ class _MessageView extends State<MessageView>
       builder: (c) {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
-          appBar: TabBar(
-            labelColor: Theme.of(context).accentColor,
-            indicatorColor: Theme.of(context).accentColor,
-            controller: c.tabController,
-            onTap: (int i) {
-              c.tabIndex = i;
-              c.init();
-            },
-            tabs: [
-              Tab(text: "未读"),
-              Tab(text: "已读"),
-            ],
-          ),
-          body: Get.find<UserController>().isLogin
+          appBar: _userController.isLogin
+              ? TabBar(
+                  labelColor: Theme.of(context).accentColor,
+                  indicatorColor: Theme.of(context).accentColor,
+                  controller: c.tabController,
+                  onTap: (int i) {
+                    c.tabIndex = i;
+                    c.init();
+                  },
+                  tabs: [
+                    Tab(text: "未读"),
+                    Tab(text: "已读"),
+                  ],
+                )
+              : null,
+          body: _userController.isLogin
               ? SmartRefresher(
                   enablePullDown: true,
                   enablePullUp: true,
@@ -59,25 +58,27 @@ class _MessageView extends State<MessageView>
                   onLoading: c.onLoading,
                   child: _list(context, c),
                 )
-              : TextButton(
-                  child: Text(
-                    "点我登录",
-                    style: TextStyle(
-                      fontSize: ScreenUtil().setSp(36),
-                      color: Colors.white,
+              : Center(
+                  child: TextButton(
+                    child: Text(
+                      "点我登录",
+                      style: TextStyle(
+                        fontSize: ScreenUtil().setSp(36),
+                        color: Colors.white,
+                      ),
                     ),
-                  ),
-                  style: TextButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    style: TextButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                      ),
+                      elevation: 0,
+                      backgroundColor: Colors.green,
+                      minimumSize: Size(100, 45),
                     ),
-                    elevation: 0,
-                    backgroundColor: Colors.green,
-                    minimumSize: Size(100, 45),
-                  ),
-                  onPressed: () => Get.to(
-                    () => LoginView(),
-                    fullscreenDialog: true,
+                    onPressed: () => Get.to(
+                      () => LoginView(),
+                      fullscreenDialog: true,
+                    ),
                   ),
                 ),
         );

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/message/messages_entity.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:dio/dio.dart' as dio;
@@ -22,9 +23,11 @@ class MessageController extends GetxController
     tabController = TabController(length: 2, vsync: this);
     scrollController = ScrollController();
 
-    MessagesEntity response = await getData(page);
-    messages = response.msgList;
-    update();
+    if (Get.find<UserController>().isLogin) {
+      MessagesEntity response = await getData(page);
+      messages = response.msgList;
+      update();
+    }
   }
 
   // 初始化列表

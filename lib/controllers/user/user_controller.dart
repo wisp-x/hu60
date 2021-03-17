@@ -1,7 +1,7 @@
-import 'dart:async';
-
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
+import 'package:hu60/controllers/home_controller.dart';
+import 'package:hu60/controllers/message/message_controller.dart';
 import 'package:hu60/entities/user/user_entity.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,6 +23,8 @@ class UserController extends GetxController {
         this.user = entity;
         this.isLogin = true;
         update();
+        Get.put(MessageController()).update();
+        Get.put(HomeController()).update();
         if (callback != null) callback();
       }
     }
@@ -40,6 +42,8 @@ class UserController extends GetxController {
     this.isLogin = false;
     this.user = UserEntity(0, "", "", "", 0, null, null, null, [], null, "");
     update();
+    Get.put(MessageController()).update();
+    Get.put(HomeController()).update();
   }
 
   // 设置楼层倒序/正序，倒序=true，正序=false
