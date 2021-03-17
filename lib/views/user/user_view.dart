@@ -37,31 +37,31 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
                     _buildProfile(context, c),
                     _buildSettings(context, c),
                     _buildMore(context, c),
-                ],
-              )
-                  : TextButton(
-                child: Text(
-                  "点我登录",
-                  style: TextStyle(
-                    fontSize: ScreenUtil().setSp(36),
-                    color: Colors.white,
+                  ],
+                )
+              : TextButton(
+                  child: Text(
+                    "点我登录",
+                    style: TextStyle(
+                      fontSize: ScreenUtil().setSp(36),
+                      color: Colors.white,
+                    ),
+                  ),
+                  style: TextButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(50)),
+                    ),
+                    elevation: 0,
+                    backgroundColor: Colors.green,
+                    minimumSize: Size(100, 45),
+                  ),
+                  onPressed: () => Get.to(
+                    () => LoginView(),
+                    fullscreenDialog: true,
                   ),
                 ),
-                style: TextButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(50)),
-                  ),
-                  elevation: 0,
-                  backgroundColor: Colors.green,
-                  minimumSize: Size(100, 45),
-                ),
-                onPressed: () => Get.to(
-                      () => LoginView(),
-                  fullscreenDialog: true,
-                ),
-              ),
-            ),
-          ),
+        ),
+      ),
     );
   }
 
@@ -104,7 +104,37 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: <Widget>[
           Forum.buildListTileDivider(),
-          Forum.buildListTile("收件箱", icon: Icons.mail_outline),
+          Forum.buildListTile("收件箱",
+              icon: Icons.mail_outline,
+              trailing: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Offstage(
+                    offstage: c.user.myself.newMsg <= 0,
+                    child: Container(
+                      alignment: Alignment.centerRight,
+                      width: ScreenUtil().screenWidth - 180,
+                      child: Container(
+                        padding: EdgeInsets.only(left: 5, right: 5),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          color: Colors.redAccent,
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Text(
+                          c.user.myself.newMsg.toString(),
+                          style: TextStyle(color: Colors.white, fontSize: 13),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Icon(
+                    Icons.chevron_right,
+                    color: Colors.grey,
+                    size: ScreenUtil().setWidth(45),
+                  ),
+                ],
+              )),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),

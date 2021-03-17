@@ -25,10 +25,15 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
       builder: (HomeController c) {
         int newAtInfo =
             _userController.isLogin ? _userController.user.myself.newAtInfo : 0;
+        int newMsg =
+            _userController.isLogin ? _userController.user.myself.newMsg : 0;
         Map<int, dynamic> badge;
-        if (newAtInfo > 0) {
-          badge = {2: newAtInfo > 99 ? "99+" : newAtInfo.toString()};
-        }
+        badge = {
+          2: newAtInfo > 0
+              ? (newAtInfo > 99 ? "99+" : newAtInfo.toString())
+              : null,
+          3: newMsg > 0 ? (newMsg > 99 ? "99+" : newMsg.toString()) : null,
+        };
 
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
@@ -69,16 +74,18 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
             onPageChanged: (int i) {
               c.index = i;
               c.appBarKey.currentState.animateTo(i);
-              if (i == 2 || i == 3) {
-                // 更新用户数据
-                c.userController
-                    .init(callback: () => Get.find<HomeController>().update());
-              }
-              if (i == 2) {
-                // 刷新未读消息
-                Get.find<MessageController>()
-                    .refreshController
-                    .requestRefresh();
+              if (_userController.isLogin) {
+                if (i == 2 || i == 3) {
+                  // 更新用户数据
+                  c.userController.init(
+                      callback: () => Get.find<HomeController>().update());
+                }
+                if (i == 2) {
+                  // 刷新未读消息
+                  Get.find<MessageController>()
+                      .refreshController
+                      .requestRefresh();
+                }
               }
             },
           ),
