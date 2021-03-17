@@ -55,11 +55,8 @@ class MsgList extends Object {
   @JsonKey(name: 'rtime')
   int rtime;
 
-  @JsonKey(name: 'to_u_avatar')
-  String toUAvatar;
-
-  @JsonKey(name: 'by_u_avatar')
-  String byUAvatar;
+  @JsonKey(name: 'byUinfo')
+  ByUinfo byUinfo;
 
   MsgList(
     this.id,
@@ -70,12 +67,26 @@ class MsgList extends Object {
     this.content,
     this.ctime,
     this.rtime,
-    this.toUAvatar,
-    this.byUAvatar,
+    this.byUinfo,
   );
 
   factory MsgList.fromJson(Map<String, dynamic> srcJson) =>
       _$MsgListFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$MsgListToJson(this);
+}
+
+@JsonSerializable()
+class ByUinfo extends Object {
+  @JsonKey(name: 'name')
+  String name;
+
+  ByUinfo(
+    this.name,
+  );
+
+  factory ByUinfo.fromJson(Map<String, dynamic> srcJson) =>
+      _$ByUinfoFromJson(srcJson);
+
+  Map<String, dynamic> toJson() => _$ByUinfoToJson(this);
 }

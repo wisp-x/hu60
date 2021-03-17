@@ -1,33 +1,28 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'messages_entity.dart';
+part of 'message_entity.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-MessagesEntity _$MessagesEntityFromJson(Map<String, dynamic> json) {
-  return MessagesEntity(
-    json['msgCount'] as int,
-    json['currPage'] as int,
-    json['maxPage'] as int,
-    (json['msgList'] as List)
-        ?.map((e) =>
-            e == null ? null : MsgList.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+MessageEntity _$MessageEntityFromJson(Map<String, dynamic> json) {
+  return MessageEntity(
+    json['isSender'] as bool,
+    json['msg'] == null
+        ? null
+        : Msg.fromJson(json['msg'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$MessagesEntityToJson(MessagesEntity instance) =>
+Map<String, dynamic> _$MessageEntityToJson(MessageEntity instance) =>
     <String, dynamic>{
-      'msgCount': instance.msgCount,
-      'currPage': instance.currPage,
-      'maxPage': instance.maxPage,
-      'msgList': instance.msgList,
+      'isSender': instance.isSender,
+      'msg': instance.msg,
     };
 
-MsgList _$MsgListFromJson(Map<String, dynamic> json) {
-  return MsgList(
+Msg _$MsgFromJson(Map<String, dynamic> json) {
+  return Msg(
     json['id'] as int,
     json['touid'] as int,
     json['byuid'] as int,
@@ -36,13 +31,18 @@ MsgList _$MsgListFromJson(Map<String, dynamic> json) {
     json['content'] as String,
     json['ctime'] as int,
     json['rtime'] as int,
+    json['toUinfo'] == null
+        ? null
+        : ToUinfo.fromJson(json['toUinfo'] as Map<String, dynamic>),
     json['byUinfo'] == null
         ? null
         : ByUinfo.fromJson(json['byUinfo'] as Map<String, dynamic>),
+    json['to_u_avatar'] as String,
+    json['by_u_avatar'] as String,
   );
 }
 
-Map<String, dynamic> _$MsgListToJson(MsgList instance) => <String, dynamic>{
+Map<String, dynamic> _$MsgToJson(Msg instance) => <String, dynamic>{
       'id': instance.id,
       'touid': instance.touid,
       'byuid': instance.byuid,
@@ -51,7 +51,20 @@ Map<String, dynamic> _$MsgListToJson(MsgList instance) => <String, dynamic>{
       'content': instance.content,
       'ctime': instance.ctime,
       'rtime': instance.rtime,
+      'toUinfo': instance.toUinfo,
       'byUinfo': instance.byUinfo,
+      'to_u_avatar': instance.toUAvatar,
+      'by_u_avatar': instance.byUAvatar,
+    };
+
+ToUinfo _$ToUinfoFromJson(Map<String, dynamic> json) {
+  return ToUinfo(
+    json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$ToUinfoToJson(ToUinfo instance) => <String, dynamic>{
+      'name': instance.name,
     };
 
 ByUinfo _$ByUinfoFromJson(Map<String, dynamic> json) {

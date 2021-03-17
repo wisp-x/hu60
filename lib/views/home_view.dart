@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
@@ -24,9 +26,9 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
       init: HomeController(),
       builder: (HomeController c) {
         int newAtInfo =
-            _userController.isLogin ? _userController.user.myself.newAtInfo : 0;
+        _userController.isLogin ? _userController.user.myself.newAtInfo : 0;
         int newMsg =
-            _userController.isLogin ? _userController.user.myself.newMsg : 0;
+        _userController.isLogin ? _userController.user.myself.newMsg : 0;
         Map<int, dynamic> badge;
         badge = {
           2: newAtInfo > 0
@@ -82,9 +84,11 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
                 }
                 if (i == 2) {
                   // 刷新未读消息
-                  Get.find<MessageController>()
-                      .refreshController
-                      .requestRefresh();
+                  Timer(Duration(milliseconds: 300), () {
+                    Get.find<MessageController>()
+                        .refreshController
+                        .requestRefresh();
+                  });
                 }
               }
             },

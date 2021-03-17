@@ -5,9 +5,12 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
+import 'package:hu60/views/user/message/message_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
 import 'package:hu60/views/user/profile_view.dart';
+
+import 'message/message_view.dart';
 
 class UserView extends StatefulWidget {
   @override
@@ -104,37 +107,40 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
       child: Column(
         children: <Widget>[
           Forum.buildListTileDivider(),
-          Forum.buildListTile("收件箱",
-              icon: Icons.mail_outline,
-              trailing: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Offstage(
-                    offstage: c.user.myself.newMsg <= 0,
+          Forum.buildListTile(
+            "内信",
+            icon: Icons.mail_outline,
+            trailing: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                Offstage(
+                  offstage: c.user.myself.newMsg <= 0,
+                  child: Container(
+                    alignment: Alignment.centerRight,
+                    width: ScreenUtil().screenWidth - 180,
                     child: Container(
-                      alignment: Alignment.centerRight,
-                      width: ScreenUtil().screenWidth - 180,
-                      child: Container(
-                        padding: EdgeInsets.only(left: 5, right: 5),
-                        decoration: BoxDecoration(
-                          shape: BoxShape.rectangle,
-                          color: Colors.redAccent,
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        child: Text(
-                          c.user.myself.newMsg.toString(),
-                          style: TextStyle(color: Colors.white, fontSize: 13),
-                        ),
+                      padding: EdgeInsets.only(left: 5, right: 5),
+                      decoration: BoxDecoration(
+                        shape: BoxShape.rectangle,
+                        color: Colors.redAccent,
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Text(
+                        c.user.myself.newMsg.toString(),
+                        style: TextStyle(color: Colors.white, fontSize: 13),
                       ),
                     ),
                   ),
-                  Icon(
-                    Icons.chevron_right,
-                    color: Colors.grey,
-                    size: ScreenUtil().setWidth(45),
-                  ),
-                ],
-              )),
+                ),
+                Icon(
+                  Icons.chevron_right,
+                  color: Colors.grey,
+                  size: ScreenUtil().setWidth(45),
+                ),
+              ],
+            ),
+            onTap: () => Get.to(() => MessageView()),
+          ),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),
