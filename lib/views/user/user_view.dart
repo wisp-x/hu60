@@ -5,12 +5,12 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
-import 'package:hu60/views/user/message/message_view.dart';
+import 'package:hu60/views/user/message/inbox_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
 import 'package:hu60/views/user/profile_view.dart';
 
-import 'message/message_view.dart';
+import 'message/outbox_view.dart';
 
 class UserView extends StatefulWidget {
   @override
@@ -108,8 +108,8 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
         children: <Widget>[
           Forum.buildListTileDivider(),
           Forum.buildListTile(
-            "内信",
-            icon: Icons.mail_outline,
+            "收件箱",
+            icon: Icons.mark_email_unread_outlined,
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
@@ -139,7 +139,16 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
                 ),
               ],
             ),
-            onTap: () => Get.to(() => MessageView()),
+            onTap: () => Get.to(() => InboxView()),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 70),
+            child: Forum.buildListTileDivider(),
+          ),
+          Forum.buildListTile(
+            "发件箱",
+            icon: Icons.mail_outline,
+            onTap: () => Get.to(() => OutboxView()),
           ),
           Padding(
             padding: EdgeInsets.only(left: 70),

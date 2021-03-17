@@ -39,10 +39,14 @@ MsgList _$MsgListFromJson(Map<String, dynamic> json) {
     json['byUinfo'] == null
         ? null
         : ByUinfo.fromJson(json['byUinfo'] as Map<String, dynamic>),
+    json['toUinfo'] == null
+        ? null
+        : ToUinfo.fromJson(json['toUinfo'] as Map<String, dynamic>),
   );
 }
 
-Map<String, dynamic> _$MsgListToJson(MsgList instance) => <String, dynamic>{
+Map<String, dynamic> _$MsgListToJson(MsgList instance) =>
+    <String, dynamic>{
       'id': instance.id,
       'touid': instance.touid,
       'byuid': instance.byuid,
@@ -52,6 +56,7 @@ Map<String, dynamic> _$MsgListToJson(MsgList instance) => <String, dynamic>{
       'ctime': instance.ctime,
       'rtime': instance.rtime,
       'byUinfo': instance.byUinfo,
+      'toUinfo': instance.toUinfo,
     };
 
 ByUinfo _$ByUinfoFromJson(Map<String, dynamic> json) {
@@ -61,5 +66,15 @@ ByUinfo _$ByUinfoFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$ByUinfoToJson(ByUinfo instance) => <String, dynamic>{
+      'name': instance.name,
+    };
+
+ToUinfo _$ToUinfoFromJson(Map<String, dynamic> json) {
+  return ToUinfo(
+    json['name'] as String,
+  );
+}
+
+Map<String, dynamic> _$ToUinfoToJson(ToUinfo instance) => <String, dynamic>{
       'name': instance.name,
     };

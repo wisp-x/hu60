@@ -7,11 +7,14 @@ import 'package:dio/dio.dart' as dio;
 import '../../http.dart';
 
 class MsgController extends GetxController with SingleGetTickerProviderMixin {
+  MsgController({@required this.key});
+
+  final key; // inbox or outbox
   TabController tabController; // 选项卡控制器
   RefreshController refreshController;
   ScrollController scrollController;
   int page = 1; // 页码
-  int tabIndex = 0; // 0=收件箱，1=发件箱
+  int tabIndex = 0; // 0=未读，1=已读
   bool loading = false;
   List<MsgList> messages = [];
 
@@ -60,7 +63,7 @@ class MsgController extends GetxController with SingleGetTickerProviderMixin {
   // 获取数据
   Future<MessagesEntity> getData(int page) async {
     dio.Response response = await Http.request(
-      "/msg.index.inbox.${tabIndex == 1 ? 'yes' : 'no'}.json?_uinfo=avatar&p=$page",
+      "/msg.index.$key.${tabIndex == 1 ? 'yes' : 'no'}.json?_uinfo=avatar&p=$page",
       method: Http.POST,
     );
     MessagesEntity result = MessagesEntity.fromJson(response.data);

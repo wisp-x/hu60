@@ -13,8 +13,10 @@ import '../user_info_view.dart';
 
 class MsgView extends StatefulWidget {
   final id;
+  final type; // inbox or outbox
 
-  const MsgView({Key key, this.id}) : super(key: key);
+  const MsgView({Key key, @required this.id, @required this.type})
+      : super(key: key);
 
   @override
   _MsgView createState() => _MsgView();
@@ -61,7 +63,7 @@ class _MsgView extends State<MsgView> {
                         child: Text(TimelineUtil.format(_message.ctime * 1000,
                             locale: "zh")),
                       ),
-                      Text(" 来自 "),
+                      Text(" ${widget.type == "inbox" ? "来自" : "发给"} "),
                       GestureDetector(
                         child: Text(
                           _message.byUinfo.name,

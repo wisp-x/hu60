@@ -10,21 +10,21 @@ import 'package:hu60/views/user/message/msg_view.dart';
 import 'package:hu60/views/user/user_info_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class MessageView extends StatefulWidget {
+class OutboxView extends StatefulWidget {
   @override
-  _MessageView createState() => _MessageView();
+  _OutboxView createState() => _OutboxView();
 }
 
-class _MessageView extends State<MessageView> {
+class _OutboxView extends State<OutboxView> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<MsgController>(
-      init: MsgController(),
+      init: MsgController(key: "outbox"),
       builder: (c) {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
-            title: Text("内信"),
+            title: Text("发件箱"),
             centerTitle: true,
             elevation: 0,
             bottom: TabBar(
@@ -36,8 +36,8 @@ class _MessageView extends State<MessageView> {
                 c.init();
               },
               tabs: [
-                Tab(text: "收件箱"),
-                Tab(text: "发件箱"),
+                Tab(text: "对方未读"),
+                Tab(text: "对方已读"),
               ],
             ),
           ),
@@ -80,10 +80,10 @@ class _MessageView extends State<MessageView> {
                     padding: EdgeInsets.all(10),
                     child: Text(date),
                   ),
-                  Text(" 来自 "),
+                  Text(" 发给 "),
                   GestureDetector(
                     child: Text(
-                      item.byUinfo.name,
+                      item.toUinfo.name,
                       style: TextStyle(color: Colors.blue),
                     ),
                     onTap: () => Get.to(() => UserInfoView(id: item.byuid)),
@@ -96,7 +96,7 @@ class _MessageView extends State<MessageView> {
                 color: Colors.white,
                 child: Html.decode(item.content),
               ),
-              onTap: () => Get.to(() => MsgView(id: item.id)),
+              onTap: () => Get.to(() => MsgView(id: item.id, type: "outbox")),
             ),
           ],
         );
