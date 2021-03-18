@@ -85,7 +85,7 @@ class TopicView extends StatelessWidget {
                                 child: Text("下沉"),
                                 onPressed: () {
                                   Get.back();
-                                  c.sink(context, () {
+                                  c.sink(context, id, () {
                                     c.refreshController.requestRefresh();
                                   });
                                 },

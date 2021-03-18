@@ -66,4 +66,18 @@ class UserTopicsController extends GetxController {
     update();
     return result;
   }
+
+  // 更新列表数据
+  void updateList() async {
+    TopicsEntity response = await getData(page);
+    this.topics.asMap().keys.map((index) {
+      var item = response.topicList.firstWhere(
+        (t) => t.id == this.topics[index].id,
+        orElse: () => null,
+      );
+      if (item != null) {
+        this.topics[index] = item;
+      }
+    }).toList();
+  }
 }

@@ -23,10 +23,12 @@ class TopicController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-    refreshController = RefreshController(initialRefresh: false);
-    scrollController = ScrollController();
-    textController = TextEditingController();
-    init();
+    if (id != null) {
+      refreshController = RefreshController(initialRefresh: false);
+      scrollController = ScrollController();
+      textController = TextEditingController();
+      init();
+    }
   }
 
   // 初始化列表
@@ -111,7 +113,7 @@ class TopicController extends GetxController {
   }
 
   // 下沉帖子
-  void sink(BuildContext context, Function callback) async {
+  void sink(BuildContext context, int id, Function callback) async {
     showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -125,11 +127,11 @@ class TopicController extends GetxController {
               onPressed: () async {
                 Get.back();
                 dio.Response getToken = await Http.request(
-                  "/bbs.sinktopic.$id.json",
+                  "/bbs.sinktopic.${id ?? this.id}.json",
                   method: Http.GET,
                 );
                 dio.Response response = await Http.request(
-                  "/bbs.sinktopic.$id.json",
+                  "/bbs.sinktopic.${id ?? this.id}.json",
                   method: Http.POST,
                   data: {"token": getToken.data["token"], "go": 1},
                 );

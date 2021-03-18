@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/forum/topic_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/controllers/user/user_topics_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/utils.dart';
@@ -43,7 +46,6 @@ class TopicsView extends StatelessWidget {
             child: ListView.separated(
               itemCount: c.topics.length,
               separatorBuilder: (BuildContext context, int index) => Container(
-                margin: EdgeInsets.only(top: 15),
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Divider(
                   height: 1.0,
@@ -52,22 +54,57 @@ class TopicsView extends StatelessWidget {
               ),
               itemBuilder: (BuildContext context, int index) {
                 TopicList item = c.topics[index];
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Padding(
-                          padding: EdgeInsets.only(bottom: 8),
-                          child: Forum.buildTopicsTitle(item),
-                        ),
-                        Forum.buildTopicsFooter(item),
-                      ],
+                return SwipeActionCell(
+                  key: ValueKey(item.id),
+                  backgroundColor: Colors.transparent,
+                  trailingActions: <SwipeAction>[
+                    SwipeAction(
+                      widthSpace: 70,
+                      title: "删除",
+                      onTap: (CompletionHandler handler) async {
+                        await handler(false);
+                        Get.put(TopicController(id: null)).delete(
+                          context,
+                          item.id,
+                          item.contentId,
+                          () => c.updateList(),
+                        );
+                      },
+                      color: Colors.red,
                     ),
+                    SwipeAction(
+                      widthSpace: 70,
+                      title: "下沉",
+                      onTap: (CompletionHandler handler) async {
+                        await handler(false);
+                        Get.put(TopicController(id: null)).sink(
+                          context,
+                          item.id,
+                          () => c.updateList(),
+                        );
+                      },
+                      color: Colors.yellow[700],
+                    ),
+                  ],
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        top: 15,
+                        right: 20,
+                        bottom: 15,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Forum.buildTopicsTitle(item),
+                          Forum.buildTopicsFooter(item),
+                        ],
+                      ),
+                    ),
+                    onTap: () => Get.to(() => TopicView(id: item.id)),
                   ),
-                  onTap: () => Get.to(() => TopicView(id: item.id)),
                 );
               },
             ),
