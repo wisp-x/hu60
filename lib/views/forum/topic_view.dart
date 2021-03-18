@@ -130,9 +130,9 @@ class TopicView extends StatelessWidget {
       onPressed: () async {
         Get.back();
         if (c.isCollect) {
-          c.cancelCollect();
+          Get.find<UserController>().cancelCollect(c.id);
         } else {
-          c.collect();
+          Get.find<UserController>().collect(c.id);
         }
       },
     );

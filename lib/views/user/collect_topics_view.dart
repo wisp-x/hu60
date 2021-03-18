@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
+import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/controllers/user/collect_topics_controller.dart';
+import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/common/forum.dart';
@@ -44,7 +47,6 @@ class CollectTopicsView extends StatelessWidget {
             child: ListView.separated(
               itemCount: c.topics.length,
               separatorBuilder: (BuildContext context, int index) => Container(
-                margin: EdgeInsets.only(top: 15),
                 padding: EdgeInsets.only(left: 20, right: 20),
                 child: Divider(
                   height: 1.0,
@@ -52,27 +54,50 @@ class CollectTopicsView extends StatelessWidget {
                 ),
               ),
               itemBuilder: (BuildContext context, int index) {
-                if (c.topics.length < index) {
-                  return null;
-                }
                 TopicList item = c.topics[index];
-                return GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 20, top: 15, right: 20),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: <Widget>[
-                        Forum.buildTopicsHeader(context, item),
-                        Padding(
-                          padding: EdgeInsets.only(top: 8, bottom: 8),
-                          child: Forum.buildTopicsTitle(item),
-                        ),
-                        Forum.buildTopicsFooter(item),
-                      ],
+
+                return SwipeActionCell(
+                  key: ValueKey(item.id),
+                  backgroundColor: Colors.transparent,
+                  trailingActions: <SwipeAction>[
+                    SwipeAction(
+                      widthSpace: 100,
+                      title: "取消收藏",
+                      onTap: (CompletionHandler handler) async {
+                        Get.find<UserController>().cancelCollect(
+                          item.id,
+                          callback: () {
+                            c.topics.removeAt(index);
+                            c.update();
+                          },
+                        );
+                      },
+                      color: Colors.red,
                     ),
+                  ],
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    child: Padding(
+                      padding: EdgeInsets.only(
+                        left: 20,
+                        top: 15,
+                        right: 20,
+                        bottom: 15,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: <Widget>[
+                          Forum.buildTopicsHeader(context, item),
+                          Padding(
+                            padding: EdgeInsets.only(top: 8, bottom: 8),
+                            child: Forum.buildTopicsTitle(item),
+                          ),
+                          Forum.buildTopicsFooter(item),
+                        ],
+                      ),
+                    ),
+                    onTap: () => Get.to(() => TopicView(id: item.id)),
                   ),
-                  onTap: () => Get.to(() => TopicView(id: item.id)),
                 );
               },
             ),

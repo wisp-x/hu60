@@ -234,32 +234,4 @@ class TopicController extends GetxController {
   void _checkIsCollect() async {
     // TODO 老虎未暴露是否收藏帖子的属性，暂时无法实现
   }
-
-  // 收藏帖子
-  void collect() async {
-    dio.Response response = await Http.request(
-      "/bbs.setfavoritetopic.$id.json",
-      method: Http.POST,
-    );
-    if (response.data["success"]) {
-      Fluttertoast.showToast(msg: "收藏成功");
-      this.isCollect = true;
-    } else {
-      Fluttertoast.showToast(msg: response.data["notice"]);
-    }
-  }
-
-  // 取消收藏
-  void cancelCollect() async {
-    dio.Response response = await Http.request(
-      "/bbs.unsetfavoritetopic.$id.json",
-      method: Http.POST,
-    );
-    if (response.data["success"]) {
-      Fluttertoast.showToast(msg: "已取消收藏");
-      this.isCollect = false;
-    } else {
-      Fluttertoast.showToast(msg: response.data["notice"]);
-    }
-  }
 }

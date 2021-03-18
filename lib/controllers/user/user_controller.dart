@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart' as dio;
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:hu60/controllers/message/message_controller.dart';
@@ -125,5 +126,33 @@ class UserController extends GetxController {
       },
     );
     if (callback != null) callback(response.data);
+  }
+
+  // 收藏帖子
+  void collect(int id, {Function callback}) async {
+    dio.Response response = await Http.request(
+      "/bbs.setfavoritetopic.$id.json",
+      method: Http.POST,
+    );
+    if (callback != null) callback();
+    if (response.data["success"]) {
+      Fluttertoast.showToast(msg: "收藏成功");
+    } else {
+      Fluttertoast.showToast(msg: response.data["notice"]);
+    }
+  }
+
+  // 取消帖子收藏
+  void cancelCollect(int id, {Function callback}) async {
+    dio.Response response = await Http.request(
+      "/bbs.unsetfavoritetopic.$id.json",
+      method: Http.POST,
+    );
+    if (callback != null) callback();
+    if (response.data["success"]) {
+      Fluttertoast.showToast(msg: "已取消收藏");
+    } else {
+      Fluttertoast.showToast(msg: response.data["notice"]);
+    }
   }
 }
