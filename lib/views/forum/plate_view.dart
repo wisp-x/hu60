@@ -39,7 +39,7 @@ class _PlateView extends State<PlateView> {
       body: _loading
           ? Utils.loading(context)
           : Container(
-              margin: EdgeInsets.all(15),
+              padding: EdgeInsets.only(left: 15, right: 15),
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return _widgets[index];
@@ -59,13 +59,13 @@ class _PlateView extends State<PlateView> {
     setState(() {
       _plates = entity.forums;
     });
-    _makeTree(_plates, null, 0);
+    _makeTree(_plates, null, 0, init: true);
     setState(() {
       _loading = false;
     });
   }
 
-  void _makeTree(List plates, parent, int layer) {
+  void _makeTree(List plates, parent, int layer, {bool init = false}) {
     plates.forEach((element) {
       if (element is LinkedHashMap<String, dynamic>) {
         element = Child.fromJson(element);
@@ -76,7 +76,7 @@ class _PlateView extends State<PlateView> {
           TextSpan(
             children: <InlineSpan>[
               WidgetSpan(
-                child: Padding(
+                child: Container(
                   padding: EdgeInsets.only(
                     left: element is Forums ? 0 : layer.toDouble() * 20,
                   ),
@@ -86,7 +86,7 @@ class _PlateView extends State<PlateView> {
               WidgetSpan(
                 alignment: ui.PlaceholderAlignment.middle,
                 child: Container(
-                  margin: EdgeInsets.only(bottom: 6),
+                  margin: EdgeInsets.only(top: init ? 15 : 6),
                   padding: EdgeInsets.only(
                     left: 15,
                     top: 6,
@@ -127,7 +127,7 @@ class _PlateView extends State<PlateView> {
         );
       });
       if (element.child.length > 0) {
-        return _makeTree(element.child, parent, layer + 1);
+        return _makeTree(element.child, parent, layer + 1, init: false);
       }
     });
   }
