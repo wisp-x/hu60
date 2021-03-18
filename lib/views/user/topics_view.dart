@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
-import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/controllers/user/user_topics_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/utils.dart';

@@ -1,6 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import '../http.dart';
+import 'package:dio/dio.dart' as dio;
 
 class User {
   // 获取用户头像
@@ -39,5 +42,20 @@ class User {
         errorWidget: (context, url, error) => Center(child: Icon(Icons.error)),
       ),
     );
+  }
+
+  /// 交友操作
+  /// [Action] in follow、unfollow、block、unblock
+  /// [callback] Callback after success
+  static friendOption(int id, String action, {Function callback}) async {
+    dio.Response response = await Http.request(
+      "/user.relationship.json",
+      method: Http.POST,
+      data: {"action": action, "targetUid": id},
+    );
+    Fluttertoast.showToast(msg: response.data["message"]);
+    if (response.data["success"]) {
+      if (callback != null) callback();
+    }
   }
 }

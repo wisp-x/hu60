@@ -35,7 +35,7 @@ dependencies:
   shared_preferences: ^2.0.3
   convex_bottom_bar: ^3.0.0
   pull_to_refresh: ^1.6.4
-  json_serializable: ^4.0.3
+  json_serializable: ^3.2.3
   build_runner: ^1.11.1
   cached_network_image: ^2.5.0
   common_utils: ^2.0.2

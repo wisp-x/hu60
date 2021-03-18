@@ -6,6 +6,7 @@ import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/user/collects_view.dart';
+import 'package:hu60/views/user/follows_view.dart';
 import 'package:hu60/views/user/message/inbox_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
@@ -174,7 +175,11 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),
           ),
-          Forum.buildListTile("特别关注", icon: Icons.star_outline),
+          Forum.buildListTile(
+            "特别关注",
+            icon: Icons.star_outline,
+            onTap: () => Get.to(() => FollowsView()),
+          ),
           Padding(
             padding: EdgeInsets.only(left: 70),
             child: Forum.buildListTileDivider(),

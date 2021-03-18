@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/entities/user/replies_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
+import 'package:hu60/utils/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../http.dart';
@@ -184,15 +185,9 @@ class UserInfoController extends GetxController
 
   // 交友操作
   void _friendOption(String action, {Function callback}) async {
-    dio.Response response = await Http.request(
-      "/user.relationship.json",
-      method: Http.POST,
-      data: {"action": action, "targetUid": this.id},
-    );
-    Fluttertoast.showToast(msg: response.data["message"]);
-    if (response.data["success"]) {
+    User.friendOption(this.id, action, callback: () {
       _refreshInfo();
       if (callback != null) callback();
-    }
+    });
   }
 }
