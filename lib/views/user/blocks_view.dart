@@ -2,18 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
-import 'package:hu60/controllers/user/follows_controller.dart';
-import 'package:hu60/entities/user/follows_entity.dart';
+import 'package:hu60/controllers/user/blocks_controller.dart';
+import 'package:hu60/entities/user/blocks_entity.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/user/user_info_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class FollowsView extends StatelessWidget {
+class BlocksView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<FollowsController>(
-      init: FollowsController(),
+    return GetBuilder<BlocksController>(
+      init: BlocksController(),
       builder: (c) {
         Widget child;
         if (c.loading) {
@@ -26,7 +26,7 @@ class FollowsView extends StatelessWidget {
             padding: EdgeInsets.only(bottom: 100),
             child: Center(
               child: Text(
-                "没有关注任何用户",
+                "没有屏蔽任何用户",
                 style: TextStyle(fontSize: ScreenUtil().setSp(35)),
               ),
             ),
@@ -57,9 +57,9 @@ class FollowsView extends StatelessWidget {
                   trailingActions: <SwipeAction>[
                     SwipeAction(
                       widthSpace: ScreenUtil().setWidth(200),
-                      title: "取消关注",
+                      title: "取消屏蔽",
                       onTap: (CompletionHandler handler) async {
-                        User.friendOption(item.uid, "unfollow", callback: () {
+                        User.friendOption(item.uid, "unblock", callback: () {
                           c.users.removeAt(index);
                           c.update();
                         });
@@ -93,7 +93,7 @@ class FollowsView extends StatelessWidget {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: AppBar(
-            title: Text("特别关注"),
+            title: Text("屏蔽用户"),
             centerTitle: true,
             titleSpacing: 0,
             elevation: 0,
