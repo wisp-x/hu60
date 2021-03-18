@@ -79,5 +79,6 @@ class UserTopicsController extends GetxController {
         this.topics[index] = item;
       }
     }).toList();
+    update();
   }
 }

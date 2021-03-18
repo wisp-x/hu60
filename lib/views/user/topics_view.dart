@@ -59,7 +59,7 @@ class TopicsView extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   trailingActions: <SwipeAction>[
                     SwipeAction(
-                      widthSpace: 70,
+                      widthSpace: ScreenUtil().setWidth(140),
                       title: "删除",
                       onTap: (CompletionHandler handler) async {
                         await handler(false);
@@ -73,7 +73,7 @@ class TopicsView extends StatelessWidget {
                       color: Colors.red,
                     ),
                     SwipeAction(
-                      widthSpace: 70,
+                      widthSpace: ScreenUtil().setWidth(140),
                       title: "下沉",
                       onTap: (CompletionHandler handler) async {
                         await handler(false);

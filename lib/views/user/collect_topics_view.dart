@@ -61,7 +61,7 @@ class CollectTopicsView extends StatelessWidget {
                   backgroundColor: Colors.transparent,
                   trailingActions: <SwipeAction>[
                     SwipeAction(
-                      widthSpace: 100,
+                      widthSpace: ScreenUtil().setWidth(200),
                       title: "取消收藏",
                       onTap: (CompletionHandler handler) async {
                         Get.find<UserController>().cancelCollect(
