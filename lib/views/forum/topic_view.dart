@@ -52,9 +52,11 @@ class TopicView extends StatelessWidget {
                       actions: !c.loading && meta.uid != userController.user.uid
                           ? <Widget>[
                               _openUrlAction(id),
+                              _collectAction(c),
                             ]
                           : <Widget>[
                               _openUrlAction(id),
+                              _collectAction(c),
                               CupertinoActionSheetAction(
                                 child: Text("修改"),
                                 onPressed: () async {
@@ -122,9 +124,23 @@ class TopicView extends StatelessWidget {
     );
   }
 
+  Widget _collectAction(TopicController c) {
+    return CupertinoActionSheetAction(
+      child: Text(c.isCollect ? "取消收藏" : "加入收藏"),
+      onPressed: () async {
+        Get.back();
+        if (c.isCollect) {
+          c.cancelCollect();
+        } else {
+          c.collect();
+        }
+      },
+    );
+  }
+
   Widget _openUrlAction(id) {
     return CupertinoActionSheetAction(
-      child: Text('浏览器打开'),
+      child: Text("浏览器打开"),
       onPressed: () async {
         Get.back();
         Utils.openUrl("/bbs.topic.$id.html");
