@@ -50,10 +50,16 @@ dependencies:
   image_picker: ^0.7.2+1
   http_parser: ^4.0.0
   flutter_swipe_action_cell: ^2.0.0
+  flutter_launcher_icons: ^0.9.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
