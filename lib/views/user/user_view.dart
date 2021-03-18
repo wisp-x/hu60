@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
-import 'package:hu60/utils/user.dart';
+import 'package:hu60/services/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/user/blocks_view.dart';
 import 'package:hu60/views/user/collects_view.dart';

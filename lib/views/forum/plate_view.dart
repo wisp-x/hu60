@@ -7,7 +7,7 @@ import 'package:hu60/entities/forum/plate_entity.dart';
 import 'package:hu60/http.dart';
 import 'dart:ui' as ui;
 
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 
 class PlateView extends StatefulWidget {
   @override

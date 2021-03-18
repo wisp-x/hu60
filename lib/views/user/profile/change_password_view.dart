@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'dart:ui' as ui;
 
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 import 'package:hu60/views/home_view.dart';
 import 'package:hu60/views/user/user_view.dart';
 

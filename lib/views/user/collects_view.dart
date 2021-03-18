@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/collects_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';

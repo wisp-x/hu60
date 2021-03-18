@@ -4,8 +4,8 @@ import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/follows_controller.dart';
 import 'package:hu60/entities/user/follows_entity.dart';
-import 'package:hu60/utils/user.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/user.dart';
+import 'package:hu60/services/utils.dart';
 import 'package:hu60/views/user/user_info_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

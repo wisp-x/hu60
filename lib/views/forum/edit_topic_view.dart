@@ -5,7 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 
 class EditTopicView extends StatefulWidget {
   final int id; // 帖子ID

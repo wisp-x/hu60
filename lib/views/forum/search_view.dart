@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/search_controller.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 

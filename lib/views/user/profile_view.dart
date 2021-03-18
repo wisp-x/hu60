@@ -9,7 +9,7 @@ import 'package:get/get.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/http.dart';
-import 'package:hu60/utils/user.dart';
+import 'package:hu60/services/user.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/common/photo_gallery.dart';
 import 'package:hu60/views/user/profile/change_name_view.dart';

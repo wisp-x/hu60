@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/entities/user/replies_entity.dart';
 import 'package:hu60/entities/user/user_info_entity.dart';
-import 'package:hu60/utils/user.dart';
+import 'package:hu60/services/user.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import '../../http.dart';

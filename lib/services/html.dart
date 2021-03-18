@@ -5,7 +5,7 @@ import 'package:flutter_html/html_parser.dart';
 import 'package:flutter_html/image_render.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/screen_util.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/utils.dart';
 import 'dart:ui' as ui;
 import 'package:html/dom.dart' as dom;
 import 'package:hu60/views/common/photo_gallery.dart';

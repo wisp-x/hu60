@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/screen_util.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/message/message_entity.dart';
-import 'package:hu60/utils/html.dart';
-import 'package:hu60/utils/utils.dart';
+import 'package:hu60/services/html.dart';
+import 'package:hu60/services/utils.dart';
 import 'package:dio/dio.dart' as dio;
 
 import '../../../http.dart';

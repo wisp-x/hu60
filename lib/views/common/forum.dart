@@ -2,7 +2,7 @@ import 'package:common_utils/common_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
-import 'package:hu60/utils/user.dart';
+import 'package:hu60/services/user.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:hu60/views/user/user_info_view.dart';
 import 'package:get/get.dart';
