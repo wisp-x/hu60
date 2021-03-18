@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/views/common/forum.dart';
-import 'package:hu60/views/user/collect_topics_view.dart';
+import 'package:hu60/views/user/collects_view.dart';
 import 'package:hu60/views/user/message/inbox_view.dart';
 import 'package:hu60/views/user/login_view.dart';
 import 'package:hu60/views/user/more_setting_view.dart';
@@ -168,7 +168,7 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
           Forum.buildListTile(
             "我的收藏",
             icon: Icons.bookmark_outline,
-            onTap: () => Get.to(() => CollectTopicsView()),
+            onTap: () => Get.to(() => CollectsView()),
           ),
           Padding(
             padding: EdgeInsets.only(left: 70),

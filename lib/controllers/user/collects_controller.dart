@@ -5,7 +5,7 @@ import 'package:hu60/http.dart';
 import 'package:dio/dio.dart' as dio;
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class CollectTopicsController extends GetxController {
+class CollectsController extends GetxController {
   RefreshController refreshController = RefreshController();
   ScrollController scrollController = ScrollController();
   int page = 1; // 页码

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_swipe_action_cell/core/cell.dart';
 import 'package:get/get.dart';
-import 'package:hu60/controllers/forum/topic_controller.dart';
-import 'package:hu60/controllers/user/collect_topics_controller.dart';
+import 'package:hu60/controllers/user/collects_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/utils.dart';
@@ -11,12 +10,11 @@ import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/forum/topic_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
-class CollectTopicsView extends StatelessWidget {
-  // TODO 完善帖子取消收藏功能
+class CollectsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<CollectTopicsController>(
-      init: CollectTopicsController(),
+    return GetBuilder<CollectsController>(
+      init: CollectsController(),
       builder: (c) {
         Widget child;
         if (c.loading) {
