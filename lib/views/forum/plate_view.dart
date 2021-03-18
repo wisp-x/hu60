@@ -39,7 +39,7 @@ class _PlateView extends State<PlateView> {
       body: _loading
           ? Utils.loading(context)
           : Padding(
-              padding: EdgeInsets.all(15),
+              padding: EdgeInsets.only(left: 15, right: 15),
               child: ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
                   return _widgets[index];

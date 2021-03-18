@@ -37,9 +37,7 @@ void main() {
             GlobalCupertinoLocalizations.delegate, // 对应的Cupertino风格
             GlobalWidgetsLocalizations.delegate // 指定默认的文本排列方向, 由左到右或由右到左
           ],
-          supportedLocales: [
-            const Locale('zh', 'CH'),
-          ],
+          supportedLocales: [const Locale('zh', 'CH')],
           localeResolutionCallback: (
             Locale locale,
             Iterable<Locale> supportedLocales,

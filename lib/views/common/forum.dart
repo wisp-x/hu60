@@ -65,45 +65,40 @@ class Forum {
           onTap: () => Get.to(() => UserInfoView(id: item.uid)),
         ),
         Expanded(
-          child: Text.rich(
-            TextSpan(
-              children: <InlineSpan>[
-                WidgetSpan(
-                  alignment: ui.PlaceholderAlignment.middle,
-                  child: GestureDetector(
-                    child: Container(
-                      margin: EdgeInsets.only(right: 5),
-                      child: Text(
-                        item.uName,
-                        style: TextStyle(fontSize: ScreenUtil().setSp(35)),
-                      ),
-                    ),
-                    onTap: () => Get.to(
-                      () => UserInfoView(id: item.uid),
-                    ),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              GestureDetector(
+                child: Container(
+                  margin: EdgeInsets.only(right: 5),
+                  child: Text(
+                    item.uName,
+                    style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                   ),
                 ),
-                WidgetSpan(
-                  alignment: ui.PlaceholderAlignment.middle,
-                  child: Container(
-                    padding: EdgeInsets.only(left: 3, right: 3),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(
-                        Radius.circular(4.0),
-                      ),
-                      color: Colors.green[400],
-                    ),
-                    child: Text(
-                      item.forumName,
-                      style: TextStyle(
-                        fontSize: ScreenUtil().setSp(35),
-                        color: Colors.white,
-                      ),
-                    ),
+                onTap: () => Get.to(
+                  () => UserInfoView(
+                    id: item.uid,
                   ),
-                )
-              ],
-            ),
+                ),
+              ),
+              Container(
+                padding: EdgeInsets.only(left: 3, right: 3),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.all(
+                    Radius.circular(4.0),
+                  ),
+                  color: Colors.green[400],
+                ),
+                child: Text(
+                  item.forumName,
+                  style: TextStyle(
+                    fontSize: ScreenUtil().setSp(35),
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ],
           ),
         )
       ],
