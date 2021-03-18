@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart' as flutterHtml;
 import 'package:flutter_html/html_parser.dart';
-import 'package:flutter_html/image_render.dart';
 import 'package:flutter_html/style.dart';
 import 'package:flutter_screenutil/screen_util.dart';
 import 'package:hu60/services/utils.dart';

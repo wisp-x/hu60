@@ -1,8 +1,13 @@
+import 'dart:async';
+
+import 'package:dio/dio.dart' as dio;
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/screen_util.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
+import 'package:hu60/http.dart';
 import 'package:hu60/services/utils.dart';
 import 'package:hu60/views/common/forum.dart';
 
@@ -12,6 +17,10 @@ class MoreSettingView extends StatefulWidget {
 }
 
 class _MoreSettingView extends State<MoreSettingView> {
+  String version = "v2.0-beta"; // TODO 当前版本
+  double ver = 2.0; // TODO
+  bool check = false; // 检测更新
+
   @override
   Widget build(BuildContext context) {
     return GetBuilder<UserController>(
@@ -58,11 +67,36 @@ class _MoreSettingView extends State<MoreSettingView> {
                     padding: EdgeInsets.only(left: 70),
                     child: Forum.buildListTileDivider(),
                   ),
+                  Offstage(
+                    offstage: !GetPlatform.isAndroid,
+                    child: Column(
+                      children: <Widget>[
+                        Forum.buildListTile(
+                          "检测更新",
+                          icon: Icons.update,
+                          trailing: check
+                              ? CupertinoActivityIndicator()
+                              : Icon(
+                                  Icons.chevron_right,
+                                  color: Colors.grey,
+                                  size: ScreenUtil().setWidth(45),
+                                ),
+                          onTap: () {
+                            if (!check) _check();
+                          },
+                        ),
+                        Padding(
+                          padding: EdgeInsets.only(left: 70),
+                          child: Forum.buildListTileDivider(),
+                        )
+                      ],
+                    ),
+                  ),
                   Forum.buildListTile(
                     "版本信息",
                     icon: Icons.info,
                     trailing: Text(
-                      "v2.0 build 20210310",
+                      "$version build 20210318",
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: ScreenUtil().setSp(30),
@@ -77,5 +111,23 @@ class _MoreSettingView extends State<MoreSettingView> {
         ),
       ),
     );
+  }
+
+  void _check() async {
+    setState(() => check = true);
+    String url = "https://api.github.com/repos/wisp-x/hu60/releases";
+    dio.Response response = await Http.dio.get(url);
+    Map<String, dynamic> data = response.data[0];
+    double version = double.parse(RegExp(r"\d+", multiLine: true)
+        .allMatches(data["tag_name"])
+        .map((e) => e.group(0))
+        .first);
+    setState(() => check = false);
+    if (version > this.ver) {
+      Fluttertoast.showToast(msg: "检测到新版本，即将跳转至下载页!");
+      Timer(Duration(seconds: 3), () {
+        Utils.openUrl(data["html_url"]);
+      });
+    }
   }
 }
