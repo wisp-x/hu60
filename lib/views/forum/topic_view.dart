@@ -8,6 +8,7 @@ import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/entities/forum/topic_entity.dart';
 import 'package:hu60/http.dart';
 import 'package:hu60/utils/html.dart';
+import 'package:hu60/utils/topic.dart';
 import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:common_utils/common_utils.dart';
@@ -75,9 +76,14 @@ class TopicView extends StatelessWidget {
                                   Get.back();
                                   var data = await Get.to(PlateView());
                                   if (data != null) {
-                                    c.move(context, id, data["id"], () {
-                                      c.refreshController.requestRefresh();
-                                    });
+                                    Topic.move(
+                                      context,
+                                      id,
+                                      data["id"],
+                                      callback: () {
+                                        c.refreshController.requestRefresh();
+                                      },
+                                    );
                                   }
                                 },
                               ),
@@ -85,7 +91,7 @@ class TopicView extends StatelessWidget {
                                 child: Text("下沉"),
                                 onPressed: () {
                                   Get.back();
-                                  c.sink(context, id, () {
+                                  Topic.sink(context, id, callback: () {
                                     c.refreshController.requestRefresh();
                                   });
                                 },
@@ -95,11 +101,11 @@ class TopicView extends StatelessWidget {
                                 child: Text('删除'),
                                 onPressed: () {
                                   Get.back();
-                                  c.delete(
+                                  Topic.deleteContent(
                                     context,
                                     id,
                                     c.content.id,
-                                    () {
+                                    callback: () {
                                       Get.back();
                                     },
                                   );
@@ -571,7 +577,7 @@ class TopicView extends StatelessWidget {
                       ),
                     ),
                     onTap: () {
-                      c.delete(context, id, item.id, () {
+                      Topic.deleteContent(context, id, item.id, callback: () {
                         c.updateFloor(id);
                       });
                     },

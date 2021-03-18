@@ -5,6 +5,8 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/forum/topic_controller.dart';
 import 'package:hu60/controllers/user/user_topics_controller.dart';
 import 'package:hu60/entities/forum/topics_entity.dart';
+import 'package:hu60/utils/topic.dart';
+import 'package:hu60/utils/user.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/common/forum.dart';
 import 'package:hu60/views/forum/topic_view.dart';
@@ -62,11 +64,11 @@ class TopicsView extends StatelessWidget {
                       title: "删除",
                       onTap: (CompletionHandler handler) async {
                         await handler(false);
-                        Get.put(TopicController(id: null)).delete(
+                        Topic.deleteContent(
                           context,
                           item.id,
                           item.contentId,
-                          () => c.updateList(),
+                          callback: () => c.updateList(),
                         );
                       },
                       color: Colors.red,
@@ -76,10 +78,10 @@ class TopicsView extends StatelessWidget {
                       title: "下沉",
                       onTap: (CompletionHandler handler) async {
                         await handler(false);
-                        Get.put(TopicController(id: null)).sink(
+                        Topic.sink(
                           context,
                           item.id,
-                          () => c.updateList(),
+                          callback: () => c.updateList(),
                         );
                       },
                       color: Colors.yellow[700],
