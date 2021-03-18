@@ -19,6 +19,7 @@ class MoreSettingView extends StatefulWidget {
 class _MoreSettingView extends State<MoreSettingView> {
   String version = "v2.0-beta"; // TODO 当前版本
   double ver = 2.0; // TODO
+  int buildDate = 20210318; // 打包时间
   bool check = false; // 检测更新
 
   @override
@@ -96,7 +97,7 @@ class _MoreSettingView extends State<MoreSettingView> {
                     "版本信息",
                     icon: Icons.info,
                     trailing: Text(
-                      "$version build 20210318",
+                      "$version build ${buildDate}",
                       style: TextStyle(
                         color: Colors.grey[500],
                         fontSize: ScreenUtil().setSp(30),
