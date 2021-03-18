@@ -129,6 +129,8 @@ class _MoreSettingView extends State<MoreSettingView> {
       Timer(Duration(seconds: 3), () {
         Utils.openUrl(data["html_url"]);
       });
+    } else {
+      Fluttertoast.showToast(msg: "暂无新版本");
     }
   }
 }
