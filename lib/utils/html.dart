@@ -32,9 +32,6 @@ class Html {
         onImageError: (dynamic exception, StackTrace stackTrace) {
           print("加载错误 $exception");
         },
-        customImageRenders: {
-          base64DataUriMatcher(): base64ImageRender(),
-        },
         style: {
           "*": Style.fromTextStyle(
             TextStyle(

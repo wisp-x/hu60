@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:dio/dio.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -54,7 +53,7 @@ class Http {
       ),
     );
 
-    dio.interceptors.add(
+    /*dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (RequestOptions options) async {
           return options;
@@ -66,7 +65,7 @@ class Http {
           return e;
         },
       ),
-    );
+    );*/
 
     data = data ?? {};
     method = method ?? 'GET';

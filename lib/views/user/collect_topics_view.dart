@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:hu60/controllers/user/collect_topics_controller.dart';
+import 'package:hu60/entities/forum/topics_entity.dart';
 import 'package:hu60/utils/utils.dart';
 import 'package:hu60/views/common/forum.dart';
+import 'package:hu60/views/forum/topic_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class CollectTopicsView extends StatelessWidget {
@@ -39,7 +41,41 @@ class CollectTopicsView extends StatelessWidget {
             scrollController: c.scrollController,
             onRefresh: c.onRefresh,
             onLoading: c.onLoading,
-            child: Forum.buildTopics(c.topics),
+            child: ListView.separated(
+              itemCount: c.topics.length,
+              separatorBuilder: (BuildContext context, int index) => Container(
+                margin: EdgeInsets.only(top: 15),
+                padding: EdgeInsets.only(left: 20, right: 20),
+                child: Divider(
+                  height: 1.0,
+                  color: Color(0xffcecece),
+                ),
+              ),
+              itemBuilder: (BuildContext context, int index) {
+                if (c.topics.length < index) {
+                  return null;
+                }
+                TopicList item = c.topics[index];
+                return GestureDetector(
+                  behavior: HitTestBehavior.opaque,
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 20, top: 15, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Forum.buildTopicsHeader(context, item),
+                        Padding(
+                          padding: EdgeInsets.only(top: 8, bottom: 8),
+                          child: Forum.buildTopicsTitle(item),
+                        ),
+                        Forum.buildTopicsFooter(item),
+                      ],
+                    ),
+                  ),
+                  onTap: () => Get.to(() => TopicView(id: item.id)),
+                );
+              },
+            ),
           );
         }
         return Scaffold(
