@@ -20,7 +20,7 @@ class _MessageView extends State<MessageView> {
 
   initState() {
     super.initState();
-    if (_userController.isLogin) Get.find<MessageController>().init();
+    Get.find<MessageController>().init();
   }
 
   @override

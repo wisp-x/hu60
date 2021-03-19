@@ -26,6 +26,7 @@ class MessageController extends GetxController
 
   // 初始化列表
   void init() async {
+    if (!Get.put(UserController()).isLogin) return;
     loading = true;
     page = 1;
     update();
