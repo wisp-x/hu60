@@ -113,7 +113,7 @@ class _ProfileView extends State<ProfileView> {
                   Forum.buildListTile(
                     "个性签名",
                     content: Text(
-                      c.user.signature,
+                      c.user.signature ?? '',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                     ),
@@ -126,7 +126,7 @@ class _ProfileView extends State<ProfileView> {
                   Forum.buildListTile(
                     "联系方式",
                     content: Text(
-                      c.user.contact,
+                      c.user.contact ?? '',
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(fontSize: ScreenUtil().setSp(35)),
                     ),

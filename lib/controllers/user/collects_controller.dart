@@ -60,6 +60,7 @@ class CollectsController extends GetxController {
     } else {
       refreshController.loadComplete();
     }
+    result.topicList = result.topicList ?? [];
     loading = false;
     update();
     return result;

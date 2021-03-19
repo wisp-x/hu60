@@ -84,14 +84,14 @@ class _UserView extends State<UserView> with AutomaticKeepAliveClientMixin {
           borderRadius: 8.0,
         ),
         title: Text(
-          c.user.name,
+          c.user.name ?? '',
           style: TextStyle(fontSize: ScreenUtil().setSp(40)),
         ),
         subtitle: Container(
           width: double.infinity,
           margin: EdgeInsets.only(top: 8),
           child: Text(
-            c.user.signature,
+            c.user.signature ?? '',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
               fontSize: ScreenUtil().setSp(30),
