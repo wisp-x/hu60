@@ -22,6 +22,7 @@ class UserController extends GetxController {
       if (res.data != "") {
         UserEntity entity = UserEntity.fromJson(res.data);
         this.user = entity;
+        this.user.floorReverse = this.user.floorReverse ?? false;
         this.isLogin = true;
         update();
         Get.put(MessageController()).update();
