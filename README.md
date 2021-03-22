@@ -39,6 +39,9 @@ storeFile=证书路径，例如：/Users/wispx/Develop/flutter-key.jks
 接下来进入项目根目录执行命令：```flutter build apk``` 进行打包。  
 IOS 打包 **必须** 要有 Xcode，打包命令```flutter build ios```
 
+最新版本安卓安装包，[点我](https://github.com/wisp-x/hu60/releases/download/v2.1/hu60.apk)
+直接下载，[查看历史版本](https://github.com/wisp-x/hu60/releases)
+
 ## 其他说明
 
 - APP 中不支持展示小尾巴，如果想要展示请不要使用 span 标签
