@@ -21,6 +21,24 @@
 ![](./assets/preview-1.png)
 ![](./assets/preview-2.png)
 
+## 如何编译
+
+**先决条件：**  
+1.你必须已经安装好 Flutter，安装方法[直达车](https://flutter.cn/docs/get-started/install)  
+2.然后创建证书，创建方法[直达车](https://flutter.cn/docs/deployment/android#create-a-keystore)
+
+克隆项目后进入 android 目录，创建文件 ```key.properties```，内容如下：
+
+```
+storePassword=证书储存密码
+keyPassword=证书密码
+keyAlias=key
+storeFile=证书路径，例如：/Users/wispx/Develop/flutter-key.jks
+```
+
+接下来进入项目根目录执行命令：```flutter build apk``` 进行打包。  
+IOS 打包 **必须** 要有 Xcode，打包命令```flutter build ios```
+
 ## 其他说明
 
 - APP 中不支持展示小尾巴，如果想要展示请不要使用 span 标签
