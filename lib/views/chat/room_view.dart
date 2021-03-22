@@ -98,75 +98,78 @@ class _RoomView extends State<RoomView> {
                         controller: c.refreshController,
                       ),
                     ),
-                    Container(
-                      color: Colors.white,
-                      height: 56.0,
-                      child: Row(
-                        children: <Widget>[
-                          IconButton(
-                            splashColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            icon: Icon(
-                              Icons.tag_faces,
-                              size: ScreenUtil().setWidth(60),
-                              color: Color(0xff5a5a5a),
+                    Offstage(
+                      offstage: !user.isLogin,
+                      child: Container(
+                        color: Colors.white,
+                        height: 56.0,
+                        child: Row(
+                          children: <Widget>[
+                            IconButton(
+                              splashColor: Colors.transparent,
+                              highlightColor: Colors.transparent,
+                              icon: Icon(
+                                Icons.tag_faces,
+                                size: ScreenUtil().setWidth(60),
+                                color: Color(0xff5a5a5a),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  openFace = !openFace;
+                                  _height = openFace ? 110 : 0;
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                openFace = !openFace;
-                                _height = openFace ? 110 : 0;
-                              });
-                            },
-                          ),
-                          Expanded(
-                            child: Container(
-                              height: 38,
-                              child: TextField(
-                                autofocus: true,
-                                keyboardType: TextInputType.multiline,
-                                controller: c.textController,
-                                decoration: InputDecoration(
-                                  contentPadding: EdgeInsets.all(8),
-                                  enabledBorder: OutlineInputBorder(
-                                    // 未选中时候的颜色
-                                    borderRadius: BorderRadius.circular(6),
-                                    borderSide: BorderSide(
-                                      color: Color(0xffbfbfbf),
+                            Expanded(
+                              child: Container(
+                                height: 38,
+                                child: TextField(
+                                  autofocus: true,
+                                  keyboardType: TextInputType.multiline,
+                                  controller: c.textController,
+                                  decoration: InputDecoration(
+                                    contentPadding: EdgeInsets.all(8),
+                                    enabledBorder: OutlineInputBorder(
+                                      // 未选中时候的颜色
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: BorderSide(
+                                        color: Color(0xffbfbfbf),
+                                      ),
                                     ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    // 选中时外边框颜色
-                                    borderRadius: BorderRadius.circular(6),
-                                    borderSide: BorderSide(
-                                      color: Color(0xffb3b3b3),
+                                    focusedBorder: OutlineInputBorder(
+                                      // 选中时外边框颜色
+                                      borderRadius: BorderRadius.circular(6),
+                                      borderSide: BorderSide(
+                                        color: Color(0xffb3b3b3),
+                                      ),
                                     ),
+                                    hintText: "输入要发送的消息",
                                   ),
-                                  hintText: "输入要发送的消息",
+                                  onSubmitted: (val) => _submit(c),
                                 ),
-                                onSubmitted: (val) => _submit(c),
+                                margin: EdgeInsets.only(right: 10),
                               ),
-                              margin: EdgeInsets.only(right: 10),
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(right: 10),
-                            child: TextButton(
-                              child: Text(
-                                "发送",
-                                style: TextStyle(color: Colors.white),
-                              ),
-                              style: TextButton.styleFrom(
-                                shape: RoundedRectangleBorder(
-                                  borderRadius:
-                                      BorderRadius.all(Radius.circular(4)),
+                            Padding(
+                              padding: EdgeInsets.only(right: 10),
+                              child: TextButton(
+                                child: Text(
+                                  "发送",
+                                  style: TextStyle(color: Colors.white),
                                 ),
-                                elevation: 0,
-                                backgroundColor: Colors.green,
+                                style: TextButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius:
+                                        BorderRadius.all(Radius.circular(4)),
+                                  ),
+                                  elevation: 0,
+                                  backgroundColor: Colors.green,
+                                ),
+                                onPressed: () => _submit(c),
                               ),
-                              onPressed: () => _submit(c),
-                            ),
-                          )
-                        ],
+                            )
+                          ],
+                        ),
                       ),
                     ),
                     AnimatedContainer(
