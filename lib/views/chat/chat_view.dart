@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:hu60/controllers/chat/rooms_controller.dart';
 import 'package:hu60/entities/chat/rooms_entity.dart';
 import 'package:hu60/services/utils.dart';
+import 'package:hu60/views/chat/room_view.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:common_utils/common_utils.dart';
 
@@ -80,6 +81,8 @@ class _ChatView extends State<ChatView> with AutomaticKeepAliveClientMixin {
                           return ListTile(
                             title: Text(item.name),
                             subtitle: Text(date),
+                            onTap: () =>
+                                Get.to(() => RoomView(name: item.name)),
                           );
                         },
                       ),

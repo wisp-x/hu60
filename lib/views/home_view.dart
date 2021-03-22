@@ -5,7 +5,6 @@ import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 import 'package:hu60/controllers/forum/topics_controller.dart';
 import 'package:hu60/controllers/home_controller.dart';
 import 'package:get/get.dart';
-import 'package:hu60/controllers/message/message_controller.dart';
 import 'package:hu60/controllers/user/user_controller.dart';
 import 'package:hu60/services/badge.dart';
 import 'package:hu60/views/forum/new_topic_view.dart';
