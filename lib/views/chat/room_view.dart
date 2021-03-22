@@ -159,8 +159,9 @@ class _RoomView extends State<RoomView> {
                                 ),
                                 style: TextButton.styleFrom(
                                   shape: RoundedRectangleBorder(
-                                    borderRadius:
-                                        BorderRadius.all(Radius.circular(4)),
+                                    borderRadius: BorderRadius.all(
+                                      Radius.circular(4),
+                                    ),
                                   ),
                                   elevation: 0,
                                   backgroundColor: Colors.green,
