@@ -17,9 +17,9 @@ class MoreSettingView extends StatefulWidget {
 }
 
 class _MoreSettingView extends State<MoreSettingView> {
-  String version = "v2.1"; // TODO 当前版本
-  double ver = 2.1; // TODO
-  int buildDate = 20210322; // 打包时间
+  String version = "v2.2"; // TODO 当前版本
+  double ver = 2.2; // TODO
+  int buildDate = 20211125; // 打包时间
   bool check = false; // 检测更新
 
   @override
