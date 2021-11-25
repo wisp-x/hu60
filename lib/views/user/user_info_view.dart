@@ -67,8 +67,8 @@ class _UserInfoView extends State<UserInfoView> {
                             fontSize: ScreenUtil().setSp(33),
                             fontWeight: FontWeight.bold,
                             color: c.user.isFollow
-                                ? Colors.redAccent
-                                : Colors.green,
+                                ? Colors.black45
+                                : Colors.deepOrangeAccent,
                           ),
                         ),
                       ),
@@ -118,16 +118,9 @@ class _UserInfoView extends State<UserInfoView> {
     return SliverToBoxAdapter(
       child: Container(
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            //渐变位置
-            begin: Alignment.centerLeft, //右上
-            end: Alignment.centerRight, //左下
-            //渐变颜色[始点颜色, 结束颜色]
-            colors: [
-              Color.fromRGBO(99, 184, 120, 1.0),
-              Color.fromRGBO(54, 201, 90, 1.0),
-              Color.fromRGBO(99, 184, 120, 1.0),
-            ],
+          image: DecorationImage(
+            image: AssetImage("assets/tree.jpeg"),
+            fit: BoxFit.cover,
           ),
         ),
         child: Column(

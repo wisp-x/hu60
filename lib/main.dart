@@ -45,10 +45,12 @@ void main() {
             return locale;
           },
           theme: ThemeData(
-            // bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.red),
+            appBarTheme: AppBarTheme(
+              backgroundColor: Color.fromRGBO(63, 154, 86, 1.0),
+            ),
             brightness: Brightness.light,
-            primaryColor: Colors.white,
-            accentColor: Color.fromRGBO(63, 154, 86, 1.0),
+            primaryColor: Color.fromRGBO(63, 154, 86, 1.0),
+            bottomAppBarColor: Color.fromRGBO(63, 154, 86, 1.0),
             backgroundColor: Color.fromRGBO(242, 247, 251, 1),
           ),
         ),

@@ -31,15 +31,17 @@ class _MessageView extends State<MessageView> {
         return Scaffold(
           backgroundColor: Theme.of(context).backgroundColor,
           appBar: _userController.isLogin
-              ? TabBar(
-                  labelColor: Theme.of(context).accentColor,
-                  indicatorColor: Theme.of(context).accentColor,
-                  controller: c.tabController,
-                  onTap: (int i) {
-                    c.tabIndex = i;
-                    c.init();
-                  },
-                  tabs: [Tab(text: "未读"), Tab(text: "已读")],
+              ? AppBar(
+                  toolbarHeight: 0,
+                  elevation: 0,
+                  bottom: TabBar(
+                    controller: c.tabController,
+                    onTap: (int i) {
+                      c.tabIndex = i;
+                      c.init();
+                    },
+                    tabs: [Tab(text: "未读"), Tab(text: "已读")],
+                  ),
                 )
               : null,
           body: _userController.isLogin

@@ -28,8 +28,6 @@ class _InboxView extends State<InboxView> {
             centerTitle: true,
             elevation: 0,
             bottom: TabBar(
-              labelColor: Theme.of(context).accentColor,
-              indicatorColor: Theme.of(context).accentColor,
               controller: c.tabController,
               onTap: (int i) {
                 c.tabIndex = i;

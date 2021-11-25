@@ -45,9 +45,10 @@ class Html {
           "div": (
             RenderContext context,
             Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
           ) {
+            final attrs = context.tree.element?.attributes;
+            final element = context.tree.element;
+            if (element == null) return null;
             switch (attrs["class"]) {
               case "tp info-box":
                 return Container(
@@ -73,9 +74,9 @@ class Html {
           "img": (
             RenderContext context,
             Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
           ) {
+            final attrs = context.tree.element?.attributes;
+            final element = context.tree.element;
             if (element == null) return null;
             if (attrs["src"] == null || attrs["src"] == "") {
               return Text(element.text);
@@ -145,9 +146,10 @@ class Html {
           "a": (
             RenderContext context,
             Widget child,
-            Map<String, String> attrs,
-            dom.Element element,
           ) {
+            final attrs = context.tree.element?.attributes;
+            final element = context.tree.element;
+            if (element == null) return null;
             switch (attrs["class"]) {
               case "userlink": // 链接
                 return _buildOpenUrlWidget(attrs, element);
@@ -219,7 +221,7 @@ class Html {
     );
   }
 
-  static _buildOpenUrlWidget(Map<String, String> attrs, dom.Element element) {
+  static _buildOpenUrlWidget(Map<Object, String> attrs, dom.Element element) {
     return GestureDetector(
       onTap: () => Utils.openUrl(attrs["href"]),
       child: Text.rich(

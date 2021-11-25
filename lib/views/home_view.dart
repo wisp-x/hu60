@@ -87,9 +87,9 @@ class _HomeView extends State<HomeView> with SingleTickerProviderStateMixin {
           bottomNavigationBar: ConvexAppBar(
             chipBuilder: badge != null ? DefaultChipBuilder(badge) : null,
             elevation: 0,
-            activeColor: Theme.of(context).accentColor,
-            color: Theme.of(context).accentColor,
-            backgroundColor: Theme.of(context).primaryColor,
+            activeColor: Theme.of(context).bottomAppBarColor,
+            color: Theme.of(context).bottomAppBarColor,
+            backgroundColor: Colors.white,
             key: c.appBarKey,
             items: <TabItem>[
               TabItem(icon: Icons.home, title: '首页'),
