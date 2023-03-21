@@ -31,7 +31,7 @@ dependencies:
   cupertino_icons: ^1.0.0
 
   get: ^3.25.4
-  dio: ^4.0.0-beta7
+  dio: ^5.0.3
   shared_preferences: ^2.0.3
   convex_bottom_bar: ^3.0.0
   pull_to_refresh: ^2.0.0
